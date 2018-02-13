@@ -44,9 +44,16 @@
 
   <small>Descriptors/Tags</small>
   <p>
-    <b-badge v-for="desc in exp.descriptors"></b-badge>
+    <b-badge v-for="desc in exp.descriptors" class="mr-1">{{desc}}</b-badge>
+    <!-- the modal -->
+    <b-modal size="lg" ref="descriptorsModal">
+      <div slot="modal-header" class="w-100" style="display: inline">
+        <b-input class="w-100" placeholder="Search Descriptors"></b-input>
+      </div>
+      <descriptors :selected="exp.descriptors" v-on:setselected="setSelector"></descriptors>
+    </b-modal>
     <br>
-    <b-button size="sm" variant="outline-secondary">Open Descriptors</b-button>
+    <b-btn size="sm" variant="outline-secondary" @click="showDescriptors">Open Descriptors</b-btn>
   </p>
 
   <small>Key-Value pairs</small>
@@ -72,7 +79,7 @@
   </p>
 
 
-      <b-table striped hover :items="exp.locations">
+      <b-table striped hover :items="exp.locations" class="pb-3">
         <template slot="x" slot-scope="data">
           <textfield v-model="data.value" :index="data.index" v-on:input="setX" ttype="text"></textfield>
         </template>
@@ -88,7 +95,7 @@
 
       </b-table>
 
-
+      <hr class="mb-3 mt-3 pt-3 pb-3">
   </div>
 </template>
 
@@ -106,6 +113,7 @@
 </style>
 
 <script>
+import Descriptors from './Descriptors';
 
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
@@ -134,6 +142,7 @@ export default {
   name: 'experiment',
   data() {
     return {
+      atlases: [],
       include: true,
       includeOptions: [
         { text: 'Include', value: true },
@@ -155,11 +164,12 @@ export default {
         { text: 'p exact', value: 'p' },
         { text: 'p < value', value: 'p<' },
       ],
-      kvFields: ['key', 'value','delete'],
+      kvFields: ['key', 'value', 'delete'],
     };
   },
   components: {
     Textfield,
+    Descriptors,
   },
   computed: {
 
@@ -197,7 +207,21 @@ export default {
       });
       this.$refs.kvTable.refresh();
     },
-
+    showDescriptors() {
+      this.$refs.descriptorsModal.show();
+    },
+    setSelector(item) {
+      console.log('recieved', item);
+      const idx = this.exp.descriptors.indexOf(item.name);
+      console.log('idx is', idx);
+      if (idx >= 0) {
+        // remove the descriptors
+        this.exp.descriptors.splice(idx, 1);
+      } else {
+        this.exp.descriptors.push(item.name);
+      }
+      console.log(this.exp.descriptors);
+    },
   },
   props: ['exp', 'index'],
 };
