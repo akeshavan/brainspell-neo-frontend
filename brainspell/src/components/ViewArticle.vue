@@ -2,67 +2,6 @@
   <!-- This is a dynamic route
     Source: https://scotch.io/tutorials/getting-started-with-vue-router
   -->
-  <!--<div class="">
-    <div class="special">
-      <div v-bind:class="{'fullpage': !viewArticle, 'halfpage left': viewArticle}">
-        <h1>Brainspell</h1>
-        <p class="lead">
-          An open, human-curated classification of neuroimaging literature.
-        </p>
-
-        <div>
-
-          <input type="checkbox" v-model="viewArticle"></input>
-
-        </div>
-
-
-        <b-container>
-
-          <b-form class="mb-3">
-            <b-label>Add to GitHub Collections</b-label>
-            <b-input></b-input>
-          </b-form>
-
-          <b-row class="mt-3">
-            <h2>{{info.title}}</h2>
-          </b-row>
-
-          <b-row>
-
-            <p class="authors text-center text-muted">{{info.authors}}</p>
-
-            <p class="abstract text-justify">
-              {{info.abstract}}
-            </p>
-
-            <p>
-              <a :href="'https://www.ncbi.nlm.nih.gov/pubmed/' + this.pmid">PubMed</a>
-            </p>
-          </b-row>
-
-          <b-row style="display: block;">
-
-            <div v-for="(exp, index) in info.experiments" class="experiment-list">
-              <div class="experiment">
-                <h3> Experiment {{index}}</h3>
-                <p>
-
-                </p>
-                <p>Exclusion popup</p>
-              </div>
-            </div>
-
-          </b-row>
-
-        </b-container>
-      </div>
-      <div v-if="viewArticle" class="mt-3 halfpage artView right">
-        <b-input v-model="articleURL"></b-input>
-        <iframe :src="articleURL" v-if="articleURL" class="iframe"></iframe>
-      </div>
-    </div>
-  </div>-->
 
   <div class="content mt-3">
     <div v-bind:class="{'fullpage': !viewArticle, 'halfpage left': viewArticle}">
@@ -96,11 +35,19 @@
           <p>
             <a :href="'https://www.ncbi.nlm.nih.gov/pubmed/' + this.pmid">PubMed</a>
           </p>
+          <br>
+          <p class="text-center w-100">
+            <b-form>
+              <label>Number of Subjects</label>
+              <b-input class="w-25 mx-auto"></b-input>
+            </b-form>
+          </p>
         </b-row>
+        <hr class="mb-3 mt-3 pt-3 pb-3">
 
-        <b-row style="display: block;">
+        <b-row style="display: block;" class="mt-3">
 
-          <div v-for="(exp, index) in info.experiments" class="experiment-list">
+          <div v-for="(exp, index) in info.experiments" class="experiment-list mt-3">
             <experiment :index="index" :exp="exp"></experiment>
           </div>
 
@@ -180,7 +127,9 @@
     data() {
       return {
         pmid: null,
-        info: {},
+        info: {
+          experiments: [],
+        },
         viewArticle: false,
         articleURL: null,
       };
@@ -204,7 +153,14 @@
           this.info = resp.data;
           this.articleURL = `http://dx.doi.org/${this.info.doi}`;
           this.info.experiments = JSON.parse(this.info.experiments);
+          this.info.metadata = JSON.parse(this.info.metadata);
           this.info.experiments.forEach((exp, idx, arr) => {
+            if (!arr[idx].kvPairs) {
+              arr[idx].kvPairs = [];
+            }
+            if (!arr[idx].descriptors) {
+              arr[idx].descriptors = [];
+            }
             arr[idx].locations.forEach((loc, jdx, locarr) => {
               if (typeof loc === 'string' || loc instanceof String){
                 const locs = loc.split(',')
