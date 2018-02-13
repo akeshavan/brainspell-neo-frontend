@@ -114,6 +114,7 @@
 
 <script>
 import Descriptors from './Descriptors';
+import Vue from 'vue';
 
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
@@ -221,6 +222,7 @@ export default {
         this.exp.descriptors.push(item.name);
       }
       console.log(this.exp.descriptors);
+      this.$forceUpdate();
     },
   },
   props: ['exp', 'index'],

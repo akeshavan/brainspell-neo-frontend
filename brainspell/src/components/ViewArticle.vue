@@ -127,7 +127,9 @@
     data() {
       return {
         pmid: null,
-        info: {},
+        info: {
+          experiments: [],
+        },
         viewArticle: false,
         articleURL: null,
       };

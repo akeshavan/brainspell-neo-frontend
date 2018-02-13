@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="input-group col-md-12">
-      
+      {{selectedDesc}}
     </div>
     <ul class="list-group">
 
