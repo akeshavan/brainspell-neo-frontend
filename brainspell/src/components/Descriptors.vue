@@ -1,13 +1,10 @@
 <template>
   <div>
-    <div class="input-group col-md-12">
-      {{selectedDesc}}
-    </div>
     <ul class="list-group">
 
         <li :class="{'list-group-item tag': selected.indexOf(atlas.name) < 0, 'list-group-item tag selected': selected.indexOf(atlas.name) >= 0}"
              v-if="!atlas.superClass"
-             v-for="atlas in atlases"
+             v-for="atlas in searchAtlas"
              @click="sendClick(atlas)"
         >
           {{atlas.name}}
@@ -76,10 +73,11 @@ export default {
       initSelected: this.selected,
     };
   },
-  props: ['selected'],
+  props: ['selected', 'filter'],
   methods: {
     sendClick(item) {
       this.$emit('setselected', item);
+      this.$forceUpdate();
     },
     isSelected(atlas) {
       // console.log('checking', atlas);
@@ -93,6 +91,9 @@ export default {
     },
     nowSelected() {
       return this.selected.length;
+    },
+    searchAtlas() {
+      return this.atlases.filter(v => v.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0);
     },
   },
   created() {

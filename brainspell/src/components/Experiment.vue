@@ -48,9 +48,9 @@
     <!-- the modal -->
     <b-modal size="lg" ref="descriptorsModal">
       <div slot="modal-header" class="w-100" style="display: inline">
-        <b-input class="w-100" placeholder="Search Descriptors"></b-input>
+        <b-input class="w-100" placeholder="Search Descriptors" v-model="tagSearch"></b-input>
       </div>
-      <descriptors :selected="exp.descriptors" v-on:setselected="setSelector"></descriptors>
+      <descriptors :selected="exp.descriptors" v-on:setselected="setSelector" :filter="tagSearch"></descriptors>
     </b-modal>
     <br>
     <b-btn size="sm" variant="outline-secondary" @click="showDescriptors">Open Descriptors</b-btn>
@@ -91,6 +91,13 @@
         </template>
         <template slot="E" slot-scope="data">
           <textfield v-model="data.value" :index="data.index" v-on:input="setE" ttype="text"></textfield>
+        </template>
+        <template slot="delete" scope="row">
+
+          <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeLocation(row)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
         </template>
 
       </b-table>
@@ -166,6 +173,7 @@ export default {
         { text: 'p < value', value: 'p<' },
       ],
       kvFields: ['key', 'value', 'delete'],
+      tagSearch: '',
     };
   },
   components: {
@@ -200,6 +208,9 @@ export default {
     },
     setValue(val, idx) {
       this.exp.kvPairs[idx].value = val;
+    },
+    removeLocation(loc) {
+
     },
     addKVrow() {
       this.exp.kvPairs.push({
