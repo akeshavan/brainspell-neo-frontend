@@ -205,6 +205,9 @@
           this.articleURL = `http://dx.doi.org/${this.info.doi}`;
           this.info.experiments = JSON.parse(this.info.experiments);
           this.info.experiments.forEach((exp, idx, arr) => {
+            if (!arr[idx].kvPairs) {
+              arr[idx].kvPairs = [];
+            }
             arr[idx].locations.forEach((loc, jdx, locarr) => {
               if (typeof loc === 'string' || loc instanceof String){
                 const locs = loc.split(',')
