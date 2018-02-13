@@ -3,7 +3,12 @@
     <h3> Experiment {{index + 1 }}</h3>
 
     <p>
-      <textfield v-model="exp.caption" placeholder="Enter Caption"></textfield>
+      <textfield v-model="exp.caption" placeholder="Enter Caption" ttype="textarea"></textfield>
+    </p>
+
+    <p>
+      <small>Contrast</small>
+      <textfield v-model="exp.contrast" placeholder="Enter Contrast Name" ttype="text"></textfield>
     </p>
 
     <b-form-group>
@@ -20,16 +25,16 @@
     <template>
       <b-table striped hover :items="exp.locations">
         <template slot="x" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setX"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setX" ttype="text"></textfield>
         </template>
         <template slot="y" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setY"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setY" ttype="text"></textfield>
         </template>
         <template slot="z" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setZ"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setZ" ttype="text"></textfield>
         </template>
         <template slot="E" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setE"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setE" ttype="text"></textfield>
         </template>
 
       </b-table>
@@ -54,10 +59,11 @@
 <script>
 
 const Textfield = {
-  props: ['value', 'placeholder', 'index', 'class'],
+  props: ['value', 'placeholder', 'index', 'ttype'],
   template: `
   <div>
-    <input class="textfield" :value="value" :placeholder="getPlaceholder()" v-on:input="onInput" type="text">
+    <input class="textfield" :value="value" :placeholder="getPlaceholder()" v-on:input="onInput" v-if="ttype=='text'">
+    <textarea class="textfield text-justify" :value="value" :placeholder="getPlaceholder()" v-on:input="onInput" v-else>
   </div>
   `,
   methods: {
