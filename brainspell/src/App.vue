@@ -64,6 +64,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import VueFire from 'vuefire';
 import firebase from 'firebase';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
 // import db from './main';
 
 // explicit installation required in module environments

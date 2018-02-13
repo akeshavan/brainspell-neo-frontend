@@ -48,7 +48,7 @@
         <b-row style="display: block;" class="mt-3">
 
           <div v-for="(exp, index) in info.experiments" class="experiment-list mt-3">
-            <experiment :index="index" :exp="exp"></experiment>
+            <experiment :index="index" :exp="exp" v-on:newexp="addExp"></experiment>
           </div>
 
         </b-row>
@@ -146,6 +146,10 @@
     },
 
     methods: {
+      addExp(locations, index) {
+        console.log('adding new experiment at', index);
+        this.info.experiments.splice(index+1, 0, { locations, kvPairs: [], descriptors: [] });
+      },
       fetchData() {
         this.pmid = this.$route.params.id;
         axios.get(`https://brainspell.herokuapp.com/json/article?pmid=${this.$route.params.id}`)
