@@ -101,13 +101,7 @@
         <b-row style="display: block;">
 
           <div v-for="(exp, index) in info.experiments" class="experiment-list">
-            <div class="experiment">
-              <h3> Experiment {{index}}</h3>
-              <p>
-
-              </p>
-              <p>Exclusion popup</p>
-            </div>
+            <experiment :index="index" :exp="exp"></experiment>
           </div>
 
         </b-row>
@@ -124,64 +118,61 @@
 </template>
 
 <style>
-.content, html, body {
-    height: 90%;
-}
-.left {
-    float: left;
-    width: 50%;
-    padding: 5px;
-    height: calc(100vh - 80px);
-    max-height: calc(100vh - 80px);
-    overflow: scroll;
-}
-.right {
-    float: left;
-    width: 50%;
-    height: calc(100vh - 80px);
-    max-height: calc(100vh - 80px);
-    overflow: scroll;
-}
-
+  .content, html, body {
+      height: 90%;
+  }
+  .left {
+      float: left;
+      width: 50%;
+      padding: 5px;
+      height: calc(100vh - 80px);
+      max-height: calc(100vh - 80px);
+      overflow: scroll;
+  }
+  .right {
+      float: left;
+      width: 50%;
+      height: calc(100vh - 80px);
+      max-height: calc(100vh - 80px);
+      overflow: scroll;
+  }
 </style>
 
 <style>
 
+  .authors {
+    width: 100%;
+  }
 
-.authors {
-  width: 100%;
-}
+  .experiment-list {
+    display: block;
+  }
 
-.experiment-list {
-  display: block;
-}
+  .experiment {
+    display: block;
+  }
 
-.experiment {
-  display: block;
-}
+  .fullpage {
+    width: 100%;
+  }
 
-.fullpage {
-  width: 100%;
-}
+  .iframe {
+    width: 100%;
+    height: 100%;
+    border-style: none;
+  }
 
-.iframe {
-  width: 100%;
-  height: 100%;
-  border-style: none;
-}
-
-.nowidth {
-  width: 0 !important;
-  height: 0 !important;
-  visibility: hidden;
-}
-
-
+  .nowidth {
+    width: 0 !important;
+    height: 0 !important;
+    visibility: hidden;
+  }
 </style>
 
 
 <script>
   import axios from 'axios';
+  import Experiment from './Experiment';
 
   export default {
     name: 'ViewArticle',
@@ -194,6 +185,8 @@
         articleURL: null,
       };
     },
+
+    components: { Experiment },
 
     created() {
       this.fetchData();
@@ -211,6 +204,18 @@
           this.info = resp.data;
           this.articleURL = `http://dx.doi.org/${this.info.doi}`;
           this.info.experiments = JSON.parse(this.info.experiments);
+          this.info.experiments.forEach((exp, idx, arr) => {
+            arr[idx].locations.forEach((loc, jdx, locarr) => {
+              if (typeof loc === 'string' || loc instanceof String){
+                const locs = loc.split(',')
+                locarr[jdx] = { x: locs[0],
+                  y: locs[1],
+                  z: locs[2],
+                  E: locs[3],
+                };
+              }
+            });
+          });
         })
         .catch((e) => {
           console.log('ERROR', e);
