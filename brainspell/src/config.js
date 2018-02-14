@@ -1,5 +1,5 @@
 export default {
-  authUrl: 'https://aqueous-reef-70776.herokuapp.com/authenticate/',
-  clientId: 'bdf880910c19a91f4a7f',
+  authUrl: 'https://brainspell.herokuapp.com/json/github-oauth',
+  clientId: '11d54ed9cbcaa3a88e15',
   redirectUri: 'http://localhost:8080',
 };

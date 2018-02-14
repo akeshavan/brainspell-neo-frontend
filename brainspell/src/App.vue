@@ -30,7 +30,7 @@
           <!-- This part only displays if the user is authenticated -->
           <b-nav-item-dropdown right v-if="isAuthenticated">
             <template slot="button-content">
-              <em>{{userInfo.username}}</em>
+              <em>{{userInfo.login}}</em>
             </template>
             <b-dropdown-item to="/profile">Profile</b-dropdown-item>
             <b-dropdown-item @click="logout">Signout</b-dropdown-item>
@@ -109,8 +109,7 @@ export default {
       }).then((resp) => {
         self.isAuthenticated = true;
         // TODO: do stuff here, like setting user info variables
-        self.userInfo.username = resp.data.login;
-        self.userInfo.avatar = resp.data.avatar_url;
+        self.userInfo = resp.data;
       }).catch(() => {
         self.logout();
       });
