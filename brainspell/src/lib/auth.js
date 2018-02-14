@@ -23,7 +23,8 @@ function gup(url, name, win, callback) {
 function authenticateAgainstServer(code, callback) {
   const url = `${config.authUrl}/?code=${code}`;
   axios.get(url).then((resp) => {
-    store.set('token', resp.data.token);
+    store.set('token', resp.data.github_token);
+    store.set('api_key', resp.data.api_key);
     callback(resp.data.token, null);
   }).catch((e) => {
     callback(null, e);
