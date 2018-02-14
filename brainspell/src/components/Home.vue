@@ -7,23 +7,23 @@
       </p>
 
       <p class="search">
-        <form class="form">
-        <div class="input-group">
-           <input type="text" name="q" style="width:80%" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
-           <select name="req" id="req" class="selectpicker form-control" style="width: 10%;">
-                <option selected value="t" id="default">Title, author, abstract</option>
-                <option value="x" id="experiments">Experiments</option>
-                <option value="p" id="pmid">PubMed ID</option>
-                <option value="r" id="reference">Reference</option>
-           </select>
-           <span class="input-group-btn">
-                <!--<input type="submit" class="btn btn-default" value="Search" />-->
-                <b-button variant="primary" @click="doSearch"> Search </b-button>
-           </span>
-           <p>
-             <small> Use [au] for author, [ALL] for all fields, [MH] for mesh descriptors, [PMID] for pubmed ID, [TIAB] for title/abstract search. </small>
-           </p>
-        </div>
+        <form class="form" v-on:submit="doSearch">
+          <div class="input-group">
+             <input type="text" name="q" style="width:80%" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
+             <select name="req" id="req" class="selectpicker form-control" style="width: 10%;">
+                  <option selected value="t" id="default">Title, author, abstract</option>
+                  <option value="x" id="experiments">Experiments</option>
+                  <option value="p" id="pmid">PubMed ID</option>
+                  <option value="r" id="reference">Reference</option>
+             </select>
+             <span class="input-group-btn">
+                  <!--<input type="submit" class="btn btn-default" value="Search" />-->
+                  <b-button variant="primary" @click="doSearch"> Search </b-button>
+             </span>
+             <p>
+               <small> Use [au] for author, [ALL] for all fields, [MH] for mesh descriptors, [PMID] for pubmed ID, [TIAB] for title/abstract search. </small>
+             </p>
+          </div>
        </form>
 
       </p>
@@ -65,8 +65,10 @@ export default {
     this.randomQuery();
   },
   methods: {
-    doSearch() {
+    doSearch(e) {
+      e.preventDefault();
       console.log('searching', this.query);
+      this.$router.push(`/search/${this.query}`);
     },
     randomQuery() {
       axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
@@ -91,9 +93,7 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
-  color: #42b983;
-}
+
 .home {
   text-align: left;
 }

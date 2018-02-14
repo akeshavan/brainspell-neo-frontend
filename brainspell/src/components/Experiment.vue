@@ -79,7 +79,7 @@
   </p>
 
 
-      <b-table striped hover :items="exp.locations" class="pb-3">
+      <b-table striped hover :items="exp.locations" :fields="locationFields" class="pb-3">
         <template slot="x" slot-scope="data">
           <textfield v-model="data.value" :index="data.index" v-on:input="setX" ttype="text"></textfield>
         </template>
@@ -96,6 +96,20 @@
 
           <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeLocation(row)">
             <span aria-hidden="true">&times;</span>
+          </button>
+
+        </template>
+        <template slot="split" scope="row">
+
+          <button type="button" class="close" aria-label="Close" style="width:100%" @click="splitAt(row)">
+            <i class="fa fa-arrow-down"></i>
+          </button>
+
+        </template>
+        <template slot="add" scope="row">
+
+          <button type="button" class="close" aria-label="Close" style="width:100%" @click="addAt(row)">
+            <i class="fa fa-plus"></i>
           </button>
 
         </template>
@@ -174,6 +188,7 @@ export default {
       ],
       kvFields: ['key', 'value', 'delete'],
       tagSearch: '',
+      locationFields: ['x', 'y', 'z', 'E', 'add', 'delete', 'split'],
     };
   },
   components: {
@@ -210,7 +225,17 @@ export default {
       this.exp.kvPairs[idx].value = val;
     },
     removeLocation(loc) {
-
+      this.exp.locations.splice(loc.index, 1);
+      console.log('removing', loc);
+    },
+    splitAt(loc) {
+      const newLocations = this.exp.locations.splice(loc.index);
+      this.$emit('newexp', newLocations, this.index);
+      console.log('splitAt', loc);
+    },
+    addAt(loc) {
+      this.exp.locations.splice(loc.index + 1, 0, {});
+      console.log('splitAt', loc);
     },
     addKVrow() {
       this.exp.kvPairs.push({
