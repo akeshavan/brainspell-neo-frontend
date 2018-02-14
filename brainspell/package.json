@@ -20,8 +20,11 @@
     "firebase": "^4.9.0",
     "path.join": "^1.0.0",
     "store": "^2.0.12",
+    "themify-icons": "^1.0.0",
+    "ti-icons": "^0.1.2",
     "vue": "^2.5.13",
     "vue-axios": "^2.0.2",
+    "vue-form-wizard": "^0.8.2",
     "vue-router": "^3.0.1",
     "vue-xeditable": "^1.1.0",
     "vuefire": "^1.4.5"

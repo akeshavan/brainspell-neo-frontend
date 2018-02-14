@@ -11,6 +11,7 @@ import Terms from '@/components/Terms';
 import Upload from '@/components/Upload';
 import Unauthorized from '@/components/Unauthorized';
 import Leaderboard from '@/components/Leaderboard';
+import CreateCollection from '@/components/CreateCollection';
 import firebase from 'firebase';
 
 Vue.use(Router);
@@ -85,6 +86,11 @@ const router = new Router({
       path: '/leaderboard',
       name: 'Leaderboard',
       component: Leaderboard,
+    },
+    {
+      path: '/createcollection',
+      name: 'CreateCollection',
+      component: CreateCollection,
     },
   ],
 });
