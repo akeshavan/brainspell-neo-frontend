@@ -5,15 +5,15 @@ import Home from '@/components/Home';
 import Profile from '@/components/Profile';
 import Search from '@/components/Search';
 import ViewArticle from '@/components/ViewArticle';
-import Play from '@/components/Play';
-import Login from '@/components/Login';
-import SignUp from '@/components/SignUp';
-import Terms from '@/components/Terms';
-import Upload from '@/components/Upload';
-import Unauthorized from '@/components/Unauthorized';
-import Leaderboard from '@/components/Leaderboard';
+// import Play from '@/components/Play';
+// import Login from '@/components/Login';
+// import SignUp from '@/components/SignUp';
+// import Terms from '@/components/Terms';
+// import Upload from '@/components/Upload';
+// import Unauthorized from '@/components/Unauthorized';
+// import Leaderboard from '@/components/Leaderboard';
 import CreateCollection from '@/components/CreateCollection';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 
 
 Vue.use(Router);

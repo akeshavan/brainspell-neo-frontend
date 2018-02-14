@@ -64,7 +64,7 @@ import axios from 'axios';
 import pathJoin from 'path.join';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
+// import '../node_modules/font-awesome/css/font-awesome.min.css';
 import auth from './lib/auth';
 // import db from './main';
 
