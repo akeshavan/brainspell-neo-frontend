@@ -144,13 +144,6 @@ export default {
     /*padding-top: 40px;*/
   }
 
-  #signupForm {
-    max-width: 400px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0px 0 7px 0px #80808036;
-  }
-
   .inline {
 
   }

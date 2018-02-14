@@ -20,6 +20,8 @@
 
           <b-form class="mb-3 w-100">
             <b-button variant="success">Add to Collection</b-button>
+            <b-button variant="danger">Exclude from Collection</b-button>
+            <small> TO do: when you click exclude, explain why</small>
           </b-form>
 
         </b-row>

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import About from '@/components/About';
 import Home from '@/components/Home';
 import Profile from '@/components/Profile';
+import Search from '@/components/Search';
 import ViewArticle from '@/components/ViewArticle';
 
 Vue.use(Router);
@@ -31,6 +32,11 @@ const router = new Router({
       path: '/view-article/:id',
       name: 'ViewArticle',
       component: ViewArticle,
+    },
+    {
+      path: '/search/:query',
+      name: 'Search',
+      component: Search,
     },
   ],
 });
