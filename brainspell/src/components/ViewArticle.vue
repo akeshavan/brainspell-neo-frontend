@@ -4,7 +4,10 @@
   -->
 
   <div class="content mt-3">
-    <div v-bind:class="{'fullpage': !viewArticle, 'halfpage left': viewArticle}">
+    <div v-if="!info.title">
+      Loading... <i class="fa fa-spinner fa-pulse fa-3x"</i>
+    </div>
+    <div v-bind:class="{'fullpage': !viewArticle, 'halfpage left': viewArticle}" v-else>
       <b-container>
 
         <b-row class="mt-3 text-center">

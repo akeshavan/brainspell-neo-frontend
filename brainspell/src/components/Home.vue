@@ -66,9 +66,11 @@ export default {
   },
   methods: {
     doSearch(e) {
-      e.preventDefault();
-      console.log('searching', this.query);
-      this.$router.push(`/search/${this.query}`);
+      if (this.query) {
+        e.preventDefault();
+        console.log('searching', this.query);
+        this.$router.push(`/search/${this.query}`);
+      }
     },
     randomQuery() {
       axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
