@@ -26,7 +26,7 @@
                   placeholder="Separate strings with semicolons"></b-form-input>
         </p>
         <p>What are your criteria for study inclusion?
-          <!--<b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
+          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
 
             <template slot="Inclusion" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
@@ -39,7 +39,7 @@
 
             </template>
 
-          </b-table>-->
+          </b-table>
           <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
         </p>
       </tab-content>
