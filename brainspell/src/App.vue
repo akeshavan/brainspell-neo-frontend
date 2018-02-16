@@ -28,6 +28,17 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
+
+          <b-nav-item-dropdown right v-if="isAuthenticated && currentCollection">
+            <template slot="button-content" v-if="currentCollection">
+              <em>{{currentCollection}}</em>
+            </template>
+            <b-dropdown-item to="/createcollection" v-if="currentCollection"> <i class="fa fa-plus"></i> Create Collection </b-dropdown-item>
+
+          </b-nav-item-dropdown>
+
+          <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus"></i> Create Collection</b-nav-item>
+
           <b-nav-item-dropdown right v-if="isAuthenticated">
             <template slot="button-content">
               <em>{{userInfo.login}}</em>
@@ -82,6 +93,8 @@ export default {
       userInfo: {
         username: null,
       },
+      currentCollection: null,
+      allCollections: [],
     };
   },
 
@@ -110,6 +123,12 @@ export default {
         self.isAuthenticated = true;
         // TODO: do stuff here, like setting user info variables
         self.userInfo = resp.data;
+      }).then(() => {
+        // Get the user's collections
+        axios.get(`https://brainspell.herokuapp.com/json/collections?github_access_token=${token}&pmid=1`)
+             .then((resp) => {
+               console.log(resp);
+             });
       }).catch(() => {
         self.logout();
       });
