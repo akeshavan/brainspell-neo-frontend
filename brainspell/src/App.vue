@@ -125,7 +125,7 @@ export default {
         self.userInfo = resp.data;
       }).then(() => {
         // Get the user's collections
-        axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&pmid=1`)
+        axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
              .then((resp) => {
                console.log(resp);
              });
