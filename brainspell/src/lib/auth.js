@@ -65,4 +65,8 @@ export default {
     return store.get('token');
   },
 
+  getKey() {
+    return store.get('api_key');
+  },
+
 };

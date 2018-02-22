@@ -28,9 +28,10 @@
         <p>What are your criteria for study inclusion?
           <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
 
-            <template slot="Inclusion" slot-scope="data">
+            <template slot="Criteria" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
             </template>
+
             <template slot="delete" scope="row">
 
               <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
@@ -57,7 +58,12 @@
 </template>
 
 <style>
-
+  .textfield {
+    border-style: none;
+    background-color: #ffffff00;
+    width: 100%;
+    text-align: center;
+  }
 </style>
 
 <script>
@@ -101,6 +107,8 @@ export default {
       tagSearch: '',
       name: '',
       description: '',
+      incCriteria: [],
+      searchStr: '',
     };
   },
   components: {
@@ -110,24 +118,19 @@ export default {
 
   },
   methods: {
-    incCriteria() {
-      return this.col.incCriteria;
-    },
     removeInc(row) {
-      this.col.incCriteria.splice(row.index, 1);
+      this.incCriteria.splice(row.index, 1);
       this.$refs.incTable.refresh();
     },
     setInclusion(val, idx) {
-      this.col.incCriteria[idx].key = val;
+      this.incCriteria[idx].Criteria = val;
     },
     addInclusion() {
-      this.col.incCriteria.push({
-        key: '',
-        value: '',
+      this.incCriteria.push({
+        Criteria: '',
       });
       this.$refs.incTable.refresh();
     },
   },
-  props: ['col', 'index'],
 };
 </script>
