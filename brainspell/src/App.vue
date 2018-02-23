@@ -75,9 +75,8 @@ import axios from 'axios';
 import pathJoin from 'path.join';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-// import '../node_modules/font-awesome/css/font-awesome.min.css';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
 import auth from './lib/auth';
-// import db from './main';
 
 // explicit installation required in module environments
 
@@ -110,6 +109,7 @@ export default {
     },
     getUserInfo() {
       const token = auth.getToken();
+      const key = auth.getKey();
       const self = this;
       // TODO: CHANGE THIS TO YOUR SERVER
       // In this example, we are getting user info from github
@@ -125,7 +125,7 @@ export default {
         self.userInfo = resp.data;
       }).then(() => {
         // Get the user's collections
-        axios.get(`https://brainspell.herokuapp.com/json/collections?github_access_token=${token}&pmid=1`)
+        axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
              .then((resp) => {
                console.log(resp);
              });
