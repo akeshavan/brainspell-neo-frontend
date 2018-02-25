@@ -26,8 +26,18 @@
           </div>
 
           <b-form class="mb-3 w-100" v-if="isAuthenticated">
-            <b-button variant="success" v-if="!isInCollection && currentCollection" @click="addToCollection"> <i class="fa fa-plus"></i> Add to {{currentCollection.name}}</b-button>
-            <b-button variant="danger" v-if = "isInCollection && currentCollection">Exclude from Collection {{currentCollection.name}} </b-button>
+            <b-button variant="outline-secondary" disabled v-if="!currentCollection">
+              <i class="fa fa-spinner fa-pulse"></i> Loading your collections
+            </b-button>
+            <b-button variant="success" v-if="!isInCollection && currentCollection" :disabled="addPending  || pendingCollection" @click="addToCollection">
+              <i class="fa fa-spinner fa-pulse" v-if="addPending  || pendingCollection"></i>
+              <i class="fa fa-plus" v-else></i>
+
+               Add to {{currentCollection.name}}
+            </b-button>
+            <b-button variant="danger" v-if = "isInCollection && currentCollection">
+              Exclude from {{currentCollection.name}}
+            </b-button>
             <!--<small> TO do: when you click exclude, explain why</small>-->
           </b-form>
 
@@ -133,7 +143,7 @@
 
   export default {
     name: 'ViewArticle',
-    props: ['currentCollection', 'isAuthenticated', 'auth_tokens'],
+    props: ['currentCollection', 'isAuthenticated', 'auth_tokens', 'pendingCollection'],
     data() {
       return {
         pmid: null,
@@ -143,6 +153,7 @@
         viewArticle: false,
         articleURL: null,
         articlePDF: null,
+        addPending: false,
       };
     },
 
@@ -170,9 +181,12 @@
     methods: {
       addToCollection() {
         console.log('sending request...')
+        this.addPending = true;
         axios.get(`https://brainspell.herokuapp.com/json/add-to-collection?github_access_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&name=${this.currentCollection.name}`)
           .then((resp) => {
             console.log('success, added', resp);
+            this.addPending = false;
+            this.$emit('updateCollection');
           }).catch((e) => {
             console.log('error on add', e);
           })

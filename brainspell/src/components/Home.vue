@@ -30,7 +30,7 @@
 
       <b-container>
         <p class="muted">
-          <small> Randomly selected articles </small>
+          <small> Randomly selected articles <i class="fa fa-spinner fa-pulse" v-if="randomPending"></i> </small>
         </p>
         <b-row v-for="article in articles" class="mt-2 mb-2">
           <p class="article">
@@ -59,6 +59,7 @@ export default {
       msg: 'Brainspell',
       query: null,
       articles: [],
+      randomPending: true,
     };
   },
   mounted() {
@@ -76,6 +77,7 @@ export default {
       axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
         console.log('result is', res);
         this.articles = res.data.articles;
+        this.randomPending = false;
       });
     },
   },

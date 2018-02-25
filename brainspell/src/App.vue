@@ -65,7 +65,12 @@
 
 
     <div class="router">
-      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated" :currentCollection="currentCollection" :auth_tokens="auth_tokens"/>
+      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated"
+        :currentCollection="currentCollection" :auth_tokens="auth_tokens"
+        :allCollections="allCollections"
+        v-on:updateCollection="updateCollections"
+        :pendingCollection="pendingCollection"
+        />
     </div>
 
   </div>
@@ -99,13 +104,16 @@ export default {
       userInfo: {
         username: null,
       },
-      currentCollection: null,
+      currentIdx: 0,
       allCollections: [],
+      pendingCollection: true,
     };
   },
 
   computed: {
-
+    currentCollection() {
+      return this.allCollections[this.currentIdx];
+    },
   },
   methods: {
     authenticate() {
@@ -113,6 +121,18 @@ export default {
       auth.login(() => {
         self.getUserInfo();
       });
+    },
+    updateCollections() {
+      const token = auth.getToken();
+      const key = auth.getKey();
+      // Get the user's collections
+      console.log('updating collections');
+      this.pendingCollection = true;
+      axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
+           .then((resp) => {
+             this.allCollections = resp.data.collections;
+             this.pendingCollection = false;
+           });
     },
     getUserInfo() {
       const token = auth.getToken();
@@ -133,14 +153,7 @@ export default {
         // TODO: do stuff here, like setting user info variables
         self.userInfo = resp.data;
       }).then(() => {
-        // Get the user's collections
-        axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
-             .then((resp) => {
-               this.allCollections = resp.data.collections;
-               if (!this.currentCollection) {
-                 this.currentCollection = resp.data.collections[0];
-               }
-             });
+        this.updateCollections();
       }).catch(() => {
         self.logout();
       });
