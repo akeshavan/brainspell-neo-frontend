@@ -29,11 +29,14 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && currentCollection">
+          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections">
             <template slot="button-content" v-if="currentCollection">
-              <em>{{currentCollection}}</em>
+              <em>{{currentCollection.name}}</em>
             </template>
-            <b-dropdown-item to="/createcollection" v-if="currentCollection"> <i class="fa fa-plus"></i> Create Collection </b-dropdown-item>
+
+            <b-dropdown-item to="/createcollection" v-if="currentCollection">
+              <i class="fa fa-plus"></i> Create Collection
+            </b-dropdown-item>
 
           </b-nav-item-dropdown>
 
@@ -62,7 +65,7 @@
 
 
     <div class="router">
-      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated"/>
+      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated" :currentCollection="currentCollection" :auth_tokens="auth_tokens"/>
     </div>
 
   </div>
@@ -89,6 +92,10 @@ export default {
     return {
       allUsers: [],
       isAuthenticated: false,
+      auth_tokens: {
+        github_access_token: null,
+        api_key: null,
+      },
       userInfo: {
         username: null,
       },
@@ -110,6 +117,8 @@ export default {
     getUserInfo() {
       const token = auth.getToken();
       const key = auth.getKey();
+      this.auth_tokens.github_access_token = token;
+      this.auth_tokens.api_key = key;
       const self = this;
       // TODO: CHANGE THIS TO YOUR SERVER
       // In this example, we are getting user info from github
@@ -127,7 +136,10 @@ export default {
         // Get the user's collections
         axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
              .then((resp) => {
-               console.log(resp);
+               this.allCollections = resp.data.collections;
+               if (!this.currentCollection) {
+                 this.currentCollection = resp.data.collections[0];
+               }
              });
       }).catch(() => {
         self.logout();
