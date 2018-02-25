@@ -26,8 +26,8 @@
           </div>
 
           <b-form class="mb-3 w-100" v-if="isAuthenticated">
-            <b-button variant="success" v-if="!isInCollection" @click="addToCollection"> <i class="fa fa-plus"></i> Add to {{currentCollection.name}}</b-button>
-            <b-button variant="danger" v-else>Exclude from Collection {{currentCollection.name}} </b-button>
+            <b-button variant="success" v-if="!isInCollection && currentCollection" @click="addToCollection"> <i class="fa fa-plus"></i> Add to {{currentCollection.name}}</b-button>
+            <b-button variant="danger" v-if = "isInCollection && currentCollection">Exclude from Collection {{currentCollection.name}} </b-button>
             <!--<small> TO do: when you click exclude, explain why</small>-->
           </b-form>
 
@@ -148,9 +148,12 @@
 
     computed: {
       isInCollection() {
-        const exists = _.filter(this.currentCollection.contents, v => v.pmid === this.pmid);
-        console.log(exists);
-        return exists.length;
+        if (this.currentCollection) {
+          const exists = _.filter(this.currentCollection.contents, v => v.pmid === this.pmid);
+          console.log(exists);
+          return exists.length;
+        }
+        return 0;
       },
     },
 
