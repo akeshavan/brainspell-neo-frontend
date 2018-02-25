@@ -17,7 +17,7 @@
 
         <b-row>
           <div class="w-100 text-right">
-            <label>Open Article
+            <label>View Full Article
               <span v-if="!articlePDF" v-b-tooltip.hover title="Not Open Access!">
                 <i class="fa fa-exclamation-triangle"></i>
               </span>
