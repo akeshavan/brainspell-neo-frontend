@@ -29,13 +29,13 @@
             <b-button variant="outline-secondary" disabled v-if="!currentCollection">
               <i class="fa fa-spinner fa-pulse"></i> Loading your collections
             </b-button>
-            <b-button variant="success" v-if="!isInCollection && currentCollection" :disabled="addPending  || pendingCollection" @click="addToCollection">
+            <b-button variant="outline-success" v-if="!isInCollection && currentCollection" :disabled="addPending  || pendingCollection" @click="addToCollection">
               <i class="fa fa-spinner fa-pulse" v-if="addPending  || pendingCollection"></i>
               <i class="fa fa-plus" v-else></i>
 
                Add to {{currentCollection.name}}
             </b-button>
-            <b-button variant="danger" v-if = "isInCollection && currentCollection">
+            <b-button variant="outline-danger" v-if = "isInCollection && currentCollection">
               Exclude from {{currentCollection.name}}
             </b-button>
             <!--<small> TO do: when you click exclude, explain why</small>-->
@@ -58,7 +58,7 @@
           <p class="text-center w-100">
             <b-form>
               <label>Number of Subjects</label>
-              <b-input class="w-25 mx-auto"></b-input>
+              <b-input class="w-25 mx-auto" v-model="info.N"></b-input>
             </b-form>
           </p>
         </b-row>
@@ -67,7 +67,7 @@
         <b-row style="display: block;" class="mt-3">
 
           <div v-for="(exp, index) in info.experiments" class="experiment-list mt-3">
-            <experiment :index="index" :exp="exp" v-on:newexp="addExp"></experiment>
+            <experiment :index="index" :exp="exp" v-on:newexp="addExp" v-on:needsSave="needsSave"></experiment>
           </div>
 
         </b-row>
@@ -138,8 +138,9 @@
 
 <script>
   import axios from 'axios';
-  import Experiment from './Experiment';
+  import Vue from 'vue';
   import _ from 'lodash';
+  import Experiment from './Experiment';
 
   export default {
     name: 'ViewArticle',
@@ -149,11 +150,13 @@
         pmid: null,
         info: {
           experiments: [],
+          N: null,
         },
         viewArticle: false,
         articleURL: null,
         articlePDF: null,
         addPending: false,
+        madeEdits: false,
       };
     },
 
@@ -162,6 +165,7 @@
         if (this.currentCollection) {
           const exists = _.filter(this.currentCollection.contents, v => v.pmid === this.pmid);
           console.log(exists);
+          this.$emit('setEdit', exists.length);
           return exists.length;
         }
         return 0;
@@ -176,11 +180,29 @@
 
     watch: {
       $route: 'fetchData',
+      info: {
+        handler(val, oldval) {
+          console.log('val and oldval', val, oldval.title);
+          if (oldval.title) {
+            this.$emit('needsSave', true);
+          }
+        },
+        deep: true,
+      },
+      'info.experiments': {
+        handler(val, oldval) {
+          console.log('val and oldval list', val, oldval.title);
+          if (oldval.title) {
+            this.$emit('needsSave', true);
+          }
+        },
+        deep: true,
+      },
     },
 
     methods: {
       addToCollection() {
-        console.log('sending request...')
+        console.log('sending request...');
         this.addPending = true;
         axios.get(`https://brainspell.herokuapp.com/json/add-to-collection?github_access_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&name=${this.currentCollection.name}`)
           .then((resp) => {
@@ -189,17 +211,21 @@
             this.$emit('updateCollection');
           }).catch((e) => {
             console.log('error on add', e);
-          })
+          });
+      },
+      needsSave() {
+        this.$emit('needsSave', true);
       },
       addExp(locations, index) {
         console.log('adding new experiment at', index);
-        this.info.experiments.splice(index+1, 0, { locations, kvPairs: [], descriptors: [] });
+        this.info.experiments.splice(index + 1, 0, { locations, kvPairs: [], descriptors: [] });
+        // this.$emit('needsSave', true);
       },
-      setArticleURL(doi){
+      setArticleURL(doi) {
         axios.get(`https://api.oadoi.org/v2/${doi}?email=test@example.com`)
           .then((resp) => {
             console.log('resp is', resp);
-            if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf){
+            if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf) {
               this.articleURL = resp.data.best_oa_location.url_for_pdf;
               this.articlePDF = true;
             } else {
@@ -218,15 +244,12 @@
           this.info.experiments = JSON.parse(this.info.experiments);
           this.info.metadata = JSON.parse(this.info.metadata);
           this.info.experiments.forEach((exp, idx, arr) => {
-            if (!arr[idx].kvPairs) {
-              arr[idx].kvPairs = [];
-            }
-            if (!arr[idx].descriptors) {
-              arr[idx].descriptors = [];
-            }
+            Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
+            Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].descriptors || []);
+
             arr[idx].locations.forEach((loc, jdx, locarr) => {
-              if (typeof loc === 'string' || loc instanceof String){
-                const locs = loc.split(',')
+              if (typeof loc === 'string' || loc instanceof String) {
+                const locs = loc.split(',');
                 locarr[jdx] = { x: locs[0],
                   y: locs[1],
                   z: locs[2],
@@ -234,6 +257,7 @@
                 };
               }
             });
+            // Editing items in the locations table will require and emit
           });
         })
         .catch((e) => {

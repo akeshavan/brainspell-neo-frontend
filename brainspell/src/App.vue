@@ -8,7 +8,7 @@
          When logged in, this shows the username with a dropdown menu
          to see the profile or logout.
     -->
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="md" type="dark" variant="dark" sticky>
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -24,6 +24,24 @@
           <b-nav-item to="/" exact>Home</b-nav-item>
           <b-nav-item to="/about">About</b-nav-item>
         </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto" v-show="$route.path.indexOf('/view-article') == 0">
+          <b-nav-form>
+            <b-button variant="info" size="sm" class="my-2 my-sm-0" :disabled="!canEdit">
+
+              <span v-b-tooltip.hover title="Add this article to your collection to save changes" v-if="!canEdit">
+                <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
+              </span>
+
+              <span v-else>
+                <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
+              </span>
+
+            </b-button>
+          </b-nav-form>
+        </b-navbar-nav>
+
+
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -70,6 +88,8 @@
         :allCollections="allCollections"
         v-on:updateCollection="updateCollections"
         :pendingCollection="pendingCollection"
+        v-on:setEdit="setEdit"
+        v-on:needsSave="setSave"
         />
     </div>
 
@@ -107,6 +127,8 @@ export default {
       currentIdx: 0,
       allCollections: [],
       pendingCollection: true,
+      canEdit: false,
+      needsSave: false,
     };
   },
 
@@ -133,6 +155,12 @@ export default {
              this.allCollections = resp.data.collections;
              this.pendingCollection = false;
            });
+    },
+    setEdit(val) {
+      this.canEdit = val;
+    },
+    setSave(val) {
+      this.needsSave = val;
     },
     getUserInfo() {
       const token = auth.getToken();

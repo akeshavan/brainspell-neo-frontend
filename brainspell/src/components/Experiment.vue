@@ -15,7 +15,7 @@
     <small>Include or Exclude this experiment?</small>
     <b-form-group>
       <b-form-radio-group buttons
-                          v-model="include"
+                          v-model="exp.include"
                           button-variant="outline-primary"
                           size="sm"
                           :options="includeOptions"
@@ -25,7 +25,7 @@
   <small>Specify the coordinate space</small>
   <b-form-group>
     <b-form-radio-group buttons
-                        v-model="space"
+                        v-model="exp.space"
                         button-variant="outline-info"
                         size="sm"
                         :options="spaceOptions"
@@ -35,7 +35,7 @@
   <small>What kind of effect size (E)?</small>
   <b-form-group>
     <b-form-radio-group buttons
-                        v-model="effect"
+                        v-model="exp.effect"
                         button-variant="outline-success"
                         size="sm"
                         :options="effectOptions"
@@ -81,16 +81,16 @@
 
       <b-table striped hover :items="exp.locations" :fields="locationFields" class="pb-3">
         <template slot="x" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setX" ttype="text"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setX" ttype="text" v-on:needsSave="needsSave"></textfield>
         </template>
         <template slot="y" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setY" ttype="text"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setY" ttype="text" v-on:needsSave="needsSave"></textfield>
         </template>
         <template slot="z" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setZ" ttype="text"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setZ" ttype="text" v-on:needsSave="needsSave"></textfield>
         </template>
         <template slot="E" slot-scope="data">
-          <textfield v-model="data.value" :index="data.index" v-on:input="setE" ttype="text"></textfield>
+          <textfield v-model="data.value" :index="data.index" v-on:input="setE" ttype="text" v-on:needsSave="needsSave"></textfield>
         </template>
         <template slot="delete" scope="row">
 
@@ -150,6 +150,7 @@ const Textfield = {
       const value = e.target.value;
       // Add this line
       this.$emit('input', value, this.index);
+      this.$emit('needsSave', true);
     },
     getPlaceholder() {
       if (!this.value && this.placeholder) {
@@ -165,19 +166,19 @@ export default {
   data() {
     return {
       atlases: [],
-      include: true,
+      // include: true,
       includeOptions: [
         { text: 'Include', value: true },
         { text: 'Exclude', value: false },
       ],
-      space: 'MNI',
+      // space: 'MNI',
       spaceOptions: [
         { text: 'MNI', value: 'MNI' },
         { text: 'Talairach', value: 'Talairach' },
         { text: 'Other', value: 'Other' },
         { text: 'Unknown', value: 'Unknown' },
       ],
-      effect: 'Z',
+      // effect: 'Z',
       effectOptions: [
         { text: 'Z', value: 'Z' },
         { text: 'T', value: 'T' },
@@ -199,6 +200,9 @@ export default {
 
   },
   methods: {
+    needsSave() {
+      this.$emit('needsSave', true);
+    },
     kvPairs() {
       return this.exp.kvPairs;
     },
