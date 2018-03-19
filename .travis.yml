@@ -1,0 +1,23 @@
+sudo: false
+language: node_js
+node_js:
+- '6.0'
+cache:
+  directories:
+  - node_modules
+branches:
+  only:
+  - master
+notifications:
+  email: false
+before_script:
+- cd brainspell; npm prune
+script:
+- cd brainspell; npm run build
+after_success:
+- bash ./deploy.sh
+env:
+  global:
+  - GH_USER: akeshavan
+  - GH_REPO: brainspell-neo-frontend
+  - secure: l16EhLn4YRUeVc4yFM9XL2fOmg8eQ+bjU8Qr7oL2TLQF7kvfJHzUZLLnanYvR0s0CMMkElKMaQFfAlMTw+ZdoCmiib82+K39Y7wPEjqMooPMjjGPqXkK6LbW7xZ8mznUJw6P4B/915hk8nCt6suF5/v7YbW3bqXvtH1ehKIuoFMeRGJWN3T+RwJzvnnYmKxchRythbmvqWvul0ihAZXostr5xti+Tdwr0jb97Bt4P1qKtBuOXRgmjualQq5OyQJ7d8iACo6ceT1yVWLsvbdA1MvNmChmhMm3Z1mBQo/94ErL6avSzzMlg1h/aFPGZrcO4fU/S1N96+fDZQnMfAi3h9ZEp1dfIXOrxt6pfD3/P/bv23JysG09AY5RfrmKTXpDb/iOupB35Mi3x70n3ieI9LTdjfYmBvD4XIPabJBjpxbxE8iJ0Ngyerv/EYWeLMI3lvY/oh9IaGSsMR17uxI6LrKiZAKaytodUCGnkS+NtlliNSwcdiIksLnpB+7hdQUXZg7WaGC+5VDLfZwoReGf7qEfKj+z+w/ZjeYOEw6F9G7SvxrSK4FEGzl6qM0sni2Yu89DOI1kNa+D8CogOFNzDeHcDAwCjhhUJSs46EsYLbuTQFIbMD1RfTuaFi6QMMgKnuaRq4NHEyezdQ8n0sWLjjMJr1IM8CKytIPluExWWLM=
