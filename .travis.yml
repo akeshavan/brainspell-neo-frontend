@@ -13,9 +13,9 @@ notifications:
 before_script:
 - cd brainspell; npm prune
 script:
-- cd brainspell; npm run build
+- npm run build
 after_success:
-- bash ./deploy.sh
+- bash ../deploy.sh
 env:
   global:
   - GH_USER: akeshavan
