@@ -226,10 +226,11 @@
           .then((resp) => {
             console.log('resp is', resp);
             if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf) {
-              this.articleURL = resp.data.best_oa_location.url_for_pdf;
+              const url = resp.data.best_oa_location.url_for_pdf.replace('http:', 'https:');
+              this.articleURL = url;
               this.articlePDF = true;
             } else {
-              this.articleURL = resp.data.doi_url;
+              this.articleURL = resp.data.doi_url.replace('http:', 'https:');
               this.articlePDF = false;
             }
           });

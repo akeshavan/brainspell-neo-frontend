@@ -55,7 +55,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/brainspell-neo-frontend',
+    assetsPublicPath: '/brainspell-neo-frontend/',
 
     /**
      * Source Maps
