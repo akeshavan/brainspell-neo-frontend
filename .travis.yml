@@ -11,7 +11,7 @@ branches:
 notifications:
   email: false
 before_script:
-- cd brainspell; npm prune
+- cd brainspell; npm install
 script:
 - npm run build
 after_success:
