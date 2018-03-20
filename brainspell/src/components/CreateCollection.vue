@@ -21,7 +21,7 @@
       <tab-content title="Inclusion Criteria"
                    icon="ti-thumb-up">
         <p>Enter your search string(s) here:
-          <b-form-input v-model="searchString"
+          <b-form-input v-model="searchStr"
                   type="text"
                   placeholder="Separate strings with semicolons"></b-form-input>
         </p>
@@ -37,7 +37,9 @@
               <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
                 <span aria-hidden="true">&times;</span>
               </button>
+
             </template>
+
           </b-table>
           <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
         </p>
@@ -47,15 +49,18 @@
         <p>What are your criteria for study exclusion?
           <b-table striped hover :items="excCriteria" :fields="excFields" ref="excTable" small>
 
-            <template slot="Exclusion" slot-scope="data">
+            <template slot="Criteria" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setExclusion" ttype="text"></textfield>
             </template>
+
             <template slot="delete" scope="row">
 
               <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeExc(row)">
                 <span aria-hidden="true">&times;</span>
               </button>
+
             </template>
+
           </b-table>
           <b-button size="sm" variant="outline-secondary" @click="addExclusion">Add exclusion criterion</b-button>
         </p>
@@ -95,10 +100,7 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
-
 Vue.use(VueFormWizard)
-
-
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
   template: `
@@ -121,23 +123,19 @@ const Textfield = {
     },
   },
 };
-
 export default {
   name: 'collection',
   data() {
     return {
       incFields: ['Criteria', 'delete'],
+      excFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
-<<<<<<< HEAD
-      searchString: '',
-      excFields: ['Criteria', 'delete'],
-      excCriteria: '',
-=======
       incCriteria: [],
+      excCriteria: [],
+      tagSearch: '',
       searchStr: '',
->>>>>>> akeshavan/master
     };
   },
   components: {
@@ -145,75 +143,48 @@ export default {
     Descriptors,
   },
   computed: {
-
   },
   methods: {
-<<<<<<< HEAD
-    name() {
-      return this.name;
-    },
-    description() {
-      return this.description;
-    },
-    searchString() {
-      return this.searchString;
-    },
-    incCriteria() {
-      return this.incCriteria;
-    },
-=======
->>>>>>> akeshavan/master
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
       this.$refs.incTable.refresh();
     },
     setInclusion(val, idx) {
-<<<<<<< HEAD
-      this.incCriteria[idx] = val;
-    },
-    addInclusion() {
-      this.incCriteria.push({
-        key: '',
-=======
       this.incCriteria[idx].Criteria = val;
     },
     addInclusion() {
       this.incCriteria.push({
         Criteria: '',
->>>>>>> akeshavan/master
       });
       this.$refs.incTable.refresh();
-    },
-    excCriteria() {
-      return this.excCriteria;
     },
     removeExc(row) {
       this.excCriteria.splice(row.index, 1);
       this.$refs.excTable.refresh();
     },
     setExclusion(val, idx) {
-      this.excCriteria[idx] = val;
+      this.excCriteria[idx].Criteria = val;
     },
     addExclusion() {
       this.excCriteria.push({
-        key: '',
+        Criteria: '',
       });
-      this.$refs.incTable.refresh();
+      this.$refs.excTable.refresh();
     },
     showDescriptors() {
       this.$refs.descriptorsModal.show();
     },
     setSelector(item) {
       console.log('recieved', item);
-      const idx = this.exp.descriptors.indexOf(item.name);
+      const idx = this.descriptors.indexOf(item.name);
       console.log('idx is', idx);
       if (idx >= 0) {
         // remove the descriptors
-        this.exp.descriptors.splice(idx, 1);
+        this.descriptors.splice(idx, 1);
       } else {
-        this.exp.descriptors.push(item.name);
+        this.descriptors.push(item.name);
       }
-      console.log(this.exp.descriptors);
+      console.log(this.descriptors);
       this.$forceUpdate();
     },
   },
