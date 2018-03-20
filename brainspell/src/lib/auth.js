@@ -53,7 +53,7 @@ function getGithubCode(_url, REDIRECT, callback) {
 export default {
 
   login(callback) {
-    const url = `https://github.com/login/oauth/authorize?client_id=${config.clientId}`;
+    const url = `https://github.com/login/oauth/authorize?client_id=${config.clientId}&scope=repo`;
     getGithubCode(url, config.redirectUri, callback);
   },
 

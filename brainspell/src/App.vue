@@ -8,7 +8,7 @@
          When logged in, this shows the username with a dropdown menu
          to see the profile or logout.
     -->
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="md" type="dark" variant="dark" sticky>
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -25,15 +25,36 @@
           <b-nav-item to="/about">About</b-nav-item>
         </b-navbar-nav>
 
+        <b-navbar-nav class="ml-auto" v-show="$route.path.indexOf('/view-article') == 0">
+          <b-nav-form>
+            <b-button variant="info" size="sm" class="my-2 my-sm-0" :disabled="!canEdit">
+
+              <span v-b-tooltip.hover title="Add this article to your collection to save changes" v-if="!canEdit">
+                <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
+              </span>
+
+              <span v-else>
+                <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
+              </span>
+
+            </b-button>
+          </b-nav-form>
+        </b-navbar-nav>
+
+
+
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && currentCollection">
+          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections">
             <template slot="button-content" v-if="currentCollection">
-              <em>{{currentCollection}}</em>
+              <em>{{currentCollection.name}}</em>
             </template>
-            <b-dropdown-item to="/createcollection" v-if="currentCollection"> <i class="fa fa-plus"></i> Create Collection </b-dropdown-item>
+
+            <b-dropdown-item to="/createcollection" v-if="currentCollection">
+              <i class="fa fa-plus"></i> Create Collection
+            </b-dropdown-item>
 
           </b-nav-item-dropdown>
 
@@ -62,7 +83,14 @@
 
 
     <div class="router">
-      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated"/>
+      <router-view :userInfo="userInfo" :isAuthenticated="isAuthenticated"
+        :currentCollection="currentCollection" :auth_tokens="auth_tokens"
+        :allCollections="allCollections"
+        v-on:updateCollection="updateCollections"
+        :pendingCollection="pendingCollection"
+        v-on:setEdit="setEdit"
+        v-on:needsSave="setSave"
+        />
     </div>
 
   </div>
@@ -89,16 +117,25 @@ export default {
     return {
       allUsers: [],
       isAuthenticated: false,
+      auth_tokens: {
+        github_access_token: null,
+        api_key: null,
+      },
       userInfo: {
         username: null,
       },
-      currentCollection: null,
+      currentIdx: 0,
       allCollections: [],
+      pendingCollection: true,
+      canEdit: false,
+      needsSave: false,
     };
   },
 
   computed: {
-
+    currentCollection() {
+      return this.allCollections[this.currentIdx];
+    },
   },
   methods: {
     authenticate() {
@@ -107,9 +144,29 @@ export default {
         self.getUserInfo();
       });
     },
+    updateCollections() {
+      const token = auth.getToken();
+      const key = auth.getKey();
+      // Get the user's collections
+      console.log('updating collections');
+      this.pendingCollection = true;
+      axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
+           .then((resp) => {
+             this.allCollections = resp.data.collections;
+             this.pendingCollection = false;
+           });
+    },
+    setEdit(val) {
+      this.canEdit = val;
+    },
+    setSave(val) {
+      this.needsSave = val;
+    },
     getUserInfo() {
       const token = auth.getToken();
       const key = auth.getKey();
+      this.auth_tokens.github_access_token = token;
+      this.auth_tokens.api_key = key;
       const self = this;
       // TODO: CHANGE THIS TO YOUR SERVER
       // In this example, we are getting user info from github
@@ -124,11 +181,7 @@ export default {
         // TODO: do stuff here, like setting user info variables
         self.userInfo = resp.data;
       }).then(() => {
-        // Get the user's collections
-        axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
-             .then((resp) => {
-               console.log(resp);
-             });
+        this.updateCollections();
       }).catch(() => {
         self.logout();
       });
