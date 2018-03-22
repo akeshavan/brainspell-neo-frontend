@@ -68,13 +68,13 @@
       <tab-content title="Tags"
                    icon="ti-tag">
         <p>Select any/all relevant tags for you collection:
-          <b-badge v-for="desc in descriptors" class="mr-1">{{desc}}</b-badge>
+          <b-badge v-for="desc in this.descriptors" class="mr-1">{{desc}}</b-badge>
           <!-- the modal -->
           <b-modal size="lg" ref="descriptorsModal">
             <div slot="modal-header" class="w-100" style="display: inline">
               <b-input class="w-100" placeholder="Search Descriptors" v-model="tagSearch"></b-input>
             </div>
-            <descriptors :selected="descriptors" v-on:setselected="setSelector" :filter="tagSearch"></descriptors>
+            <descriptors :selected="this.descriptors" v-on:setselected="setSelector" :filter="tagSearch"></descriptors>
           </b-modal>
           <br>
           <b-btn size="sm" variant="outline-secondary" @click="showDescriptors">Open Descriptors</b-btn>
@@ -127,6 +127,7 @@ export default {
   name: 'collection',
   data() {
     return {
+      atlases: [],
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
       tagSearch: '',
