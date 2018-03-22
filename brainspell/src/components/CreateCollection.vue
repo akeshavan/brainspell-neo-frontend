@@ -46,11 +46,39 @@
       </tab-content>
       <tab-content title="Exclusion Criteria"
                    icon="ti-thumb-down">
-        What are your criteria for study exclusion?
+        <p>What are your criteria for study exclusion?
+          <b-table striped hover :items="excCriteria" :fields="excFields" ref="excTable" small>
+
+            <template slot="Criteria" slot-scope="data">
+              <textfield v-model="data.value" :index="data.index" v-on:input="setExclusion" ttype="text"></textfield>
+            </template>
+
+            <template slot="delete" scope="row">
+
+              <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeExc(row)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+            </template>
+
+          </b-table>
+          <b-button size="sm" variant="outline-secondary" @click="addExclusion">Add exclusion criterion</b-button>
+        </p>
       </tab-content>
       <tab-content title="Tags"
                    icon="ti-tag">
-        Select any/all relevant tags for you collection:
+        <p>Select any/all relevant tags for you collection:
+          <b-badge v-for="desc in this.descriptors" class="mr-1">{{desc}}</b-badge>
+          <!-- the modal -->
+          <b-modal size="lg" ref="descriptorsModal">
+            <div slot="modal-header" class="w-100" style="display: inline">
+              <b-input class="w-100" placeholder="Search Descriptors" v-model="tagSearch"></b-input>
+            </div>
+            <descriptors :selected="this.descriptors" v-on:setselected="setSelector" :filter="tagSearch"></descriptors>
+          </b-modal>
+          <br>
+          <b-btn size="sm" variant="outline-secondary" @click="showDescriptors">Open Descriptors</b-btn>
+        </p>
       </tab-content>
     </form-wizard>
   </b-container>
@@ -67,15 +95,12 @@
 </style>
 
 <script>
-
+import Descriptors from './Descriptors';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'ti-icons/css/themify-icons.css'
-
 Vue.use(VueFormWizard)
-
-
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
   template: `
@@ -98,24 +123,28 @@ const Textfield = {
     },
   },
 };
-
 export default {
   name: 'collection',
   data() {
     return {
+      atlases: [],
       incFields: ['Criteria', 'delete'],
+      excFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
       incCriteria: [],
+      excCriteria: [],
+      tagSearch: '',
       searchStr: '',
+      descriptors: [],
     };
   },
   components: {
     Textfield,
+    Descriptors,
   },
   computed: {
-
   },
   methods: {
     removeInc(row) {
@@ -130,6 +159,35 @@ export default {
         Criteria: '',
       });
       this.$refs.incTable.refresh();
+    },
+    removeExc(row) {
+      this.excCriteria.splice(row.index, 1);
+      this.$refs.excTable.refresh();
+    },
+    setExclusion(val, idx) {
+      this.excCriteria[idx].Criteria = val;
+    },
+    addExclusion() {
+      this.excCriteria.push({
+        Criteria: '',
+      });
+      this.$refs.excTable.refresh();
+    },
+    showDescriptors() {
+      this.$refs.descriptorsModal.show();
+    },
+    setSelector(item) {
+      console.log('recieved', item);
+      const idx = this.descriptors.indexOf(item.name);
+      console.log('idx is', idx);
+      if (idx >= 0) {
+        // remove the descriptors
+        this.descriptors.splice(idx, 1);
+      } else {
+        this.descriptors.push(item.name);
+      }
+      console.log(this.descriptors);
+      this.$forceUpdate();
     },
   },
 };
