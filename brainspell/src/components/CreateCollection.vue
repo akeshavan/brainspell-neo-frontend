@@ -137,6 +137,7 @@ export default {
       excCriteria: [],
       tagSearch: '',
       searchStr: '',
+      descriptors: [],
     };
   },
   components: {
