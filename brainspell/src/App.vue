@@ -169,7 +169,10 @@ export default {
       axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
-             console.log(this.allCollections);
+             this.allCollections.forEach((coll, idx) => {
+               console.log('collection contents', coll.contents);
+               Vue.set(this.allCollections[idx], 'contents', coll.contents);
+             });
              this.pendingCollection = false;
            });
     },
