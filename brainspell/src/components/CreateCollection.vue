@@ -135,6 +135,7 @@ export default {
       description: '',
       incCriteria: [],
       excCriteria: [],
+      descriptors: [],
       tagSearch: '',
       searchStr: '',
     };
