@@ -138,6 +138,7 @@ export default {
       descriptors: [],
       tagSearch: '',
       searchStr: '',
+      descriptors: [],
     };
   },
   components: {
