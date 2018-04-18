@@ -35,9 +35,19 @@
 
                Add to {{currentCollection.name}}
             </b-button>
-            <b-button variant="outline-danger" v-if = "isInCollection && currentCollection">
+
+
+            <b-form v-if = "isInCollection && currentCollection">
+              <label> Reason for Exclusion: </label>
+              <b-input class="w-25 mx-auto" v-model="excReason"></b-input>
+            </b-form>
+            <b-button variant="outline-danger" class="mt-3"
+             :disabled="!excReason.length"
+             v-if="isInCollection && currentCollection">
               Exclude from {{currentCollection.name}}
             </b-button>
+
+            </textarea>
             <!--<small> TO do: when you click exclude, explain why</small>-->
           </b-form>
 
@@ -152,6 +162,7 @@
           experiments: [],
           N: null,
         },
+        excReason: '',
         viewArticle: false,
         articleURL: null,
         articlePDF: null,
