@@ -11,7 +11,6 @@ function gup(url, name, win, callback) {
   const regexS = `[?&]${name}=([^&#]*)`;
   const regex = new RegExp(regexS);
   const results = regex.exec(url);
-
   if (results != null) {
     win.close();
     callback(results[1]);
@@ -20,6 +19,7 @@ function gup(url, name, win, callback) {
 }
 
 function authenticateAgainstServer(code, callback) {
+  console.log('authenticating against server');
   let authUrl = null;
   if (window.location.hostname === 'localhost') {
     authUrl = config.authUrl;

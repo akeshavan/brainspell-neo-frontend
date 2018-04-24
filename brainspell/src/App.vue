@@ -196,7 +196,8 @@ export default {
       // In this example, we are getting user info from github
       // If this fails, then our token is bad; we are NOT authenticated and
       // should be logged out
-      axios.get(pathJoin('https://api.github.com', 'user'), {
+      console.log('fetching user info');
+      axios.get('https://api.github.com/user', {
         headers: {
           Authorization: `token ${token}`,
         },
