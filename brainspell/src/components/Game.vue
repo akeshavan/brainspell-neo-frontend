@@ -1,7 +1,14 @@
 <template>
   <b-container id="game">
-    <span v-if="randomPending || !abstracts.length">Hold on...</span>
-    <div v-else class="text-justify" v-html="abstract">
+    <h4>Click on the sample size</h4>
+    <small>hit Next if the information isn't available</small>
+
+    <div v-if="randomPending || !abstracts.length">
+
+      <b-alert show>Hold On ... getting more abstracts</b-alert>
+
+    </div>
+    <div v-else class="text-justify mt-3" v-html="abstract">
 
     </div>
     <div class="mt-3">
@@ -9,6 +16,8 @@
         <span v-if="N"> Submit {{N}} </span>
         <span v-else> Next </span>
       </b-btn>
+      <b-input v-model="N" class="mt-3 mx-auto text-center" style="width:50px" label="manual"></b-input>
+      <small> Manual Input </small>
     </div>
   </b-container>
 </template>
@@ -90,7 +99,7 @@
     methods: {
       next() {
         this.N = 0;
-        if (this.currentIdx === 4) {
+        if (this.currentIdx === this.abstracts.length - 1) {
           this.randomQuery();
         } else {
           this.currentIdx += 1;
@@ -103,15 +112,22 @@
           console.log('result is', res);
           this.articles = res.data.articles;
         }).then(() => {
-          const abstracts = [];
+          this.abstracts = [];
           this.articles.forEach((val) => {
             axios.get(`https://brainspell.herokuapp.com/json/article?pmid=${val.id}`).then((resp) => {
-
-              abstracts.push(resp.data.abstract);
+              const html = nlp(resp.data.abstract);
+              console.log('html is', html.if('#Value').found);
+              if (html.if('#Value').found) {
+                this.abstracts.push(resp.data.abstract);
+              }
             });
           });
+
+          if (!this.abstracts.length) {
+            console.log('nothing??');
+            // this.randomQuery();
+          }
           this.randomPending = false;
-          this.abstracts = abstracts;
         });
       },
     },
