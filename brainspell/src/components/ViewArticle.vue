@@ -233,7 +233,7 @@
         // this.$emit('needsSave', true);
       },
       setArticleURL(doi) {
-        axios.get(`https://api.oadoi.org/v2/${doi}?email=test@example.com`)
+        axios.get(`https://api.oadoi.org/v2/${doi}?email=keshavan@berkeley.edu`)
           .then((resp) => {
             console.log('resp is', resp);
             if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf) {
