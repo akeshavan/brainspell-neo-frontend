@@ -193,12 +193,12 @@ export default {
     },
     submit() {
       axios.post('some/url/here', {
-          incCriteria,
-          excCriteria,
-          name,
-          description,
-          searchStr,
-          descriptors
+          incCriteria: this.incCriteria,
+          excCriteria: this.excCriteria,
+          name: this.name,
+          description: this.description,
+          searchStr: this.searchStr,
+          descriptors: this.descriptors
         })
         .then(function(response){
           console.log('resp is', response);
