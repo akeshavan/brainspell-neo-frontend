@@ -1,6 +1,5 @@
 import store from 'store';
 import axios from 'axios';
-import joinPath from 'path.join';
 import config from '../config';
 
 window.axios = axios;
@@ -12,7 +11,6 @@ function gup(url, name, win, callback) {
   const regexS = `[?&]${name}=([^&#]*)`;
   const regex = new RegExp(regexS);
   const results = regex.exec(url);
-
   if (results != null) {
     win.close();
     callback(results[1]);
@@ -21,7 +19,14 @@ function gup(url, name, win, callback) {
 }
 
 function authenticateAgainstServer(code, callback) {
-  const url = `${config.authUrl}/?code=${code}`;
+  console.log('authenticating against server');
+  let authUrl = null;
+  if (window.location.hostname === 'localhost') {
+    authUrl = config.authUrl;
+  } else {
+    authUrl = config.prodAuthUrl;
+  }
+  const url = `${authUrl}/?code=${code}`;
   axios.get(url).then((resp) => {
     store.set('token', resp.data.github_token);
     store.set('api_key', resp.data.api_key);
@@ -53,8 +58,17 @@ function getGithubCode(_url, REDIRECT, callback) {
 export default {
 
   login(callback) {
-    const url = `https://github.com/login/oauth/authorize?client_id=${config.clientId}&scope=repo`;
-    getGithubCode(url, config.redirectUri, callback);
+    let clientId = null;
+    let redirectUri = null;
+    if (window.location.hostname === 'localhost') {
+      clientId = config.clientId;
+      redirectUri = config.redirectUri;
+    } else {
+      clientId = config.prodClientId;
+      redirectUri = config.prodRedirectUrl;
+    }
+    const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo`;
+    getGithubCode(url, redirectUri, callback);
   },
 
   logout() {

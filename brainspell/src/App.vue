@@ -22,12 +22,12 @@
         <!--  Here are links to different routes  -->
         <b-navbar-nav>
           <b-nav-item to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/about">About</b-nav-item>
+          <b-nav-item to="/game">Play</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto" v-show="$route.path.indexOf('/view-article') == 0">
           <b-nav-form>
-            <b-button variant="info" size="sm" class="my-2 my-sm-0" :disabled="!canEdit">
+            <b-button variant="info" size="sm" class="my-2 my-sm-0" :disabled="!canEdit" @click="doSave">
 
               <span v-b-tooltip.hover title="Add this article to your collection to save changes" v-if="!canEdit">
                 <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
@@ -47,16 +47,27 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections">
+          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections && !pendingCollection">
             <template slot="button-content" v-if="currentCollection">
               <em>{{currentCollection.name}}</em>
             </template>
+
+            <b-dropdown-item v-for="(coll, index) in allCollections"
+              v-if="coll.name != currentCollection.name"
+              @click="setCollection(index)"
+            >
+              {{coll.name}}
+            </b-dropdown-item>
 
             <b-dropdown-item to="/createcollection" v-if="currentCollection">
               <i class="fa fa-plus"></i> Create Collection
             </b-dropdown-item>
 
           </b-nav-item-dropdown>
+
+          <b-nav-item v-if="pendingCollection">
+            <i class="fa fa-spinner fa-pulse fa-1x"></i>
+          </b-nav-item>
 
           <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus"></i> Create Collection</b-nav-item>
 
@@ -70,7 +81,7 @@
 
           <!-- The login option shows if the user is not authenticated -->
 
-          <b-nav-item v-else @click="authenticate">Login</b-nav-item>
+          <b-nav-item v-else to="/login">Login</b-nav-item>
 
 
 
@@ -90,6 +101,8 @@
         :pendingCollection="pendingCollection"
         v-on:setEdit="setEdit"
         v-on:needsSave="setSave"
+        v-on:doLogin="authenticate"
+        ref="routerView"
         />
     </div>
 
@@ -144,6 +157,9 @@ export default {
         self.getUserInfo();
       });
     },
+    setCollection(idx) {
+      this.currentIdx = idx;
+    },
     updateCollections() {
       const token = auth.getToken();
       const key = auth.getKey();
@@ -153,6 +169,10 @@ export default {
       axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
+             this.allCollections.forEach((coll, idx) => {
+               console.log('collection contents', coll.contents);
+               Vue.set(this.allCollections[idx], 'contents', coll.contents);
+             });
              this.pendingCollection = false;
            });
     },
@@ -161,6 +181,10 @@ export default {
     },
     setSave(val) {
       this.needsSave = val;
+    },
+    doSave() {
+      console.log(this.$route);
+      console.log(this.$refs.routerView.info);
     },
     getUserInfo() {
       const token = auth.getToken();
@@ -172,7 +196,8 @@ export default {
       // In this example, we are getting user info from github
       // If this fails, then our token is bad; we are NOT authenticated and
       // should be logged out
-      axios.get(pathJoin('https://api.github.com', 'user'), {
+      console.log('fetching user info');
+      axios.get('https://api.github.com/user', {
         headers: {
           Authorization: `token ${token}`,
         },
