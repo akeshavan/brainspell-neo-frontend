@@ -4,7 +4,8 @@
     <form-wizard title="Set up your new collection!"
                  subtitle="Provide the basic information to begin a Brainspell meta-analysis."
                  finishButtonText="Create!"
-                 color="#5bc0de">
+                 color="#5bc0de"
+                 @on-complete="submit">
       <tab-content title="Collection"
                    icon="ti-gift">
         <p>What would you like to name your collection?
@@ -95,6 +96,7 @@
 </style>
 
 <script>
+import axios from 'axios';
 import Descriptors from './Descriptors';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard'
@@ -127,7 +129,6 @@ export default {
   name: 'collection',
   data() {
     return {
-      atlases: [],
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
       tagSearch: '',
@@ -189,6 +190,22 @@ export default {
       console.log(this.descriptors);
       this.$forceUpdate();
     },
-  },
-};
+    submit() {
+      axios.post('some/url/here', {
+          incCriteria,
+          excCriteria,
+          name,
+          description,
+          searchStr,
+          descriptors
+        })
+        .then(function(response){
+          console.log('resp is', response);
+        })
+        .catch(function(error) {
+          console.log('error is', error);
+        });
+      },
+    },
+  };
 </script>
