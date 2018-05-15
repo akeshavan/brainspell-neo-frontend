@@ -19,31 +19,39 @@
                   placeholder="Collection description"></b-form-input>
         </p>
       </tab-content>
-      <tab-content title="Inclusion Criteria"
+      <tab-content title="Search Info"
                    icon="ti-thumb-up">
         <p>Enter your search string(s) here:
           <b-form-input v-model="searchStr"
                   type="text"
                   placeholder="Separate strings with semicolons"></b-form-input>
         </p>
-        <p>What are your criteria for study inclusion?
-          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
-
-            <template slot="Criteria" slot-scope="data">
-              <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
-            </template>
-
-            <template slot="delete" scope="row">
-
-              <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
-                <span aria-hidden="true">&times;</span>
-              </button>
-
-            </template>
-
-          </b-table>
-          <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
+        <p>Enter any PMIDs you may have from a previous search here:
+          <b-form-input v-model="pmids"
+                  type="text"
+                  placeholder="Separate PMIDs with spaces"></b-form-input>
         </p>
+      </tab-content>
+      <tab-content title="Inclusion Criteria"
+                   icon="ti-thumb-down">
+       <p>What are your criteria for study inclusion?
+         <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
+
+           <template slot="Criteria" slot-scope="data">
+             <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
+           </template>
+
+           <template slot="delete" scope="row">
+
+             <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
+               <span aria-hidden="true">&times;</span>
+             </button>
+
+           </template>
+
+         </b-table>
+         <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
+       </p>
       </tab-content>
       <tab-content title="Exclusion Criteria"
                    icon="ti-thumb-down">
@@ -139,6 +147,7 @@ export default {
       descriptors: [],
       tagSearch: '',
       searchStr: '',
+      pmids: [],
       descriptors: [],
     };
   },
