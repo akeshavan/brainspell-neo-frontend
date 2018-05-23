@@ -24,7 +24,7 @@
                   placeholder="Search strings"></b-form-input>
         </p>
         <p>Enter any PMIDs you may have from a previous search here:
-          <b-form-input v-model="pmids"
+          <b-form-input
                   type="text"
                   placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
         </p>
@@ -156,7 +156,9 @@ export default {
   },
   methods: {
     splitPmids(val){
-      this.pmids = val.split(" ");
+      console.log(val.split(" "));
+      var pmidArray = val.split(" ");
+      this.pmids = pmidArray;
     },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
