@@ -2,7 +2,7 @@
   <div>
     <b-container>
     <form-wizard title="Set up your new collection!"
-                 subtitle="Provide the basic information to begin a Brainspell meta-analysis."
+                 subtitle="Provide the basic information to begin curating a Brainspell collection for meta-analysis."
                  finishButtonText="Create!"
                  color="#5bc0de"
                  @on-complete="submit">
@@ -18,22 +18,19 @@
                   type="text"
                   placeholder="Collection description"></b-form-input>
         </p>
-      </tab-content>
-      <tab-content title="Search Info"
-                   icon="ti-thumb-up">
         <p>Enter your search string(s) here:
           <b-form-input v-model="searchStr"
                   type="text"
-                  placeholder="Separate strings with semicolons"></b-form-input>
+                  placeholder="Search strings"></b-form-input>
         </p>
         <p>Enter any PMIDs you may have from a previous search here:
           <b-form-input v-model="pmids"
                   type="text"
-                  placeholder="Separate PMIDs with spaces"></b-form-input>
+                  placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
         </p>
       </tab-content>
       <tab-content title="Inclusion Criteria"
-                   icon="ti-thumb-down">
+                   icon="ti-thumb-up">
        <p>What are your criteria for study inclusion?
          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
 
@@ -158,6 +155,9 @@ export default {
   computed: {
   },
   methods: {
+    splitPmids(val){
+      this.pmids = val.split(" ");
+    },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
       this.$refs.incTable.refresh();
