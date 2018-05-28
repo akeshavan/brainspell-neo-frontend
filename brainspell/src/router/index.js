@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import About from '@/components/About';
+import UserGuide from '@/components/UserGuide';
+import DeveloperGuide from '@/components/DeveloperGuide';
 import Home from '@/components/Home';
 import Profile from '@/components/Profile';
 import Search from '@/components/Search';
@@ -36,6 +38,16 @@ const router = new Router({
       path: '/about',
       name: 'About',
       component: About,
+    },
+    {
+      path: '/userguide',
+      name: 'UserGuide',
+      component: UserGuide,
+    },
+    {
+      path: '/developerguide',
+      name: 'DeveloperGuide',
+      component: DeveloperGuide,
     },
     {
       path: '/profile',
