@@ -2,7 +2,7 @@
   <div>
     <b-container>
     <form-wizard title="Set up your new collection!"
-                 subtitle="Provide the basic information to begin curating a Brainspell collection for meta-analysis."
+                 subtitle="Provide the basic information to begin curating a collection with metaCurious."
                  finishButtonText="Create!"
                  color="#5bc0de"
                  @on-complete="submit">

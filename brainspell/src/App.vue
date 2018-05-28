@@ -12,7 +12,7 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">metaCurious.</b-navbar-brand>
+      <b-navbar-brand href="#" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -47,10 +47,11 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+          <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+
             <template slot="button-content" v-if="currentCollection">
 
-              <em>{{currentCollection.name}}</em>
+              {{currentCollection.name}}
             </template>
 
             <b-dropdown-item v-for="(coll, index) in allCollections"
@@ -72,13 +73,13 @@
 
           <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus"></i> Create Collection</b-nav-item>
 
-          <b-nav-item-dropdown right v-if="isAuthenticated">
+          <b-dropdown id="ddown-split" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
             <template slot="button-content">
               <em>{{userInfo.login}}</em>
             </template>
-            <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+            <!-- <b-dropdown-item to="/profile">Profile</b-dropdown-item> -->
             <b-dropdown-item @click="logout">Signout</b-dropdown-item>
-          </b-nav-item-dropdown>
+          </b-dropdown>
 
           <!-- The login option shows if the user is not authenticated -->
 
@@ -240,8 +241,9 @@ export default {
     You can style your component here. Since this is a top level componentm
     the styles follow into child components.
   */
+  @import url('https://fonts.googleapis.com/css?family=Lobster+Two:700');
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Avenir', 'Lobster Two', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
@@ -250,7 +252,19 @@ export default {
 
   .dropdown-menu.dropdown-menu-right.show {
     width: fit-content;
-}
+  }
+  .btn-outline-white {
+    color: #b0b1b2;
+    background-color: transparent;
+    background-image: none;
+    border-color: #b0b1b2;
+  }
+
+  .btn-outline-white:hover {
+    color: #fff;
+    background-color: #b0b1b2;
+    border-color: #b0b1b2;
+  }
 
   .router {
     /*padding-top: 40px;*/
