@@ -1,5 +1,6 @@
 <template>
   <div id="user-guide" class="pt-4">
+
     <h1> User Guide </h1>
     <div class="container intro">
         <p>
@@ -13,7 +14,6 @@
     </div>
 
   </div>
-
 </template>
 
 <style>

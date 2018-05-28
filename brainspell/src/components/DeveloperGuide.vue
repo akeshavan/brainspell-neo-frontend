@@ -1,5 +1,6 @@
 <template>
   <div id="developer-guide" class="pt-4">
+
     <h1> Developer Guide </h1>
     <div class="container intro">
         <p>
@@ -27,7 +28,6 @@
     </div>
 
   </div>
-
 </template>
 
 <style>
