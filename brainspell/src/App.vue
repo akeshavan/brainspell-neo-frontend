@@ -260,6 +260,12 @@ export default {
     border-color: #b0b1b2;
   }
 
+  .btn-outline-white:hover {
+    color: #fff;
+    background-color: #b0b1b2;
+    border-color: #b0b1b2;
+  }
+
   .router {
     /*padding-top: 40px;*/
   }
