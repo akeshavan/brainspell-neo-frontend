@@ -12,7 +12,7 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">Brainspell</b-navbar-brand>
+      <b-navbar-brand href="#">metaCurious.</b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -47,8 +47,8 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections && !pendingCollection">
-            <template slot="button-content" v-if="currentCollection">
+          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2">
+            <template slot="button-content" v-if="currentCollection" to="/profile">
               <em>{{currentCollection.name}}</em>
             </template>
 
@@ -63,7 +63,7 @@
               <i class="fa fa-plus"></i> Create Collection
             </b-dropdown-item>
 
-          </b-nav-item-dropdown>
+          </b-dropdown>
 
           <b-nav-item v-if="pendingCollection">
             <i class="fa fa-spinner fa-pulse fa-1x"></i>
