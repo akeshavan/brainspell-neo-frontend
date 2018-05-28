@@ -12,7 +12,7 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">metaCurious.</b-navbar-brand>
+      <b-navbar-brand href="#" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -237,8 +237,9 @@ export default {
     You can style your component here. Since this is a top level componentm
     the styles follow into child components.
   */
+  @import url('https://fonts.googleapis.com/css?family=Lobster+Two:700');
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Avenir', 'Lobster Two', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
