@@ -47,11 +47,8 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-<<<<<<< HEAD
-          <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
-=======
-          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
->>>>>>> akeshavan/master
+          <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+
             <template slot="button-content" v-if="currentCollection">
 
               {{currentCollection.name}}
