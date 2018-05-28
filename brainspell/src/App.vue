@@ -47,10 +47,10 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="ddown-split" variant="outline-secondary" size="sm" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
+          <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
             <template slot="button-content" v-if="currentCollection">
 
-              <em>{{currentCollection.name}}</em>
+              {{currentCollection.name}}
             </template>
 
             <b-dropdown-item v-for="(coll, index) in allCollections"
@@ -251,7 +251,13 @@ export default {
 
   .dropdown-menu.dropdown-menu-right.show {
     width: fit-content;
-}
+  }
+  .btn-outline-white {
+    color: #b0b1b2;
+    background-color: transparent;
+    background-image: none;
+    border-color: #b0b1b2;
+  }
 
   .router {
     /*padding-top: 40px;*/
