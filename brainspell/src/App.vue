@@ -22,7 +22,7 @@
         <!--  Here are links to different routes  -->
         <b-navbar-nav>
           <b-nav-item to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/game">Play</b-nav-item>
+          <b-nav-item to="/about">About</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto" v-show="$route.path.indexOf('/view-article') == 0">
@@ -47,7 +47,11 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
+<<<<<<< HEAD
           <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
+=======
+          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+>>>>>>> akeshavan/master
             <template slot="button-content" v-if="currentCollection">
 
               {{currentCollection.name}}
