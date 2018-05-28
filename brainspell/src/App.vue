@@ -47,8 +47,8 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2">
-            <template slot="button-content" v-if="currentCollection" to="/profile">
+          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
+            <template slot="button-content" v-if="currentCollection">
 
               <em>{{currentCollection.name}}</em>
             </template>
@@ -152,6 +152,9 @@ export default {
     },
   },
   methods: {
+    gotoProfile() {
+      this.$router.replace('/profile')
+    },
     authenticate() {
       const self = this;
       auth.login(() => {
