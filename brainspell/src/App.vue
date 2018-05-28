@@ -248,6 +248,10 @@ export default {
     color: #2c3e50;
   }
 
+  .dropdown-menu.dropdown-menu-right.show {
+    width: fit-content;
+}
+
   .router {
     /*padding-top: 40px;*/
   }
