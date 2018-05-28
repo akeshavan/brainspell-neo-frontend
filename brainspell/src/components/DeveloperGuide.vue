@@ -11,7 +11,7 @@
             Before you start, you'll need to have the JavaScript package manager <a href="https://www.npmjs.com/get-npm" target="_blank"> npm</a> installed.
             You can then <code>git clone</code> and install the current <a href="https://github.com/akeshavan/brainspell-neo-frontend" target="_blank">master branch of the repository</a>.
             The code to do so might be:
-            <div class="container-fluid"><pre><code>
+            <div class="container-fluid"><pre id="code"><code>
                 git clone https://github.com/akeshavan/brainspell-neo-frontend
                 cd brainspell-neo-frontend/brainspell
                 npm install
@@ -45,6 +45,9 @@ export default {
     return {
       count: 1,
     };
+  },
+  mounted() {
+    document.getElementById('code').scrollTo(113,0);
   },
 };
 </script>
