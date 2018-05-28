@@ -1,7 +1,7 @@
 <template>
-  <div id="user-guide" class="pt-3">
+  <div id="user-guide" class="pt-4">
     <h1> User Guide </h1>
-    <div class="container-fluid intro">
+    <div class="container intro">
         <p>
             This is a guide to getting started with Brainspell.
             Before you start you'll need to set up a free <a href="https://github.com/" target="_blank">GitHub</a> account and sign in.
@@ -19,7 +19,7 @@
 <style>
     .intro {
         text-align: left;
-        padding: 1.5em 0 0 3em;
+        padding: 1.5em 3em 0 3em;
     }
 
 </style>
