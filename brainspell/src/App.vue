@@ -47,7 +47,7 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections && !pendingCollection">
+          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections && !pendingCollection  && allCollections.length">
             <template slot="button-content" v-if="currentCollection">
               <em>{{currentCollection.name}}</em>
             </template>
@@ -65,7 +65,7 @@
 
           </b-nav-item-dropdown>
 
-          <b-nav-item v-if="pendingCollection">
+          <b-nav-item v-if="pendingCollection && isAuthenticated">
             <i class="fa fa-spinner fa-pulse fa-1x"></i>
           </b-nav-item>
 
@@ -183,8 +183,16 @@ export default {
       this.needsSave = val;
     },
     doSave() {
-      console.log(this.$route);
-      console.log(this.$refs.routerView.info);
+      console.log('the current route is', this.$route);
+      console.log('the info is', JSON.stringify(this.$refs.routerView.info));
+      const data = this.$refs.routerView.info;
+      axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
+        data)
+        .then((resp) => {
+          console.log('response is', resp);
+        }).catch((e) => {
+          console.log('error', e);
+        });
     },
     getUserInfo() {
       const token = auth.getToken();
