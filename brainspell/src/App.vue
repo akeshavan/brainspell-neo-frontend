@@ -12,7 +12,7 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">Brainspell</b-navbar-brand>
+      <b-navbar-brand href="#">metaCurious.</b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -47,8 +47,9 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-nav-item-dropdown right v-if="isAuthenticated && allCollections && !pendingCollection">
+          <b-dropdown id="ddown-split" right split v-if="isAuthenticated && allCollections && !pendingCollection" class="m-2" @click="gotoProfile">
             <template slot="button-content" v-if="currentCollection">
+
               <em>{{currentCollection.name}}</em>
             </template>
 
@@ -63,9 +64,9 @@
               <i class="fa fa-plus"></i> Create Collection
             </b-dropdown-item>
 
-          </b-nav-item-dropdown>
+          </b-dropdown>
 
-          <b-nav-item v-if="pendingCollection">
+          <b-nav-item v-if="pendingCollection && isAuthenticated">
             <i class="fa fa-spinner fa-pulse fa-1x"></i>
           </b-nav-item>
 
@@ -151,6 +152,9 @@ export default {
     },
   },
   methods: {
+    gotoProfile() {
+      this.$router.replace('/profile')
+    },
     authenticate() {
       const self = this;
       auth.login(() => {
@@ -183,8 +187,16 @@ export default {
       this.needsSave = val;
     },
     doSave() {
-      console.log(this.$route);
-      console.log(this.$refs.routerView.info);
+      console.log('the current route is', this.$route);
+      console.log('the info is', JSON.stringify(this.$refs.routerView.info));
+      const data = this.$refs.routerView.info;
+      axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
+        data)
+        .then((resp) => {
+          console.log('response is', resp);
+        }).catch((e) => {
+          console.log('error', e);
+        });
     },
     getUserInfo() {
       const token = auth.getToken();
