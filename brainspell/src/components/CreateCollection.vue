@@ -2,9 +2,10 @@
   <div>
     <b-container>
     <form-wizard title="Set up your new collection!"
-                 subtitle="Provide the basic information to begin a Brainspell meta-analysis."
+                 subtitle="Provide the basic information to begin curating a Brainspell collection for meta-analysis."
                  finishButtonText="Create!"
-                 color="#5bc0de">
+                 color="#5bc0de"
+                 @on-complete="submit">
       <tab-content title="Collection"
                    icon="ti-gift">
         <p>What would you like to name your collection?
@@ -17,32 +18,37 @@
                   type="text"
                   placeholder="Collection description"></b-form-input>
         </p>
-      </tab-content>
-      <tab-content title="Inclusion Criteria"
-                   icon="ti-thumb-up">
         <p>Enter your search string(s) here:
           <b-form-input v-model="searchStr"
                   type="text"
-                  placeholder="Separate strings with semicolons"></b-form-input>
+                  placeholder="Search strings"></b-form-input>
         </p>
-        <p>What are your criteria for study inclusion?
-          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
-
-            <template slot="Criteria" slot-scope="data">
-              <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
-            </template>
-
-            <template slot="delete" scope="row">
-
-              <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
-                <span aria-hidden="true">&times;</span>
-              </button>
-
-            </template>
-
-          </b-table>
-          <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
+        <p>Enter any PMIDs you may have from a previous search here:
+          <b-form-input
+                  type="text"
+                  placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
         </p>
+      </tab-content>
+      <tab-content title="Inclusion Criteria"
+                   icon="ti-thumb-up">
+       <p>What are your criteria for study inclusion?
+         <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
+
+           <template slot="Criteria" slot-scope="data">
+             <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
+           </template>
+
+           <template slot="delete" scope="row">
+
+             <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
+               <span aria-hidden="true">&times;</span>
+             </button>
+
+           </template>
+
+         </b-table>
+         <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
+       </p>
       </tab-content>
       <tab-content title="Exclusion Criteria"
                    icon="ti-thumb-down">
@@ -95,6 +101,7 @@
 </style>
 
 <script>
+import axios from 'axios';
 import Descriptors from './Descriptors';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard'
@@ -127,7 +134,6 @@ export default {
   name: 'collection',
   data() {
     return {
-      atlases: [],
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
       tagSearch: '',
@@ -138,6 +144,7 @@ export default {
       descriptors: [],
       tagSearch: '',
       searchStr: '',
+      pmids: [],
       descriptors: [],
     };
   },
@@ -148,6 +155,11 @@ export default {
   computed: {
   },
   methods: {
+    splitPmids(val){
+      console.log(val.split(" "));
+      var pmidArray = val.split(" ");
+      this.pmids = pmidArray;
+    },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
       this.$refs.incTable.refresh();
@@ -190,6 +202,22 @@ export default {
       console.log(this.descriptors);
       this.$forceUpdate();
     },
-  },
-};
+    submit() {
+      axios.post('some/url/here', {
+          incCriteria: this.incCriteria,
+          excCriteria: this.excCriteria,
+          name: this.name,
+          description: this.description,
+          searchStr: this.searchStr,
+          descriptors: this.descriptors
+        })
+        .then(function(response){
+          console.log('resp is', response);
+        })
+        .catch(function(error) {
+          console.log('error is', error);
+        });
+      },
+    },
+  };
 </script>
