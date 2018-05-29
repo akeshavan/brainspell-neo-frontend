@@ -1,7 +1,10 @@
 <template>
   <div class="home container mt-3">
     <div class="">
-      <h1 style="font-family: 'Lobster Two'">metaCurious.</h1>
+      <h1 style="font-family: 'Lobster Two'">
+        <img class="icon" src="../assets/imgs/metacurious.svg"/>
+        metaCurious.
+      </h1>
       <p class="lead">
         An open, human-curated classification of neuroimaging literature.
       </p>
@@ -95,6 +98,10 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+}
+
+.icon {
+  height: 2em;
 }
 
 .home {
