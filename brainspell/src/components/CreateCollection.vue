@@ -26,7 +26,7 @@
         <p>Enter your search string(s) here:
           <b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
 
-            <template slot="Search" slot-scope="data">
+            <template slot="Criteria" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setSearchStr" ttype="text"></textfield>
             </template>
 
@@ -151,7 +151,7 @@ export default {
     return {
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
-      searchFields: ['Search', 'delete'],
+      searchFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
@@ -177,7 +177,7 @@ export default {
       this.pmids = pmidArray;
     },
     setSearchStr(val, idx) {
-      this.searchStr[idx].Search = val;
+      this.searchStr[idx].Criteria = val;
     },
     removeSearch(row) {
       this.searchStr.splice(row.index, 1);
@@ -185,7 +185,7 @@ export default {
     },
     addSearchStr() {
       this.searchStr.push({
-        Search: '',
+        Criteria: '',
       });
       this.$refs.incTable.refresh();
     },
@@ -231,12 +231,19 @@ export default {
       console.log(this.descriptors);
       this.$forceUpdate();
     },
+    convertObjects(thing) {
+      const l = [];
+      thing.forEach(v => {
+        l.push(v.Criteria)
+      });
+      return l
+    },
     submit() {
-      var querystring = qs.stringify({inclusion_criteria: JSON.stringify(this.incCriteria),
-          exclusion_criteria: JSON.stringify(this.excCriteria),
+      var querystring = qs.stringify({inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
+          exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
           collection_name: this.name,
           description: this.description,
-          search_strings: JSON.stringify(this.searchStr),
+          search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
           tags: JSON.stringify(this.descriptors),
           github_token: this.auth_tokens.github_access_token,
           key: this.auth_tokens.api_key})
