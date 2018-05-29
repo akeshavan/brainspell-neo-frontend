@@ -117,7 +117,7 @@
 import axios from 'axios';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
-import qs from 'query-string';
+import qs from 'simple-query-string';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import 'ti-icons/css/themify-icons.css';
 import Descriptors from './Descriptors';
@@ -249,7 +249,7 @@ export default {
         github_token: this.auth_tokens.github_access_token,
         key: this.auth_tokens.api_key });
       // const help = `https://brainspell.herokuapp.com/json/v2/create-collection?github_token=${this.auth_tokens.github_access_token}&inclusion_criteria=${JSON.stringify(this.incCriteria)}&exclusion_criteria=${JSON.stringify(this.excCriteria)}&collection_name=${this.name}&description=${this.description}&search_strings=${JSON.stringify(this.searchStr)}&tags=${JSON.stringify(this.descriptors)}&key=${this.auth_tokens.api_key}`
-      // console.log(querystring)
+      // console.log(querystring);
       axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
         .then(() => {
           // console.log('resp is', response);
