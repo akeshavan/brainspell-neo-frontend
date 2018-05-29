@@ -115,7 +115,6 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios';
-import pathJoin from 'path.join';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
@@ -154,7 +153,7 @@ export default {
   },
   methods: {
     gotoProfile() {
-      this.$router.replace('/profile')
+      this.$router.replace('/profile');
     },
     authenticate() {
       const self = this;
@@ -169,13 +168,11 @@ export default {
       const token = auth.getToken();
       const key = auth.getKey();
       // Get the user's collections
-      console.log('updating collections');
       this.pendingCollection = true;
       axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
-               console.log('collection contents', coll.contents);
                Vue.set(this.allCollections[idx], 'contents', coll.contents);
              });
              this.pendingCollection = false;
@@ -188,16 +185,14 @@ export default {
       this.needsSave = val;
     },
     doSave() {
-      console.log('the current route is', this.$route);
-      console.log('the info is', JSON.stringify(this.$refs.routerView.info));
       const data = this.$refs.routerView.info;
       axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
-        data)
-        .then((resp) => {
-          console.log('response is', resp);
+        data);
+        /* .then((resp) => {
+          // console.log('response is', resp);
         }).catch((e) => {
-          console.log('error', e);
-        });
+          // console.log('error', e);
+        }); */
     },
     getUserInfo() {
       const token = auth.getToken();
@@ -209,7 +204,7 @@ export default {
       // In this example, we are getting user info from github
       // If this fails, then our token is bad; we are NOT authenticated and
       // should be logged out
-      console.log('fetching user info');
+      // console.log('fetching user info');
       axios.get('https://api.github.com/user', {
         headers: {
           Authorization: `token ${token}`,

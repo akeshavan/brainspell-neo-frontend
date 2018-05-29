@@ -50,7 +50,7 @@ export default {
     };
   },
   mounted() {
-    document.getElementById('code').scrollTo(113,0);
+    document.getElementById('code').scrollTo(113, 0);
   },
 };
 </script>

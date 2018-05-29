@@ -89,7 +89,7 @@ export default {
     doSearch(e) {
       e.preventDefault();
       if (this.query) {
-        console.log('searching', this.query);
+        // console.log('searching', this.query);
         this.$router.push(`/search/${this.query}`);
         this.articles = [];
         this.fetchData();

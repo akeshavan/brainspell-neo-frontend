@@ -135,7 +135,7 @@
 
 <script>
 import Descriptors from './Descriptors';
-import Vue from 'vue';
+// import Vue from 'vue';
 
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
@@ -230,16 +230,16 @@ export default {
     },
     removeLocation(loc) {
       this.exp.locations.splice(loc.index, 1);
-      console.log('removing', loc);
+      // console.log('removing', loc);
     },
     splitAt(loc) {
       const newLocations = this.exp.locations.splice(loc.index);
       this.$emit('newexp', newLocations, this.index);
-      console.log('splitAt', loc);
+      // console.log('splitAt', loc);
     },
     addAt(loc) {
       this.exp.locations.splice(loc.index + 1, 0, {});
-      console.log('splitAt', loc);
+      // console.log('splitAt', loc);
     },
     addKVrow() {
       this.exp.kvPairs.push({
@@ -252,16 +252,16 @@ export default {
       this.$refs.descriptorsModal.show();
     },
     setSelector(item) {
-      console.log('recieved', item);
+      // console.log('recieved', item);
       const idx = this.exp.descriptors.indexOf(item.name);
-      console.log('idx is', idx);
+      // console.log('idx is', idx);
       if (idx >= 0) {
         // remove the descriptors
         this.exp.descriptors.splice(idx, 1);
       } else {
         this.exp.descriptors.push(item.name);
       }
-      console.log(this.exp.descriptors);
+      // console.log(this.exp.descriptors);
       this.$forceUpdate();
     },
   },

@@ -115,13 +115,15 @@
 
 <script>
 import axios from 'axios';
-import Descriptors from './Descriptors';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import qs from 'query-string';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import 'ti-icons/css/themify-icons.css';
-Vue.use(VueFormWizard)
+import Descriptors from './Descriptors';
+
+Vue.use(VueFormWizard);
+
 const Textfield = {
   props: ['value', 'placeholder', 'index', 'ttype'],
   template: `
@@ -158,10 +160,8 @@ export default {
       incCriteria: [],
       excCriteria: [],
       descriptors: [],
-      tagSearch: '',
       searchStr: [],
       pmids: [],
-      descriptors: [],
     };
   },
   components: {
@@ -171,9 +171,9 @@ export default {
   computed: {
   },
   methods: {
-    splitPmids(val){
-      console.log(val.split(" "));
-      var pmidArray = val.split(" ");
+    splitPmids(val) {
+      // console.log(val.split(" "));
+      const pmidArray = val.split(' ');
       this.pmids = pmidArray;
     },
     setSearchStr(val, idx) {
@@ -219,52 +219,50 @@ export default {
       this.$refs.descriptorsModal.show();
     },
     setSelector(item) {
-      console.log('recieved', item);
+      // console.log('recieved', item);
       const idx = this.descriptors.indexOf(item.name);
-      console.log('idx is', idx);
+      // console.log('idx is', idx);
       if (idx >= 0) {
         // remove the descriptors
         this.descriptors.splice(idx, 1);
       } else {
         this.descriptors.push(item.name);
       }
-      console.log(this.descriptors);
+      // console.log(this.descriptors);
       this.$forceUpdate();
     },
     convertObjects(thing) {
       const l = [];
-      thing.forEach(v => {
-        l.push(v.Criteria)
+      thing.forEach((v) => {
+        l.push(v.Criteria);
       });
-      return l
+      return l;
     },
     submit() {
-      var querystring = qs.stringify({inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
-          exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
-          collection_name: this.name,
-          description: this.description,
-          search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
-          tags: JSON.stringify(this.descriptors),
-          github_token: this.auth_tokens.github_access_token,
-          key: this.auth_tokens.api_key})
-      //const help = `https://brainspell.herokuapp.com/json/v2/create-collection?github_token=${this.auth_tokens.github_access_token}&inclusion_criteria=${JSON.stringify(this.incCriteria)}&exclusion_criteria=${JSON.stringify(this.excCriteria)}&collection_name=${this.name}&description=${this.description}&search_strings=${JSON.stringify(this.searchStr)}&tags=${JSON.stringify(this.descriptors)}&key=${this.auth_tokens.api_key}`
-      console.log(querystring)
+      const querystring = qs.stringify({
+        inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
+        exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
+        collection_name: this.name,
+        description: this.description,
+        search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
+        tags: JSON.stringify(this.descriptors),
+        github_token: this.auth_tokens.github_access_token,
+        key: this.auth_tokens.api_key });
+      // const help = `https://brainspell.herokuapp.com/json/v2/create-collection?github_token=${this.auth_tokens.github_access_token}&inclusion_criteria=${JSON.stringify(this.incCriteria)}&exclusion_criteria=${JSON.stringify(this.excCriteria)}&collection_name=${this.name}&description=${this.description}&search_strings=${JSON.stringify(this.searchStr)}&tags=${JSON.stringify(this.descriptors)}&key=${this.auth_tokens.api_key}`
+      // console.log(querystring)
       axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
-        .then(function(response){
-          console.log('resp is', response);
+        .then(() => {
+          // console.log('resp is', response);
         })
-        .catch(function(error) {
-          console.log('error is', error);
+        .catch(() => {
+          // console.log('error is', error);
         });
-      },
     },
-    handleErrorMsg() {
-      if (this.name == null) {
-        alert('Please give your collection a name.')
-      }
-      else {
-
-      }
+  },
+  handleErrorMsg() {
+    if (this.name == null) {
+      // alert('Please give your collection a name.')
     }
-  };
+  },
+};
 </script>

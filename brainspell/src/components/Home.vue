@@ -71,13 +71,13 @@ export default {
     doSearch(e) {
       if (this.query) {
         e.preventDefault();
-        console.log('searching', this.query);
+        // console.log('searching', this.query);
         this.$router.push(`/search/${this.query}`);
       }
     },
     randomQuery() {
       axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
-        console.log('result is', res);
+        // console.log('result is', res);
         this.articles = res.data.articles;
         this.randomPending = false;
       });

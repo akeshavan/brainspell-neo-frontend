@@ -175,7 +175,7 @@
       isInCollection() {
         if (this.currentCollection) {
           const exists = _.filter(this.currentCollection.contents, v => v.pmid === this.pmid);
-          console.log(exists);
+          // console.log(exists);
           this.$emit('setEdit', exists.length);
           return exists.length;
         }
@@ -193,7 +193,7 @@
       $route: 'fetchData',
       info: {
         handler(val, oldval) {
-          console.log('val and oldval', val, oldval.title);
+          // console.log('val and oldval', val, oldval.title);
           if (oldval.title) {
             this.$emit('needsSave', true);
           }
@@ -202,7 +202,7 @@
       },
       'info.experiments': {
         handler(val, oldval) {
-          console.log('val and oldval list', val, oldval.title);
+          // console.log('val and oldval list', val, oldval.title);
           if (oldval.title) {
             this.$emit('needsSave', true);
           }
@@ -213,29 +213,29 @@
 
     methods: {
       addToCollection() {
-        console.log('sending request...');
+        // console.log('sending request...');
         this.addPending = true;
         axios.get(`https://brainspell.herokuapp.com/json/add-to-collection?github_access_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&name=${this.currentCollection.name}`)
-          .then((resp) => {
-            console.log('success, added', resp);
+          .then(() => {
+            // console.log('success, added', resp);
             this.addPending = false;
             this.$emit('updateCollection');
-          }).catch((e) => {
-            console.log('error on add', e);
-          });
+          }); /* .catch((e) => {
+            // console.log('error on add', e);
+          }); */
       },
       needsSave() {
         this.$emit('needsSave', true);
       },
       addExp(locations, index) {
-        console.log('adding new experiment at', index);
+        // console.log('adding new experiment at', index);
         this.info.experiments.splice(index + 1, 0, { locations, kvPairs: [], descriptors: [] });
         // this.$emit('needsSave', true);
       },
       setArticleURL(doi) {
         axios.get(`https://api.oadoi.org/v2/${doi}?email=keshavan@berkeley.edu`)
           .then((resp) => {
-            console.log('resp is', resp);
+            // console.log('resp is', resp);
             if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf) {
               const url = resp.data.best_oa_location.url_for_pdf.replace('http:', 'https:');
               this.articleURL = url;
@@ -258,23 +258,24 @@
           this.info.experiments.forEach((exp, idx, arr) => {
             Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
             Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].descriptors || []);
-
             arr[idx].locations.forEach((loc, jdx, locarr) => {
               if (typeof loc === 'string' || loc instanceof String) {
                 const locs = loc.split(',');
+                /* eslint-disable */
                 locarr[jdx] = { x: locs[0],
                   y: locs[1],
                   z: locs[2],
                   E: locs[3],
                 };
+                /* eslint-enable */
               }
             });
             // Editing items in the locations table will require and emit
           });
-        })
-        .catch((e) => {
-          console.log('ERROR', e);
         });
+        /* .catch((e) => {
+          console.log('ERROR', e);
+        }); */
       },
     },
   };
