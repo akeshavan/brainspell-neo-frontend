@@ -55,7 +55,7 @@
             </template>
 
             <b-dropdown-item v-for="(coll, index) in allCollections"
-              :key="coll"
+              :key="index"
               v-if="coll.name != currentCollection.name"
               @click="setCollection(index)"
             >
@@ -170,7 +170,7 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
-      axios.get(`https://brainspell.herokuapp.com/json/collections?key=${key}&github_access_token=${token}&pmid=1`)
+      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=1`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
