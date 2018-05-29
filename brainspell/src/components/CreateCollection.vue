@@ -1,11 +1,20 @@
 <template>
   <div>
+    <b-modal ref="completeModalRef" hide-footer title="Your collection has been created!" no-close-on-backdrop no-close-on-esc hide-header-close centered>
+      <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
+      <p><br>
+         <a href="#" id="linkToCollection" target="_blank">
+           github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
+         </a>
+      </p>
+      <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
+      <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
+    </b-modal>
     <b-container>
     <form-wizard title="Set up your new collection!"
                  subtitle="Provide the basic information to begin curating a collection with metaCurious."
                  finishButtonText="Create!"
                  color="#5bc0de"
-                 @on-loading=""
                  @on-complete="submit">
       <tab-content title="Collection"
                    icon="ti-gift">
@@ -112,6 +121,9 @@
     width: 100%;
     text-align: center;
   }
+  .success {
+    height: 15em;
+  }
 </style>
 
 <script>
@@ -147,9 +159,10 @@ const Textfield = {
 };
 export default {
   name: 'collection',
-  props: ['isAuthenticated', 'auth_tokens'],
+  props: ['isAuthenticated', 'auth_tokens', 'userInfo'],
   data() {
     return {
+      showDismissibleAlert: false,
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
       searchFields: ['Criteria', 'delete'],
@@ -163,7 +176,6 @@ export default {
       searchStr: [],
       pmids: [],
       descriptors: [],
-      loadingWizard: false,
     };
   },
   components: {
@@ -233,6 +245,10 @@ export default {
       console.log(this.descriptors);
       this.$forceUpdate();
     },
+    convertURL(user, col) {
+      const colRoot = '/brainspell-neo-collection-'
+      document.getElementById('linkToCollection').href = 'https://github.com/' + user + colRoot + col;
+    },
     convertObjects(thing) {
       const l = [];
       thing.forEach(v => {
@@ -240,9 +256,7 @@ export default {
       });
       return l
     },
-    setLoading(value) {
-      this.loadingWizard = value;
-    },
+
     submit() {
       var querystring = qs.stringify({inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
           exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
@@ -261,15 +275,16 @@ export default {
         .catch(function(error) {
           console.log('error is', error);
         });
-      },
+      this.convertURL(this.userInfo.login, this.name);
+      this.$refs.completeModalRef.show();
     },
-    handleErrorMsg() {
-      if (this.name == null) {
-        alert('Please give your collection a name.')
-      }
-      else {
-
-      }
-    }
-  };
+    showModal () {
+      this.$refs.completeModalRef.show()
+    },
+    hideModal () {
+      this.$refs.completeModalRef.hide();
+      this.$router.replace("/")
+    },
+  },
+};
 </script>
