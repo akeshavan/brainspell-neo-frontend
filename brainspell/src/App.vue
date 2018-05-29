@@ -47,7 +47,7 @@
         <b-navbar-nav class="ml-auto">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="ddown-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+          <b-dropdown id="down-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
 
             <template slot="button-content" v-if="currentCollection">
 
@@ -71,9 +71,9 @@
             <i class="fa fa-spinner fa-pulse fa-1x"></i>
           </b-nav-item>
 
-          <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus"></i> Create Collection</b-nav-item>
+          <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus m-2" size="sm"></i> Create Collection</b-nav-item>
 
-          <b-dropdown id="ddown-split" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
+          <b-dropdown id="down-split" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
             <template slot="button-content">
               <em>{{userInfo.login}}</em>
             </template>
