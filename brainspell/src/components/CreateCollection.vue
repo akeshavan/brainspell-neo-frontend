@@ -5,6 +5,7 @@
                  subtitle="Provide the basic information to begin curating a collection with metaCurious."
                  finishButtonText="Create!"
                  color="#5bc0de"
+                 @on-loading=""
                  @on-complete="submit">
       <tab-content title="Collection"
                    icon="ti-gift">
@@ -162,6 +163,7 @@ export default {
       searchStr: [],
       pmids: [],
       descriptors: [],
+      loadingWizard: false,
     };
   },
   components: {
@@ -237,6 +239,9 @@ export default {
         l.push(v.Criteria)
       });
       return l
+    },
+    setLoading(value) {
+      this.loadingWizard = value;
     },
     submit() {
       var querystring = qs.stringify({inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
