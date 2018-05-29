@@ -4,12 +4,14 @@
     <h1> User Guide </h1>
     <div class="container intro">
         <p>
-            This is a guide to getting started with MetaCurious.
+            This is a guide to getting started with MetaCurious. To contribute to development, check out our <a href="#/developerguide">Developer Guide</a>.
+        </p>
+        <p>
             Before you start you'll need to set up a free <a href="https://github.com/" target="_blank">GitHub</a> account and sign in.
             Here are some <a href="https://help.github.com/articles/signing-up-for-a-new-github-account" target="_blank">instructions</a>.
         </p>
         <p>
-            You can login to MetaCurious with your GitHub account.
+            You should login to MetaCurious with your GitHub account.
         </p>
     </div>
 
