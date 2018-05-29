@@ -3,7 +3,7 @@
 
     <h1> About MetaCurious </h1>
     <div class="container intro">
-        <div class="row pt-3">
+        <div class="row align-items-center pt-3">
             <div class="col-md-8 align-middle">
                 <p>
                     MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
@@ -15,7 +15,7 @@
                 <img src="../assets/imgs/undraw_files.svg" class="undraw">
             </div>
         </div>
-        <div class="row pt-3">
+        <div class="row align-items-center pt-3">
             <div class="col-md-8 align-middle">
                 <p>
             	    This project started with Brainspell (by Roberto Toro, building on NeuroSynth) a long time ago ... and then evolved to be specifically tuned for neuroimaging meta-analyses.
@@ -26,7 +26,7 @@
                 <img src="../assets/imgs/undraw_collab.svg" class="undraw">
             </div>
         </div>
-        <div class="row pt-3">
+        <div class="row align-items-center pt-3">
             <div class="col-md-8 align-middle">
                 <p>
                     If you're looking to get started using MetaCurious for your projects, check out our <a href="#/userguide">User Guide</a>.
