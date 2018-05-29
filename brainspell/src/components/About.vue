@@ -75,6 +75,11 @@
                 </tr>
                 <tr>
                     <td>
+                        <img src="https://avatars0.githubusercontent.com/u/4883288?s=460&v=4" class="rounded-circle" width="95px" alt="Anisha">
+                    </br>
+                        Greg Kiar
+                    </td>
+                    <td>
                         <img src="https://archive.org/download/HYPhD_Jean-Baptiste-Poline_17-09-2014/HYPhD_Jean-Baptiste-Poline_17-09-2014.jpg" class="rounded-circle" width="95px" alt="JB">
                     </br>
                         Jean-Baptiste Poline
@@ -84,10 +89,16 @@
                     </br>
                         Sharabesh Ramesh
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <img src="https://media.licdn.com/dms/image/C5603AQEdxjjxvrMBwg/profile-displayphoto-shrink_200_200/0?e=1533168000&v=beta&t=G7XSPCp0ZZ11BbLoS-Q7GcobiXl3uEmtDM4pEspquyY" class="rounded-circle" width="95px" alt="Neel">
                     </br>
                         Neel Somani
+                    </td>
+                    <td>
+                    </td>
+                    <td>
                     </td>
                 </tr>
             </tbody>
