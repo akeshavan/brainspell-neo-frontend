@@ -4,7 +4,7 @@
     <h1> About MetaCurious </h1>
     <div class="container intro">
         <div class="row align-items-center pt-3">
-            <div class="col-md-8 align-middle order-sm-2 order-1">
+            <div class="col-md-8 align-middle order-md-2 order-1">
                 <p>
                   The number of publications in neuroimaging is increasing exponentially,
                   and it is impossible to read and understand all the papers.
@@ -23,12 +23,12 @@
                 </p>
 
             </div>
-            <div class="col-md-4 order-sm-1 order-2">
+            <div class="col-md-4 order-md-1 order-2">
                 <img src="../assets/imgs/undraw_files.svg" class="undraw">
             </div>
         </div>
         <div class="row align-items-center pt-3">
-            <div class="col-md-8 align-middle order-sm-2">
+            <div class="col-md-8 align-middle order-md-2">
               <p>
                   MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
                   All the metadata needed to reproduce the analysis is available and sharable.
@@ -46,7 +46,7 @@
                     To contribute to MetaCurious development, look at our <a href="#/developerguide">developer documentation</a>.
                 </p>
             </div>
-            <div class="col-md-4 order-sm-1">
+            <div class="col-md-4 order-md-1">
                 <img src="../assets/imgs/undraw_data.svg" class="undraw">
             </div>
         </div>
