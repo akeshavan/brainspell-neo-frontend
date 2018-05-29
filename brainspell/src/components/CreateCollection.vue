@@ -18,15 +18,28 @@
                   type="text"
                   placeholder="Collection description"></b-form-input>
         </p>
-        <p>Enter your search string(s) here:
-          <b-form-input v-model="searchStr"
-                  type="text"
-                  placeholder="Search strings"></b-form-input>
-        </p>
         <p>Enter any PMIDs you may have from a previous search here:
           <b-form-input
                   type="text"
                   placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
+        </p>
+        <p>Enter your search string(s) here:
+          <b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
+
+            <template slot="Search" slot-scope="data">
+              <textfield v-model="data.value" :index="data.index" v-on:input="setSearchStr" ttype="text"></textfield>
+            </template>
+
+            <template slot="delete" scope="row">
+
+              <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeSearch(row)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+            </template>
+
+          </b-table>
+          <b-button size="sm" variant="outline-secondary" @click="addSearchStr">Add search string</b-button>
         </p>
       </tab-content>
       <tab-content title="Inclusion Criteria"
@@ -136,6 +149,7 @@ export default {
     return {
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
+      searchFields: ['Search', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
@@ -143,7 +157,7 @@ export default {
       excCriteria: [],
       descriptors: [],
       tagSearch: '',
-      searchStr: '',
+      searchStr: [],
       pmids: [],
       descriptors: [],
     };
@@ -159,6 +173,19 @@ export default {
       console.log(val.split(" "));
       var pmidArray = val.split(" ");
       this.pmids = pmidArray;
+    },
+    setSearchStr(val, idx) {
+      this.searchStr[idx].Search = val;
+    },
+    removeSearch(row) {
+      this.searchStr.splice(row.index, 1);
+      this.$refs.searchTable.refresh();
+    },
+    addSearchStr() {
+      this.searchStr.push({
+        Search: '',
+      });
+      this.$refs.incTable.refresh();
     },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
