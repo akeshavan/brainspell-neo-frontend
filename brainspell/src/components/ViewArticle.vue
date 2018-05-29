@@ -43,11 +43,10 @@
             </b-form>
             <b-button variant="outline-danger" class="mt-3"
              :disabled="!excReason.length"
+             @click="excludeFromCollection"
              v-if="isInCollection && currentCollection">
               Exclude from {{currentCollection.name}}
             </b-button>
-
-            </textarea>
             <!--<small> TO do: when you click exclude, explain why</small>-->
           </b-form>
 
@@ -215,7 +214,7 @@
       addToCollection() {
         // console.log('sending request...');
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/add-to-collection?github_access_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&name=${this.currentCollection.name}`)
+        axios.get(`https://brainspell.herokuapp.com/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;
@@ -224,6 +223,19 @@
             // console.log('error on add', e);
           }); */
       },
+
+      excludeFromCollection() {
+        this.addPending = true;
+        axios.get(`https://brainspell.herokuapp.com/json/v2/exclude-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}`)
+          .then(() => {
+            // console.log('success, added', resp);
+            this.addPending = false;
+            this.$emit('updateCollection');
+          }); /* .catch((e) => {
+            // console.log('error on add', e);
+          }); */
+      },
+
       needsSave() {
         this.$emit('needsSave', true);
       },

@@ -174,6 +174,9 @@ export default {
            .then((resp) => {
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
+               /* eslint-disable */
+               coll.name = coll.name.replace('brainspell-neo-collection-', '');
+               /* eslint-enable */
                Vue.set(this.allCollections[idx], 'contents', coll.contents);
              });
              this.pendingCollection = false;
