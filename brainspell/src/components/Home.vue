@@ -9,7 +9,7 @@
       <p class="search">
         <form class="form" v-on:submit="doSearch">
           <div class="input-group">
-             <input type="text" name="q" style="width:80%" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
+             <input type="text" name="q" style="width:calc(100% - 178px)" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
              <select name="req" id="req" class="selectpicker form-control" style="width: 10%;">
                   <option selected value="t" id="default">Title, author, abstract</option>
                   <option value="x" id="experiments">Experiments</option>
