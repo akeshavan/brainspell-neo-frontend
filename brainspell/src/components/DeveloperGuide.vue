@@ -5,6 +5,9 @@
     <div class="container intro">
         <p>
             This is a guide for developing the MetaCurious frontend.
+            To get started using MetaCurious, check out our <a href="#/userguide">User Guide</a>.
+        </p>
+        <p>
             MetaCurious is coded in  <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="https://vuejs.org/" target="_blank">Vue.js</a>, and <a href="https://bootstrap-vue.js.org/" target="_blank">Bootstrap-Vue</a>.
             For a general guide on getting started with these frameworks, see their documentation!
         </p>
