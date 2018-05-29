@@ -1,7 +1,10 @@
 <template>
   <div class="home container mt-3">
     <div class="">
-      <h1>{{msg}}</h1>
+      <h1 style="font-family: 'Lobster Two'">
+        <img class="icon" src="../assets/imgs/metacurious.svg"/>
+        metaCurious.
+      </h1>
       <p class="lead">
         An open, human-curated classification of neuroimaging literature.
       </p>
@@ -9,7 +12,7 @@
       <p class="search">
         <form class="form" v-on:submit="doSearch">
           <div class="input-group">
-             <input type="text" name="q" style="width:calc(100% - 178px)" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
+             <input type="text" name="q" style="width:calc(95% - 178px)" v-model="query" placeholder="Search articles by title, author, keyword..." class="form-control">
              <select name="req" id="req" class="selectpicker form-control" style="width: 10%;">
                   <option selected value="t" id="default">Title, author, abstract</option>
                   <option value="x" id="experiments">Experiments</option>
@@ -56,7 +59,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      msg: 'metaCurious.',
       query: null,
       articles: [],
       randomPending: true,
@@ -96,6 +98,10 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+}
+
+.icon {
+  height: 2em;
 }
 
 .home {

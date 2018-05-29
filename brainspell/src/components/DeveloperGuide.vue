@@ -1,10 +1,14 @@
 <template>
   <div id="developer-guide" class="pt-4">
+
     <h1> Developer Guide </h1>
     <div class="container intro">
         <p>
-            This is a guide for developing the Brainspell frontend.
-            Brainspell is coded in  <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="https://vuejs.org/" target="_blank">Vue.js</a>, and <a href="https://bootstrap-vue.js.org/" target="_blank">Bootstrap-Vue</a>.
+            This is a guide for developing the MetaCurious frontend.
+            To get started using MetaCurious, check out our <a href="#/userguide">User Guide</a>.
+        </p>
+        <p>
+            MetaCurious is coded in  <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="https://vuejs.org/" target="_blank">Vue.js</a>, and <a href="https://bootstrap-vue.js.org/" target="_blank">Bootstrap-Vue</a>.
             For a general guide on getting started with these frameworks, see their documentation!
         </p>
         <p>
@@ -18,7 +22,7 @@
                 npm run dev
             </code></pre></div>
             Then, in your browser, navigate to <code>http://localhost:8080</code>.
-            You should see the main home page for Brainspell:
+            You should see the main home page for MetaCurious:
         </p>
         <img src="../assets/imgs/homepage.jpg" class="img-fluid" alt="homepage">
         <p>
@@ -27,7 +31,6 @@
     </div>
 
   </div>
-
 </template>
 
 <style>
