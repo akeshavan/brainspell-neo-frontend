@@ -56,7 +56,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      msg: 'Brainspell',
+      msg: 'metaCurious.',
       query: null,
       articles: [],
       randomPending: true,
