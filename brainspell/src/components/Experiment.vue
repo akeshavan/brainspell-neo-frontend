@@ -44,7 +44,7 @@
 
   <small>Descriptors/Tags</small>
   <p>
-    <b-badge v-for="desc in exp.descriptors" class="mr-1">{{desc}}</b-badge>
+    <b-badge v-for="desc in exp.descriptors" :key="desc" class="mr-1">{{desc}}</b-badge>
     <!-- the modal -->
     <b-modal size="lg" ref="descriptorsModal">
       <div slot="modal-header" class="w-100" style="display: inline">
@@ -66,7 +66,7 @@
       <template slot="value" slot-scope="data">
         <textfield v-model="data.value" :index="data.index" v-on:input="setValue" ttype="text"></textfield>
       </template>
-      <template slot="delete" scope="row">
+      <template slot="delete" slot-scope="row">
 
         <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeKV(row)">
           <span aria-hidden="true">&times;</span>
@@ -92,21 +92,21 @@
         <template slot="E" slot-scope="data">
           <textfield v-model="data.value" :index="data.index" v-on:input="setE" ttype="text" v-on:needsSave="needsSave"></textfield>
         </template>
-        <template slot="delete" scope="row">
+        <template slot="delete" slot-scope="row">
 
           <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeLocation(row)">
             <span aria-hidden="true">&times;</span>
           </button>
 
         </template>
-        <template slot="split" scope="row">
+        <template slot="split" slot-scope="row">
 
           <button type="button" class="close" aria-label="Close" style="width:100%" @click="splitAt(row)">
             <i class="fa fa-arrow-down"></i>
           </button>
 
         </template>
-        <template slot="add" scope="row">
+        <template slot="add" slot-scope="row">
 
           <button type="button" class="close" aria-label="Close" style="width:100%" @click="addAt(row)">
             <i class="fa fa-plus"></i>

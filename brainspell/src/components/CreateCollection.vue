@@ -30,7 +30,7 @@
               <textfield v-model="data.value" :index="data.index" v-on:input="setSearchStr" ttype="text"></textfield>
             </template>
 
-            <template slot="delete" scope="row">
+            <template slot="delete" slot-scope="row">
 
               <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeSearch(row)">
                 <span aria-hidden="true">&times;</span>
@@ -51,7 +51,7 @@
              <textfield v-model="data.value" :index="data.index" v-on:input="setInclusion" ttype="text"></textfield>
            </template>
 
-           <template slot="delete" scope="row">
+           <template slot="delete" slot-scope="row">
 
              <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeInc(row)">
                <span aria-hidden="true">&times;</span>
@@ -72,7 +72,7 @@
               <textfield v-model="data.value" :index="data.index" v-on:input="setExclusion" ttype="text"></textfield>
             </template>
 
-            <template slot="delete" scope="row">
+            <template slot="delete" slot-scope="row">
 
               <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeExc(row)">
                 <span aria-hidden="true">&times;</span>
@@ -87,7 +87,7 @@
       <tab-content title="Tags"
                    icon="ti-tag">
         <p>Select any/all relevant tags for you collection:
-          <b-badge v-for="desc in this.descriptors" class="mr-1">{{desc}}</b-badge>
+          <b-badge v-for="desc in this.descriptors" :key="desc" class="mr-1">{{desc}}</b-badge>
           <!-- the modal -->
           <b-modal size="lg" ref="descriptorsModal">
             <div slot="modal-header" class="w-100" style="display: inline">

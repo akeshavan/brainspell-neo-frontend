@@ -55,6 +55,7 @@
             </template>
 
             <b-dropdown-item v-for="(coll, index) in allCollections"
+              :key="coll"
               v-if="coll.name != currentCollection.name"
               @click="setCollection(index)"
             >

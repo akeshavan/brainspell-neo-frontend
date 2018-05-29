@@ -35,7 +35,7 @@
         <p class="muted">
           <small> Randomly selected articles <i class="fa fa-spinner fa-pulse" v-if="randomPending"></i> </small>
         </p>
-        <b-row v-for="article in articles" class="mt-2 mb-2">
+        <b-row v-for="article in articles" class="mt-2 mb-2" :key="article">
           <p class="article">
             <router-link :to="'/view-article/' + article.id">
               {{article.title}}
