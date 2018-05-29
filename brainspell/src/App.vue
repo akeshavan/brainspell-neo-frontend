@@ -44,10 +44,10 @@
 
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <div class="navbar-collapse justify-content-end">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="down-split" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
+          <b-dropdown id="ddown-split1" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
 
             <template slot="button-content" v-if="currentCollection">
 
@@ -73,7 +73,7 @@
 
           <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus m-2" size="sm"></i> Create Collection</b-nav-item>
 
-          <b-dropdown id="down-split" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
+          <b-dropdown id="ddown-split2" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
             <template slot="button-content">
               <em>{{userInfo.login}}</em>
             </template>
@@ -87,7 +87,7 @@
 
 
 
-        </b-navbar-nav>
+      </div>
 
       </b-collapse>
     </b-navbar>
