@@ -1,9 +1,9 @@
 <template>
   <div id="about" class="pt-4">
 
-    <h1> About Brainspell </h1>
+    <h1> About MetaCurious </h1>
     <div class="container intro">
-        <div class="row">
+        <div class="row pt-3">
             <div class="col-md-8 align-middle">
                 <p>
                     MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
@@ -15,18 +15,18 @@
                 <img src="../assets/imgs/undraw_files.svg" class="undraw">
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <img src="../assets/imgs/undraw_collab.svg" class="undraw">
-            </div>
-            <div class="col-md-8">
+        <div class="row pt-3">
+            <div class="col-md-8 align-middle">
                 <p>
             	    This project started with Brainspell (by Roberto Toro, building on NeuroSynth) a long time ago ... and then evolved to be specifically tuned for neuroimaging meta-analyses.
                     It's now a collaborative, _______ tool for conducting and sharing meta-analyses.
             	</p>
             </div>
+            <div class="col-md-4">
+                <img src="../assets/imgs/undraw_collab.svg" class="undraw">
+            </div>
         </div>
-        <div class="row">
+        <div class="row pt-3">
             <div class="col-md-8 align-middle">
                 <p>
                     If you're looking to get started using MetaCurious for your projects, check out our <a href="#/userguide">User Guide</a>.
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="container-fluid pt-3">
+    <div class="container-fluid pt-5">
         <h3>Current Contributors:</h3>
         <table class="table table-responsive-sm table-borderless">
             <thead></thead>
