@@ -35,7 +35,7 @@
         <p class="muted">
           <small> Randomly selected articles <i class="fa fa-spinner fa-pulse" v-if="randomPending"></i> </small>
         </p>
-        <b-row v-for="article in articles" class="mt-2 mb-2">
+        <b-row v-for="article in articles" class="mt-2 mb-2" :key="article.title">
           <p class="article">
             <router-link :to="'/view-article/' + article.id">
               {{article.title}}
@@ -71,13 +71,13 @@ export default {
     doSearch(e) {
       if (this.query) {
         e.preventDefault();
-        console.log('searching', this.query);
+        // console.log('searching', this.query);
         this.$router.push(`/search/${this.query}`);
       }
     },
     randomQuery() {
       axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
-        console.log('result is', res);
+        // console.log('result is', res);
         this.articles = res.data.articles;
         this.randomPending = false;
       });

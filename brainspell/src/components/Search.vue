@@ -20,7 +20,7 @@
         </div>
      </form>
 
-      <b-row v-for="article in articles" class="mt-2 mb-2">
+      <b-row v-for="article in articles" class="mt-2 mb-2" :key="article">
         <p class="articleSearch">
           <router-link :to="'/view-article/' + article.id">
             {{article.title}}
@@ -89,7 +89,7 @@ export default {
     doSearch(e) {
       e.preventDefault();
       if (this.query) {
-        console.log('searching', this.query);
+        // console.log('searching', this.query);
         this.$router.push(`/search/${this.query}`);
         this.articles = [];
         this.fetchData();

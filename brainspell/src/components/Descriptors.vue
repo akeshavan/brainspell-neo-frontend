@@ -86,8 +86,8 @@ export default {
   },
   computed: {
     selectedDesc() {
-      console.log('currentSelected', this.selected);
-      return this.selected
+      // console.log('currentSelected', this.selected);
+      return this.selected;
     },
     nowSelected() {
       return this.selected.length;

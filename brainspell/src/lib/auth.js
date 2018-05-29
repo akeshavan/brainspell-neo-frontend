@@ -19,7 +19,7 @@ function gup(url, name, win, callback) {
 }
 
 function authenticateAgainstServer(code, callback) {
-  console.log('authenticating against server');
+  // console.log('authenticating against server');
   let authUrl = null;
   if (window.location.hostname === 'localhost') {
     authUrl = config.authUrl;

@@ -13,3 +13,5 @@ const app = new Vue({
   components: { App },
   router,
 });
+
+export default app;
