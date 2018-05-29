@@ -9,8 +9,9 @@
                   The number of publications in neuroimaging is increasing exponentially,
                   and it is impossible to read and understand all the papers.
 
-                  We need to run meta-analyses to efficiently summarize the main findings
-                  in neuroimaging.
+                  Quantitative meta-analyses efficiently summarize the main findings
+                  in neuroimaging, allowing researchers to asses consensus in brain
+                  activation patterns across many individual studies.
 
                   In order to do this, we need to collect metadata on our publications.
                 </p>
@@ -36,7 +37,7 @@
                  <p>
                   You can collaborate on a collection through <a href="https://github.com">GitHub</a>.
                   Fork a collection on <a href="https://github.com">GitHub</a>,
-                  annotate the manuscript on metaCurious,
+                  annotate the paper and its experiments on metaCurious,
                   and send pull requests to your collaborators on <a href="https://github.com">GitHub</a>.
                  </p>
 
