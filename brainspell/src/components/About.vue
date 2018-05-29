@@ -59,41 +59,41 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="https://avatars1.githubusercontent.com/u/14095475?s=400&v=4" class="rounded-circle" width="95px" alt="Katie">
+                        <a href="https://github.com/62442katieb" target="_blank"><img src="https://avatars1.githubusercontent.com/u/14095475?s=400&v=4" class="rounded-circle" width="95px" alt="Katie"></a>
                     </br>
                         Katie Bottenhorn
                     </td>
                     <td>
-                        <img src="https://avatars2.githubusercontent.com/u/15017191?s=460&v=4" class="rounded-circle" width="95px" alt="Elizabeth">
+                        <a href="https://github.com/emdupre" target="_blank"><img src="https://avatars2.githubusercontent.com/u/15017191?s=460&v=4" class="rounded-circle" width="95px" alt="Elizabeth"></a>
                     </br>
                         Elizabeth DuPre
                     </td>
                     <td>
-                        <img src="https://avatars0.githubusercontent.com/u/972008?s=400&v=4" class="rounded-circle" width="95px" alt="Anisha">
+                        <a href="https://github.com/akeshavan/" target="_blank"><img src="https://avatars0.githubusercontent.com/u/972008?s=400&v=4" class="rounded-circle" width="95px" alt="Anisha"></a>
                     </br>
                         Anisha Keshavan
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://avatars0.githubusercontent.com/u/4883288?s=460&v=4" class="rounded-circle" width="95px" alt="Anisha">
+                        <a href="https://github.com/gkiar/" target="_blank"><img src="https://avatars0.githubusercontent.com/u/4883288?s=460&v=4" class="rounded-circle" width="95px" alt="Greg"></a>
                     </br>
                         Greg Kiar
                     </td>
                     <td>
-                        <img src="https://archive.org/download/HYPhD_Jean-Baptiste-Poline_17-09-2014/HYPhD_Jean-Baptiste-Poline_17-09-2014.jpg" class="rounded-circle" width="95px" alt="JB">
+                        <a href="https://github.com/jbpoline/" target="_blank"><img src="https://archive.org/download/HYPhD_Jean-Baptiste-Poline_17-09-2014/HYPhD_Jean-Baptiste-Poline_17-09-2014.jpg" class="rounded-circle" width="95px" alt="JB"></a>
                     </br>
                         Jean-Baptiste Poline
                     </td>
                     <td>
-                        <img src="https://media.licdn.com/dms/image/C5603AQFEaNjB_wP0jQ/profile-displayphoto-shrink_200_200/0?e=1533168000&v=beta&t=fLHuRP9jJn0_8aiNsyuGYA08gN2dp9VILKR8LLsEo6o" class="rounded-circle" width="95px" alt="Sharabesh">
+                        <a href="https://github.com/Sharabesh" target="_blank"><img src="https://media.licdn.com/dms/image/C5603AQFEaNjB_wP0jQ/profile-displayphoto-shrink_200_200/0?e=1533168000&v=beta&t=fLHuRP9jJn0_8aiNsyuGYA08gN2dp9VILKR8LLsEo6o" class="rounded-circle" width="95px" alt="Sharabesh"></a>
                     </br>
                         Sharabesh Ramesh
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://media.licdn.com/dms/image/C5603AQEdxjjxvrMBwg/profile-displayphoto-shrink_200_200/0?e=1533168000&v=beta&t=G7XSPCp0ZZ11BbLoS-Q7GcobiXl3uEmtDM4pEspquyY" class="rounded-circle" width="95px" alt="Neel">
+                        <a href="https://github.com/neelsomani" target="_blank"><img src="https://media.licdn.com/dms/image/C5603AQEdxjjxvrMBwg/profile-displayphoto-shrink_200_200/0?e=1533168000&v=beta&t=G7XSPCp0ZZ11BbLoS-Q7GcobiXl3uEmtDM4pEspquyY" class="rounded-circle" width="95px" alt="Neel"></a>
                     </br>
                         Neel Somani
                     </td>
