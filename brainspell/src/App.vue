@@ -254,10 +254,10 @@ export default {
     width: fit-content;
   }
   .btn-outline-white {
-    color: #b0b1b2;
-    background-color: transparent;
-    background-image: none;
-    border-color: #b0b1b2;
+    color: #b0b1b2 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: #b0b1b2 !important;
   }
 
   .btn-outline-white:hover {
