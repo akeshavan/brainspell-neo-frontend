@@ -4,36 +4,48 @@
     <h1> About MetaCurious </h1>
     <div class="container intro">
         <div class="row align-items-center pt-3">
-            <div class="col-md-8 align-middle">
+            <div class="col-md-8 align-middle order-sm-2 order-1">
                 <p>
-                    MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
-                    No more "what was the exact exclusion / inclusion criteria for this meta-analysis"?
-                    All the metadata needed to reproduce the analysis should be available and sharable.
+                  The number of publications in neuroimaging is increasing exponentially,
+                  and it is impossible to read and understand all the papers.
+
+                  We need to run meta-analyses to efficiently summarize the main findings
+                  in neuroimaging.
+
+                  In order to do this, we need to collect metadata on our publications.
                 </p>
+                <p>
+                  But descriptions of studies in PDF format are messy, and it is really
+                  hard to separate the content into valuable nuggets of metadata <i>automatically</i>.
+                  To do this on your own would take a very long time.
+                  By collaborating we can get the answers in only a few days!
+                </p>
+
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 order-sm-1 order-2">
                 <img src="../assets/imgs/undraw_files.svg" class="undraw">
             </div>
         </div>
         <div class="row align-items-center pt-3">
-            <div class="col-md-8 align-middle">
-                <p>
-            	    This project started with Brainspell (by Roberto Toro, building on NeuroSynth) a long time ago ... and then evolved to be specifically tuned for neuroimaging meta-analyses.
-                    It's now a collaborative, _______ tool for conducting and sharing meta-analyses.
-            	</p>
-            </div>
-            <div class="col-md-4">
-                <img src="../assets/imgs/undraw_collab.svg" class="undraw">
-            </div>
-        </div>
-        <div class="row align-items-center pt-3">
-            <div class="col-md-8 align-middle">
+            <div class="col-md-8 align-middle order-sm-2">
+              <p>
+                  MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
+                  All the metadata needed to reproduce the analysis is available and sharable.
+              </p>
+
+                 <p>
+                  You can collaborate on a collection through <a href="https://github.com">GitHub</a>.
+                  Fork a collection on <a href="https://github.com">GitHub</a>,
+                  annotate the manuscript on metaCurious,
+                  and send pull requests to your collaborators on <a href="https://github.com">GitHub</a>.
+                 </p>
+
                 <p>
                     If you're looking to get started using MetaCurious for your projects, check out our <a href="#/userguide">User Guide</a>.
                     To contribute to MetaCurious development, look at our <a href="#/developerguide">developer documentation</a>.
                 </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 order-sm-1">
                 <img src="../assets/imgs/undraw_data.svg" class="undraw">
             </div>
         </div>
@@ -103,6 +115,10 @@
 
 .undraw {
     width: 100%;
+}
+
+.order-2 {
+  order: 2 !important;
 }
 
 </style>
