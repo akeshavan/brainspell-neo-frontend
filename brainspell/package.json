@@ -21,6 +21,7 @@
     "font-awesome": "^4.7.0",
     "npm": "^5.6.0",
     "path.join": "^1.0.0",
+    "query-string": "^6.1.0",
     "store": "^2.0.12",
     "themify-icons": "^1.0.0",
     "ti-icons": "^0.1.2",
