@@ -1,7 +1,7 @@
 <template>
   <div class="home container mt-3">
     <div class="">
-      <h1>{{msg}}</h1>
+      <h1 style="font-family: 'Lobster Two'">metaCurious.</h1>
       <p class="lead">
         An open, human-curated classification of neuroimaging literature.
       </p>
@@ -56,7 +56,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      msg: 'Brainspell',
       query: null,
       articles: [],
       randomPending: true,
