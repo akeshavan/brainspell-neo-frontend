@@ -12,7 +12,7 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
+      <b-navbar-brand href="/" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -261,9 +261,9 @@ export default {
   }
 
   .btn-outline-white:hover {
-    color: #fff;
-    background-color: #b0b1b2;
-    border-color: #b0b1b2;
+    color: #fff !important;
+    background-color: #b0b1b2 !important;
+    border-color: #b0b1b2 !important;
   }
 
   .router {

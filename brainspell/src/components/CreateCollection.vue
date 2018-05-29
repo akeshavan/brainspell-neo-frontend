@@ -11,7 +11,7 @@
         <p>What would you like to name your collection?
           <b-form-input v-model="name"
                   type="text"
-                  placeholder="Collection name"></b-form-input>
+                  placeholder="Collection name" required></b-form-input>
         </p>
         <p>Please describe the purpose of this collection:
           <b-form-input v-model="description"
@@ -246,5 +246,13 @@ export default {
         });
       },
     },
+    handleErrorMsg() {
+      if (this.name == null) {
+        alert('Please give your collection a name.')
+      }
+      else {
+
+      }
+    }
   };
 </script>
