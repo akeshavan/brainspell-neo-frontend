@@ -21,22 +21,48 @@
         <p>What would you like to name your collection?
           <b-form-input v-model="name"
                   type="text"
-                  placeholder="Collection name" required></b-form-input>
+                  placeholder="Avoid using 'brainspell-neo' in your collection name" required></b-form-input>
         </p>
         <p>Please describe the purpose of this collection:
           <b-form-input v-model="description"
                   type="text"
                   placeholder="Collection description"></b-form-input>
         </p>
-        <p>Enter any PMIDs you may have from a previous search here:
+      </tab-content>
+
+      <!--NEXT TAB-->
+      <tab-content title="Search(es)"
+                     icon="ti-search">
+        <!--<p>Enter any PMIDs you may have from a previous search here:
           <b-form-input
                   type="text"
                   placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
-        </p>
-        <p>Enter your search string(s) here:
-          <b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
+        </p>-->
+        <p>Enter your search string(s) and corresponding PMIDs here:
+          <p>
+            <b-table striped hover :items="spPairs" :fields="spFields" ref="spTable" small>
 
-            <template slot="Criteria" slot-scope="data">
+              <template slot="Search" slot-scope="data">
+                <textfield v-model="data.value" :index="data.index" v-on:input="setSearch" ttype="text"></textfield>
+              </template>
+              <template slot="PMIDs" slot-scope="data">
+                <textfield v-model="data.value" :index="data.index" v-on:input="setPmid" ttype="text"></textfield>
+              </template>
+              <template slot="delete" slot-scope="row">
+
+                <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeSP(row)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+              </template>
+
+            </b-table>
+            <b-button size="sm" variant="outline-secondary" @click="addSProw">Add search</b-button>
+          </p><!--this works-->
+
+          <!--<b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
+
+            <template slot="Search string" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setSearchStr" ttype="text"></textfield>
             </template>
 
@@ -49,11 +75,11 @@
             </template>
 
           </b-table>
-          <b-button size="sm" variant="outline-secondary" @click="addSearchStr">Add search string</b-button>
+          <b-button size="sm" variant="outline-secondary" @click="addSearchStr">Add search string</b-button>-->
         </p>
       </tab-content>
-      <tab-content title="Inclusion Criteria"
-                   icon="ti-thumb-up">
+      <tab-content title="Inclusion &amp; Exlcusion Criteria"
+                   icon="ti-settings">
        <p>What are your criteria for study inclusion?
          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
 
@@ -72,9 +98,6 @@
          </b-table>
          <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
        </p>
-      </tab-content>
-      <tab-content title="Exclusion Criteria"
-                   icon="ti-thumb-down">
         <p>What are your criteria for study exclusion?
           <b-table striped hover :items="excCriteria" :fields="excFields" ref="excTable" small>
 
@@ -164,18 +187,19 @@ export default {
   props: ['isAuthenticated', 'auth_tokens', 'userInfo'],
   data() {
     return {
-      showDismissibleAlert: false,
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
-      searchFields: ['Criteria', 'delete'],
+      //searchFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
       incCriteria: [],
       excCriteria: [],
       descriptors: [],
-      searchStr: [],
-      pmids: [],
+      //searchStr: [],
+      spFields: ['Search', 'PMIDs', 'delete'],
+      spPairs: [],
+      //pmids: [],
     };
   },
   components: {
@@ -185,23 +209,27 @@ export default {
   computed: {
   },
   methods: {
+    removeSP(row) {
+      this.spPairs.splice(row.index, 1);
+      this.$refs.spTable.refresh();
+    },
+    setSearch(val, idx) {
+      this.spPairs[idx].Search = val;
+    },
+    setPmid(val, idx) {
+      this.spPairs[idx].PMIDs = val;
+    },
+    addSProw() {
+      this.spPairs.push({
+        Search: '',
+        PMIDs: '',
+      });
+      this.$refs.spTable.refresh();
+    },
     splitPmids(val) {
       // console.log(val.split(" "));
       const pmidArray = val.split(' ');
       this.pmids = pmidArray;
-    },
-    setSearchStr(val, idx) {
-      this.searchStr[idx].Criteria = val;
-    },
-    removeSearch(row) {
-      this.searchStr.splice(row.index, 1);
-      this.$refs.searchTable.refresh();
-    },
-    addSearchStr() {
-      this.searchStr.push({
-        Criteria: '',
-      });
-      this.$refs.incTable.refresh();
     },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
