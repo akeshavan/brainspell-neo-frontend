@@ -20,8 +20,8 @@
             </b-card-header>
             <b-collapse :id="'accordion'+index" :visible='coll == currentCollection' accordion="my-accordion" role="tabpanel">
               <b-card-body>
-                <p class="card-text text-left" v-if="coll.contents.length">
-                  <div v-for="c in coll.contents" class="mt-2 mb-2 pb-2 pt-2 text-left">
+                <p class="card-text text-left" v-if="coll.unmapped_articles.length">
+                  <div v-for="c in coll.unmapped_articles" class="mt-2 mb-2 pb-2 pt-2 text-left">
                     <p class="text-left mb-0 pb-0">
                       <router-link :to="'/view-article/'+c.pmid">{{c.title}}</router-link>
                     </p>

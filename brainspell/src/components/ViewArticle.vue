@@ -179,10 +179,15 @@
     computed: {
       isInCollection() {
         if (this.currentCollection) {
-          const exists = _.filter(this.currentCollection.contents, v => v.pmid === this.pmid);
-          // console.log(exists);
-          this.$emit('setEdit', exists.length);
-          return exists.length;
+          console.log('checking if in collection', this.currentCollection);
+          const exists = _.filter(this.currentCollection.unmapped_articles,
+            v => v.pmid === this.pmid);
+          if (exists != undefined) {
+            this.$emit('setEdit', exists.length);
+            return exists.length;
+          }
+
+          console.log('exists is undefined???');
         }
         return 0;
       },
@@ -229,8 +234,9 @@
     methods: {
       checkExclusion() {
         axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
+          console.log('from checkExclusion', resp);
           this.isExcluded = !!resp.data.article_info.excluded_flag;
-          this.excReason = resp.data.article_info.exclusion_reason;
+          this.excReason = resp.data.article_info.exclusion_reason || '';
         }).catch(() => {
           this.isExcluded = false;
           this.excReason = '';
@@ -239,7 +245,7 @@
       addToCollection() {
         // console.log('sending request...');
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
+        axios.get(`https://brainspell.herokuapp.com/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&unmapped_pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;

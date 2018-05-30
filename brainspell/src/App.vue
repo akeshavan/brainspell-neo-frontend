@@ -181,7 +181,7 @@ export default {
                /* eslint-disable */
                coll.name = coll.name.replace('brainspell-neo-collection-', '');
                /* eslint-enable */
-               Vue.set(this.allCollections[idx], 'contents', coll.contents);
+               Vue.set(this.allCollections[idx], 'unmapped_articles', coll.unmapped_articles);
              });
              this.pendingCollection = false;
            });
@@ -203,7 +203,6 @@ export default {
       // console.log('need to save', this.$refs.routerView.info);
       const data = this.$refs.routerView.info;
       const globalData = {};
-      // const localData = {};
 
       globalData.nsubjects = data.N;
       globalData.experiments = [];
@@ -224,13 +223,38 @@ export default {
         //console.log('sent global', resp);
       }); */
       // const data = this.$refs.routerView.info;
-      /* axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
-        data); */
-        /* .then((resp) => {
-          // console.log('response is', resp);
-        }).catch((e) => {
-          // console.log('error', e);
-        }); */
+
+      const kvFormat = function kvFormat() {
+        const output = {};
+        data.experiments.forEach((v) => {
+          output[v.id] = v.kvPairs;
+        });
+        return output;
+      };
+
+      const excFormat = function excFormat() {
+        const output = {};
+        data.experiments.forEach((v) => {
+          if (!v.include) {
+            output[v.id] = 'excluded';
+          }
+        });
+        return output;
+      };
+
+      const localData = {
+        collection_name: this.currentCollection.name,
+        github_token: this.auth_tokens.github_access_token,
+        key: this.auth_tokens.api_key,
+        pmid: data.pmid,
+        key_value_pairs: JSON.stringify(kvFormat()),
+        exclusion_reasons: JSON.stringify(excFormat()),
+      };
+
+      const querystring = qs.stringify(localData);
+      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-local-article?${querystring}`).then((resp) => {
+        console.log('local response', resp);
+      });
     },
     getUserInfo() {
       const token = auth.getToken();
