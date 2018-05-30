@@ -50,47 +50,45 @@
         <div class="navbar-collapse justify-content-end">
           <!-- This part only displays if the user is authenticated -->
 
-          <b-dropdown id="ddown-split1" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
-
-            <template slot="button-content" v-if="currentCollection">
-
-              {{currentCollection.name}}
-            </template>
-
-            <b-dropdown-item v-for="(coll, index) in allCollections"
-              :key="index"
-              v-if="coll.name != currentCollection.name"
-              @click="setCollection(index)"
-            >
-              {{coll.name}}
-            </b-dropdown-item>
-
-            <b-dropdown-item to="/createcollection" v-if="currentCollection">
-              <i class="fa fa-plus"></i> Create Collection
-            </b-dropdown-item>
-
-          </b-dropdown>
-
-          <b-nav-item v-if="pendingCollection && isAuthenticated">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item" v-if="pendingCollection && isAuthenticated">
             <i class="fa fa-spinner fa-pulse fa-1x"></i>
-          </b-nav-item>
+          </li>
 
-          <b-nav-item to="/createcollection" v-if="isAuthenticated && !currentCollection"><i class="fa fa-plus m-2" size="sm"></i> Create Collection</b-nav-item>
-
-          <b-dropdown id="ddown-split2" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
-            <template slot="button-content">
-              <em>{{userInfo.login}}</em>
-            </template>
-            <!-- <b-dropdown-item to="/profile">Profile</b-dropdown-item> -->
-            <b-dropdown-item @click="logout">Signout</b-dropdown-item>
-          </b-dropdown>
+          <li class="nav-item" v-if="isAuthenticated && !currentCollection"> <a href="#/createcollection"><i class="fa fa-plus m-2" size="sm"></i>Create Collection</a></li>
 
           <!-- The login option shows if the user is not authenticated -->
+          <li class="nav-item" v-else><a href="#/login">Login</a></li>
+      </ul>
 
-          <b-nav-item v-else to="/login">Login</b-nav-item>
+      <b-dropdown id="ddown-split1" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
 
+        <template slot="button-content" v-if="currentCollection">
 
+          {{currentCollection.name}}
+        </template>
 
+        <b-dropdown-item v-for="(coll, index) in allCollections"
+          :key="index"
+          v-if="coll.name != currentCollection.name"
+          @click="setCollection(index)"
+        >
+          {{coll.name}}
+        </b-dropdown-item>
+
+        <b-dropdown-item to="/createcollection" v-if="currentCollection">
+          <i class="fa fa-plus"></i> Create Collection
+        </b-dropdown-item>
+
+      </b-dropdown>
+
+      <b-dropdown id="ddown-split2" variant="outline-info" class="m-2" size="sm" right split v-if="isAuthenticated" @click="gotoProfile">
+        <template slot="button-content">
+          <em>{{userInfo.login}}</em>
+        </template>
+        <!-- <b-dropdown-item to="/profile">Profile</b-dropdown-item> -->
+        <b-dropdown-item @click="logout">Signout</b-dropdown-item>
+      </b-dropdown>
       </div>
 
       </b-collapse>
