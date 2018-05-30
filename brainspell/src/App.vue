@@ -176,12 +176,23 @@ export default {
       this.pendingCollection = true;
       axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
            .then((resp) => {
+             console.log('response on get user collections', resp);
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
                /* eslint-disable */
                coll.name = coll.name.replace('brainspell-neo-collection-', '');
                /* eslint-enable */
+               console.log('coll is', coll);
                Vue.set(this.allCollections[idx], 'unmapped_articles', coll.unmapped_articles);
+               Vue.set(this.allCollections[idx], 'search_to_articles', coll.search_to_articles);
+               const searchStrings = Object.keys(coll.search_to_articles);
+               let pmidList = [];
+               for (let i = 0; i < searchStrings.length; i += 1) {
+                 const skey = searchStrings[i];
+                 const pmids = coll.search_to_articles[skey];
+                 pmidList = pmidList.concat(pmids);
+               }
+               Vue.set(this.allCollections[idx], 'mapped_articles', pmidList);
              });
              this.pendingCollection = false;
            });

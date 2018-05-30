@@ -27,11 +27,12 @@
                     </p>
                     <small class="text-muted text-left">{{c.reference}}</small>
                   </div>
-                  <!--<p v-for="cc in coll.contents">
-                    <p>{{cc}}</p>
-                    <p class="muted"><small>{{content.reference}}</small></p>-
-                  </p>-->
-
+                  <div v-for="c in coll.mapped_articles" class="mt-2 mb-2 pb-2 pt-2 text-left">
+                    <p class="text-left mb-0 pb-0">
+                      <router-link :to="'/view-article/'+c.pmid">{{c.title}}</router-link>
+                    </p>
+                    <small class="text-muted text-left">{{c.reference}}</small>
+                  </div>
                 </p>
               </b-card-body>
             </b-collapse>

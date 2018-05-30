@@ -182,8 +182,14 @@
       isInCollection() {
         if (this.currentCollection) {
           // console.log('checking if in collection', this.currentCollection);
-          const exists = _.filter(this.currentCollection.unmapped_articles,
+          let exists = _.filter(this.currentCollection.unmapped_articles,
             v => v.pmid === this.pmid);
+
+          const exists2 = _.filter(this.currentCollection.mapped_articles,
+            v => v.pmid === this.pmid);
+
+          exists = exists.concat(exists2);
+
           if (exists != undefined) {
             this.$emit('setEdit', exists.length);
             return exists.length;
@@ -250,10 +256,10 @@
                   Vue.set(this.info.experiments[i], 'include', !localExperiments[e.id].excluded_flag);
                   this.$forceUpdate();
                   this.$emit('needsSave', false);
-                  this.$emit('savePending', false);
                 }
               });
             }
+            this.$emit('savePending', false);
           }).catch(() => {
             this.isExcluded = false;
             this.excReason = '';
@@ -327,8 +333,13 @@
           this.info = resp.data;
           // this.articleURL = `http://dx.doi.org/${this.info.doi}`;
           this.setArticleURL(this.info.doi);
-          this.info.experiments = JSON.parse(this.info.experiments);
+          try {
+            this.info.experiments = JSON.parse(this.info.experiments);
+          } catch (e) {
+            this.info.experiments = [];
+          }
           this.info.metadata = JSON.parse(this.info.metadata);
+          this.info.metadata = this.info.metadata || {};
           this.info.N = this.info.metadata.nsubjects;
           this.info.experiments.forEach((exp, idx, arr) => {
             Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
