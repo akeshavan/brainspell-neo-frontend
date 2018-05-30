@@ -1,14 +1,18 @@
 <template>
   <div>
-    <b-modal ref="completeModalRef" hide-footer title="Your collection has been created!" no-close-on-backdrop no-close-on-esc hide-header-close centered>
-      <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
-      <p><br>
+    <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop no-close-on-esc hide-header-close hide header centered>
+      <template slot="modal-title">Your collection is being created...</template>
+      <i class="fa fa-spinner fa-pulse fa-2x"></i><br>
+      <span v-if="!loading">
+        <template slot="modal-title">Your collection has been created!</template>
+        <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
+        <p><br>
          <a href="#" id="linkToCollection" target="_blank">
            github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
          </a>
-      </p>
-      <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
-      <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
+         <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
+         <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
+      </p></span>
     </b-modal>
     <b-container>
     <form-wizard title="Set up your new collection!"
@@ -200,6 +204,7 @@ export default {
       spFields: ['Search', 'PMIDs', 'delete'],
       spPairs: [],
       //pmids: [],
+      loading: true,
     };
   },
   components: {
@@ -216,6 +221,11 @@ export default {
     setSearch(val, idx) {
       this.spPairs[idx].Search = val;
     },
+    splitPmids(val) {
+      // console.log(val.split(" "));
+      const pmidArray = val.split(' ');
+      this.pmids = pmidArray;
+    },
     setPmid(val, idx) {
       this.spPairs[idx].PMIDs = val;
     },
@@ -225,11 +235,6 @@ export default {
         PMIDs: '',
       });
       this.$refs.spTable.refresh();
-    },
-    splitPmids(val) {
-      // console.log(val.split(" "));
-      const pmidArray = val.split(' ');
-      this.pmids = pmidArray;
     },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
@@ -284,14 +289,42 @@ export default {
       });
       return l;
     },
-
+    convertSearch(thing) {
+      const q = [];
+      thing.forEach((v) => {
+        q.push(v.Search);
+      });
+      return q;
+    },
+    convertPmids(thing) {
+      const z = [];
+      thing.forEach((v) => {
+        z.push(v.PMIDs);
+      });
+      return z;
+    },
     submit() {
+      const search_map = {}
+      this.spPairs.forEach((v) => {
+        search_map[v.Search] = v.PMIDs.split(' ');
+      });
+      console.log('search map is', search_map);
+      const querystring2 = qs.stringify({
+        collection_name: this.name,
+        github_token: this.auth_tokens.github_access_token,
+        key: this.auth_tokens.api_key,
+        search_to_pmids: search_map,
+      })
+
+
+
+      // after this works
       const querystring = qs.stringify({
         inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
         exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
         collection_name: this.name,
         description: this.description,
-        search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
+        // search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
         tags: JSON.stringify(this.descriptors),
         github_token: this.auth_tokens.github_access_token,
         key: this.auth_tokens.api_key });
@@ -300,11 +333,15 @@ export default {
       axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
         .then(() => {
           // console.log('resp is', response);
+          axios.post(`https://brainspell.herokuapp.com/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
+            console.log('resp2', resp2);
+            this.loading = false;
+            this.convertURL(this.userInfo.login, this.name);
+          })
         })
         .catch(() => {
           // console.log('error is', error);
         });
-      this.convertURL(this.userInfo.login, this.name);
       this.$refs.completeModalRef.show();
     },
     showModal () {

@@ -8,6 +8,7 @@ import Profile from '@/components/Profile';
 import Search from '@/components/Search';
 import ViewArticle from '@/components/ViewArticle';
 import Login from '@/components/Login';
+import EditCollection from '@/components/EditCollection'
 // import Play from '@/components/Play';
 // import Login from '@/components/Login';
 // import SignUp from '@/components/SignUp';
@@ -70,6 +71,11 @@ const router = new Router({
       path: '/createcollection',
       name: 'CreateCollection',
       component: CreateCollection,
+    },
+    {
+      path: '/editcollection',
+      name: 'EditCollection',
+      component: EditCollection,
     },
   ],
 });
