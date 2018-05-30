@@ -314,10 +314,7 @@ export default {
         github_token: this.auth_tokens.github_access_token,
         key: this.auth_tokens.api_key,
         search_to_pmids: search_map,
-      })
-
-
-
+      });
       // after this works
       const querystring = qs.stringify({
         inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
