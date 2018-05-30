@@ -20,7 +20,7 @@
         </div>
      </form>
 
-      <b-row v-for="article in articles" class="mt-2 mb-2" :key="article">
+      <b-row v-for="(article, index) in articles" class="mt-2 mb-2" :key="index">
         <p class="articleSearch">
           <router-link :to="'/view-article/' + article.id">
             {{article.title}}
