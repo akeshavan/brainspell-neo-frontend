@@ -71,6 +71,9 @@ const router = new Router({
       path: '/createcollection',
       name: 'CreateCollection',
       component: CreateCollection,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/editcollection',
