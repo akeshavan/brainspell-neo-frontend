@@ -36,17 +36,22 @@
                Add to {{currentCollection.name}}
             </b-button>
 
+            <b-alert :show="isExcluded" variant="danger">
+              This was excluded because: {{excReason}}.
+              <a href="" @click="includeInCollection">Click here</a> to include this article in your meta analysis
+            </b-alert>
 
-            <b-form v-if = "isInCollection && currentCollection">
+            <b-form v-if = "isInCollection && currentCollection && !isExcluded">
               <label> Reason for Exclusion: </label>
               <b-input class="w-25 mx-auto" v-model="excReason"></b-input>
+              <b-button variant="outline-danger" class="mt-3"
+               :disabled="!excReason.length"
+               @click="excludeFromCollection"
+               v-if="isInCollection && currentCollection">
+                Exclude from {{currentCollection.name}}
+              </b-button>
             </b-form>
-            <b-button variant="outline-danger" class="mt-3"
-             :disabled="!excReason.length"
-             @click="excludeFromCollection"
-             v-if="isInCollection && currentCollection">
-              Exclude from {{currentCollection.name}}
-            </b-button>
+
             <!--<small> TO do: when you click exclude, explain why</small>-->
           </b-form>
 
@@ -161,6 +166,7 @@
           experiments: [],
           N: null,
         },
+        isExcluded: false,
         excReason: '',
         viewArticle: false,
         articleURL: null,
@@ -199,6 +205,16 @@
         },
         deep: true,
       },
+      isInCollection() {
+        if (this.isInCollection) {
+          this.checkExclusion();
+        }
+      },
+      currentCollection() {
+        if (this.isInCollection) {
+          this.checkExclusion();
+        }
+      },
       'info.experiments': {
         handler(val, oldval) {
           // console.log('val and oldval list', val, oldval.title);
@@ -211,6 +227,16 @@
     },
 
     methods: {
+      checkExclusion() {
+        axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
+          console.log('checking exclusion', resp);
+          this.isExcluded = !!resp.data.article_info.excluded_flag;
+          this.excReason = resp.data.article_info.exclusion_reason;
+        }).catch(() => {
+          this.isExcluded = false;
+          this.excReason = '';
+        });
+      },
       addToCollection() {
         // console.log('sending request...');
         this.addPending = true;
@@ -224,13 +250,27 @@
           }); */
       },
 
-      excludeFromCollection() {
+      includeInCollection(e) {
+        e.preventDefault();
+        console.log('lets include this again');
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/v2/exclude-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}`)
+        axios.get(`https://brainspell.herokuapp.com/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=0`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;
             this.$emit('updateCollection');
+            this.checkExclusion();
+          });
+      },
+
+      excludeFromCollection() {
+        this.addPending = true;
+        axios.get(`https://brainspell.herokuapp.com/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=1`)
+          .then(() => {
+            // console.log('success, added', resp);
+            this.addPending = false;
+            this.$emit('updateCollection');
+            this.checkExclusion();
           }); /* .catch((e) => {
             // console.log('error on add', e);
           }); */

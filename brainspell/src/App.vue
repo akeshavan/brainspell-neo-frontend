@@ -12,7 +12,10 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="/" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
+      <b-navbar-brand href="/" style="font-family: 'Lobster Two'">
+        <img class="icon-small" src="./assets/imgs/metacurious.svg"/>
+        metaCurious.
+      </b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -170,7 +173,7 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
-      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=1`)
+      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
@@ -271,6 +274,10 @@ export default {
 
   .inline {
 
+  }
+
+  .icon-small {
+    width: 20px;
   }
 
 </style>

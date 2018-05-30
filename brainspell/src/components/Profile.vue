@@ -14,7 +14,7 @@
         </p>
 
         <div role="tablist">
-          <b-card no-body class="mb-1" v-for="(coll, index) in allCollections" :key="coll">
+          <b-card no-body class="mb-1" v-for="(coll, index) in allCollections" :key="index">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-btn block href="#" v-b-toggle="'accordion'+index" variant="default">{{coll.name}}</b-btn>
             </b-card-header>
