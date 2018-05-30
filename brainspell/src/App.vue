@@ -119,6 +119,7 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios';
+import qs from 'simple-query-string';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
@@ -191,10 +192,40 @@ export default {
     setSave(val) {
       this.needsSave = val;
     },
+    stringifyLocations(loc) {
+      const output = [];
+      loc.forEach((v) => {
+        output.push(`${v.x},${v.y},${v.z},${v.E}`);
+      });
+      return output;
+    },
     doSave() {
+      // console.log('need to save', this.$refs.routerView.info);
       const data = this.$refs.routerView.info;
-      axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
-        data);
+      const globalData = {};
+      // const localData = {};
+
+      globalData.nsubjects = data.N;
+      globalData.experiments = [];
+      data.experiments.forEach((v) => {
+        const entry = {
+          id: v.id,
+          caption: v.caption,
+          locations: this.stringifyLocations(v.locations),
+          descriptors: v.descriptors,
+          contrast: v.contrast,
+          space: v.space,
+          effect: v.effect,
+        };
+        globalData.experiments.push(entry);
+      });
+      const contents = JSON.stringify(globalData);
+      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&edit_contents=${contents}`); /* .then((resp) => {
+        //console.log('sent global', resp);
+      }); */
+      // const data = this.$refs.routerView.info;
+      /* axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
+        data); */
         /* .then((resp) => {
           // console.log('response is', resp);
         }).catch((e) => {

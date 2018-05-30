@@ -229,7 +229,6 @@
     methods: {
       checkExclusion() {
         axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
-          console.log('checking exclusion', resp);
           this.isExcluded = !!resp.data.article_info.excluded_flag;
           this.excReason = resp.data.article_info.exclusion_reason;
         }).catch(() => {
@@ -252,7 +251,6 @@
 
       includeInCollection(e) {
         e.preventDefault();
-        console.log('lets include this again');
         this.addPending = true;
         axios.get(`https://brainspell.herokuapp.com/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=0`)
           .then(() => {
@@ -304,9 +302,11 @@
         .then((resp) => {
           this.info = resp.data;
           // this.articleURL = `http://dx.doi.org/${this.info.doi}`;
+          // console.log('FETCHED, this.info ', this.info);
           this.setArticleURL(this.info.doi);
           this.info.experiments = JSON.parse(this.info.experiments);
           this.info.metadata = JSON.parse(this.info.metadata);
+          this.info.N = this.info.metadata.nsubjects;
           this.info.experiments.forEach((exp, idx, arr) => {
             Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
             Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].descriptors || []);
