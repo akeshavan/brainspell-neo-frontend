@@ -30,20 +30,26 @@
         <div class="row align-items-center pt-3">
             <div class="col-md-8 align-middle order-md-2">
               <p>
-                  MetaCurious is the tool to help you do prepare your collection of articles for meta-analyses.
-                  All the metadata needed to reproduce the analysis is available and sharable.
+	        MetaCurious is the tool to help you do prepare your
+	        collection of articles for meta-analyses.  All the metadata needed to reproduce
+	        the analysis is available and sharable. MetaCurious is a front end to Brainspell-neo,
+		which started from Roberto Toro's <a href="http://www.brainspell.org/">Brainspell</a>, 
+		itself based on Tal Yarkoni's <a href="http://www.NeuroSynth.org/">NeuroSynth</a>: 
+		standing on the shoulders of <em> Giants</em>!
               </p>
 
                  <p>
-                  You can collaborate on a collection through <a href="https://github.com">GitHub</a>.
-                  Fork a collection on <a href="https://github.com">GitHub</a>,
-                  annotate the paper and its experiments on metaCurious,
-                  and send pull requests to your collaborators on <a href="https://github.com">GitHub</a>.
+                   You can collaborate on a collection through <a href="https://github.com">GitHub</a>.
+                   Fork a collection on <a href="https://github.com">GitHub</a>,
+                   annotate the paper and its experiments on metaCurious,
+                   and send pull requests to your collaborators on <a href="https://github.com">GitHub</a>.
                  </p>
 
                 <p>
-                    If you're looking to get started using MetaCurious for your projects, check out our <a href="#/userguide">User Guide</a>.
-                    To contribute to MetaCurious development, look at our <a href="#/developerguide">developer documentation</a>.
+		   If you're looking to get started using MetaCurious for your
+		   projects, check out our <a href="#/userguide">User Guide</a>.
+		   To contribute to MetaCurious development, look at our 
+		   <a href="#/developerguide">developer documentation</a>.
                 </p>
             </div>
             <div class="col-md-4 order-md-1">
