@@ -313,7 +313,9 @@
         // this.$emit('needsSave', true);
       },
       setArticleURL(doi) {
-        axios.get(`https://api.oadoi.org/v2/${doi}?email=keshavan@berkeley.edu`)
+        const urlDOI = `https://api.oadoi.org/v2/${doi}?email=keshavan@berkeley.edu`;
+        const urlUnpaywall = `https://api.unpaywall.org/v2/${doi}?email=keshavan@berkeley.edu&`;
+        axios.get(urlUnpaywall)
           .then((resp) => {
             // console.log('resp is', resp);
             if (resp.data.best_oa_location && resp.data.best_oa_location.url_for_pdf) {
@@ -332,15 +334,23 @@
         .then((resp) => {
           this.info = resp.data;
           // this.articleURL = `http://dx.doi.org/${this.info.doi}`;
+          console.log(this.info);
           this.setArticleURL(this.info.doi);
           try {
-            this.info.experiments = JSON.parse(this.info.experiments);
+            if (!this.info.experiments) {
+              this.info.experiments = [];
+            } else {
+              this.info.experiments = JSON.parse(this.info.experiments);
+            }
           } catch (e) {
             this.info.experiments = [];
           }
           this.info.metadata = JSON.parse(this.info.metadata);
           this.info.metadata = this.info.metadata || {};
           this.info.N = this.info.metadata.nsubjects;
+          if (this.info.experiments === null) {
+            this.info.experiments = [];
+          }
           this.info.experiments.forEach((exp, idx, arr) => {
             Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
             Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].tags || []);
