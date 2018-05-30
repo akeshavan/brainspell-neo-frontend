@@ -2,17 +2,26 @@
   <div>
     <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop no-close-on-esc hide-header-close hide header centered>
       <template slot="modal-title">Your collection is being created...</template>
-      <i class="fa fa-spinner fa-pulse fa-2x"></i><br>
+      <span v-if="loading">
+        <p>
+          Your collection will be located at:
+        </p>
+      </span>
+      <a href="#" id="linkToCollection" target="_blank">
+        github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
+      </a>
       <span v-if="!loading">
         <template slot="modal-title">Your collection has been created!</template>
         <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
-        <p><br>
-         <a href="#" id="linkToCollection" target="_blank">
-           github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
-         </a>
-         <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
-         <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
+        <p>
+          <br>
+          <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
+          <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
       </p></span>
+      <span v-else>
+        <br>
+        <i class="fa fa-spinner fa-pulse fa-2x"></i><br>
+      </span>
     </b-modal>
     <b-container>
     <form-wizard title="Set up your new collection!"
@@ -333,8 +342,8 @@ export default {
           axios.post(`https://brainspell.herokuapp.com/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
             console.log('resp2', resp2);
             this.loading = false;
-            this.convertURL(this.userInfo.login, this.name);
           })
+          this.convertURL(this.userInfo.login, this.name);
         })
         .catch(() => {
           // console.log('error is', error);
