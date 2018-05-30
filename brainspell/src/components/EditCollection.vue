@@ -1,18 +1,14 @@
 <template>
   <div>
-    <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop no-close-on-esc hide-header-close hide header centered>
-      <template slot="modal-title">Your collection is being created...</template>
-      <i class="fa fa-spinner fa-pulse fa-2x"></i><br>
-      <span v-if="!loading">
-        <template slot="modal-title">Your collection has been created!</template>
-        <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
-        <p><br>
+    <b-modal ref="completeModalRef" hide-footer title="Your collection has been created!" no-close-on-backdrop no-close-on-esc hide-header-close centered>
+      <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
+      <p><br>
          <a href="#" id="linkToCollection" target="_blank">
            github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
          </a>
-         <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
-         <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
-      </p></span>
+      </p>
+      <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
+      <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
     </b-modal>
     <b-container>
     <form-wizard title="Set up your new collection!"
@@ -25,48 +21,22 @@
         <p>What would you like to name your collection?
           <b-form-input v-model="name"
                   type="text"
-                  placeholder="Avoid using 'brainspell-neo' in your collection name" required></b-form-input>
+                  placeholder="Collection name" required></b-form-input>
         </p>
         <p>Please describe the purpose of this collection:
           <b-form-input v-model="description"
                   type="text"
                   placeholder="Collection description"></b-form-input>
         </p>
-      </tab-content>
-
-      <!--NEXT TAB-->
-      <tab-content title="Search(es)"
-                     icon="ti-search">
-        <!--<p>Enter any PMIDs you may have from a previous search here:
+        <p>Enter any PMIDs you may have from a previous search here:
           <b-form-input
                   type="text"
                   placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
-        </p>-->
-        <p>Enter your search string(s) and corresponding PMIDs here:
-          <p>
-            <b-table striped hover :items="spPairs" :fields="spFields" ref="spTable" small>
+        </p>
+        <p>Enter your search string(s) here:
+          <b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
 
-              <template slot="Search" slot-scope="data">
-                <textfield v-model="data.value" :index="data.index" v-on:input="setSearch" ttype="text"></textfield>
-              </template>
-              <template slot="PMIDs" slot-scope="data">
-                <textfield v-model="data.value" :index="data.index" v-on:input="setPmid" ttype="text"></textfield>
-              </template>
-              <template slot="delete" slot-scope="row">
-
-                <button type="button" class="close" aria-label="Close" style="width:100%" @click="removeSP(row)">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-
-              </template>
-
-            </b-table>
-            <b-button size="sm" variant="outline-secondary" @click="addSProw">Add search</b-button>
-          </p><!--this works-->
-
-          <!--<b-table striped hover :items="searchStr" :fields="searchFields" ref="searchTable" small>
-
-            <template slot="Search string" slot-scope="data">
+            <template slot="Criteria" slot-scope="data">
               <textfield v-model="data.value" :index="data.index" v-on:input="setSearchStr" ttype="text"></textfield>
             </template>
 
@@ -79,11 +49,11 @@
             </template>
 
           </b-table>
-          <b-button size="sm" variant="outline-secondary" @click="addSearchStr">Add search string</b-button>-->
+          <b-button size="sm" variant="outline-secondary" @click="addSearchStr">Add search string</b-button>
         </p>
       </tab-content>
-      <tab-content title="Inclusion &amp; Exlcusion Criteria"
-                   icon="ti-settings">
+      <tab-content title="Inclusion Criteria"
+                   icon="ti-thumb-up">
        <p>What are your criteria for study inclusion?
          <b-table striped hover :items="incCriteria" :fields="incFields" ref="incTable" small>
 
@@ -102,6 +72,9 @@
          </b-table>
          <b-button size="sm" variant="outline-secondary" @click="addInclusion">Add inclusion criterion</b-button>
        </p>
+      </tab-content>
+      <tab-content title="Exclusion Criteria"
+                   icon="ti-thumb-down">
         <p>What are your criteria for study exclusion?
           <b-table striped hover :items="excCriteria" :fields="excFields" ref="excTable" small>
 
@@ -191,20 +164,18 @@ export default {
   props: ['isAuthenticated', 'auth_tokens', 'userInfo'],
   data() {
     return {
+      showDismissibleAlert: false,
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
-      //searchFields: ['Criteria', 'delete'],
+      searchFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
       incCriteria: [],
       excCriteria: [],
       descriptors: [],
-      //searchStr: [],
-      spFields: ['Search', 'PMIDs', 'delete'],
-      spPairs: [],
-      //pmids: [],
-      loading: true,
+      searchStr: [],
+      pmids: [],
     };
   },
   components: {
@@ -214,27 +185,23 @@ export default {
   computed: {
   },
   methods: {
-    removeSP(row) {
-      this.spPairs.splice(row.index, 1);
-      this.$refs.spTable.refresh();
-    },
-    setSearch(val, idx) {
-      this.spPairs[idx].Search = val;
-    },
     splitPmids(val) {
       // console.log(val.split(" "));
       const pmidArray = val.split(' ');
       this.pmids = pmidArray;
     },
-    setPmid(val, idx) {
-      this.spPairs[idx].PMIDs = val;
+    setSearchStr(val, idx) {
+      this.searchStr[idx].Criteria = val;
     },
-    addSProw() {
-      this.spPairs.push({
-        Search: '',
-        PMIDs: '',
+    removeSearch(row) {
+      this.searchStr.splice(row.index, 1);
+      this.$refs.searchTable.refresh();
+    },
+    addSearchStr() {
+      this.searchStr.push({
+        Criteria: '',
       });
-      this.$refs.spTable.refresh();
+      this.$refs.incTable.refresh();
     },
     removeInc(row) {
       this.incCriteria.splice(row.index, 1);
@@ -289,39 +256,14 @@ export default {
       });
       return l;
     },
-    convertSearch(thing) {
-      const q = [];
-      thing.forEach((v) => {
-        q.push(v.Search);
-      });
-      return q;
-    },
-    convertPmids(thing) {
-      const z = [];
-      thing.forEach((v) => {
-        z.push(v.PMIDs);
-      });
-      return z;
-    },
+
     submit() {
-      const search_map = {}
-      this.spPairs.forEach((v) => {
-        search_map[v.Search] = v.PMIDs.split(' ');
-      });
-      console.log('search map is', search_map);
-      const querystring2 = qs.stringify({
-        collection_name: this.name,
-        github_token: this.auth_tokens.github_access_token,
-        key: this.auth_tokens.api_key,
-        search_to_pmids: search_map,
-      });
-      // after this works
       const querystring = qs.stringify({
         inclusion_criteria: JSON.stringify(this.convertObjects(this.incCriteria)),
         exclusion_criteria: JSON.stringify(this.convertObjects(this.excCriteria)),
         collection_name: this.name,
         description: this.description,
-        // search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
+        search_strings: JSON.stringify(this.convertObjects(this.searchStr)),
         tags: JSON.stringify(this.descriptors),
         github_token: this.auth_tokens.github_access_token,
         key: this.auth_tokens.api_key });
@@ -330,15 +272,11 @@ export default {
       axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
         .then(() => {
           // console.log('resp is', response);
-          axios.post(`https://brainspell.herokuapp.com/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
-            console.log('resp2', resp2);
-            this.loading = false;
-            this.convertURL(this.userInfo.login, this.name);
-          })
         })
         .catch(() => {
           // console.log('error is', error);
         });
+      this.convertURL(this.userInfo.login, this.name);
       this.$refs.completeModalRef.show();
     },
     showModal () {
