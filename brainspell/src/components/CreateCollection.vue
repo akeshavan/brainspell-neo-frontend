@@ -207,17 +207,17 @@ export default {
     return {
       incFields: ['Criteria', 'delete'],
       excFields: ['Criteria', 'delete'],
-      //searchFields: ['Criteria', 'delete'],
+      // searchFields: ['Criteria', 'delete'],
       tagSearch: '',
       name: '',
       description: '',
       incCriteria: [],
       excCriteria: [],
       descriptors: [],
-      //searchStr: [],
+      // searchStr: [],
       spFields: ['SearchString', 'PMIDList', 'delete'],
       spPairs: [],
-      //pmids: [],
+      // pmids: [],
       loading: true,
     };
   },
@@ -324,8 +324,9 @@ export default {
     },
     submit() {
       const search_map = {}
+
       this.spPairs.forEach((v) => {
-        search_map[v.SearchString] = v.PMIDList.split(' ');
+        search_map[v.SearchString] = v.PMIDList.trim().split(' ');
       });
       console.log('search map is', search_map);
       const querystring2 = qs.stringify({
