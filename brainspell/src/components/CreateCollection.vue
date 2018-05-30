@@ -1,21 +1,26 @@
 <template>
   <div>
     <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop no-close-on-esc hide-header-close hide header centered>
-      <template slot="modal-title">Your collection is being created...</template>
+      <template slot="modal-title" v-if="loading">Your collection is being created...</template>
+      <template slot="modal-title" v-if="!loading">Your collection has been created!</template>
       <span v-if="loading">
         <p>
           Your collection will be located at:
+        </p>
+      </span>
+      <span v-if="!loading">
+        <p>
+          Your collection lives at
         </p>
       </span>
       <a href="#" id="linkToCollection" target="_blank">
         github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
       </a>
       <span v-if="!loading">
-        <template slot="modal-title">Your collection has been created!</template>
         <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
         <p>
           <br>
-          <b-btn variant="outline-info" float-left to="/profile">See all collections</b-btn>
+          <b-btn variant="outline-info" float-left @click="toCollections">See all collections</b-btn>
           <b-btn variant="outline-primary" float-right @click="hideModal">Back to home</b-btn>
       </p></span>
       <span v-else>
@@ -311,6 +316,11 @@ export default {
         z.push(v.PMIDList);
       });
       return z;
+    },
+    toCollections() {
+      this.$refs.completeModalRef.hide();
+      this.$emit('updateCollection');
+      this.$router.replace("/profile");
     },
     submit() {
       const search_map = {}
