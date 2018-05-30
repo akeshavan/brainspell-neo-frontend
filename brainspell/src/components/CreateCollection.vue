@@ -46,19 +46,19 @@
       <!--NEXT TAB-->
       <tab-content title="Search(es)"
                      icon="ti-search">
-        <!--<p>Enter any PMIDs you may have from a previous search here:
+        <!--<p>Enter any PMIDList you may have from a previous search here:
           <b-form-input
                   type="text"
-                  placeholder="Separate PMIDs with spaces" v-on:input="splitPmids"></b-form-input>
+                  placeholder="Separate PMIDList with spaces" v-on:input="splitPmids"></b-form-input>
         </p>-->
         <p>Enter your search string(s) and corresponding PMIDs here:
           <p>
             <b-table striped hover :items="spPairs" :fields="spFields" ref="spTable" small>
 
-              <template slot="Search" slot-scope="data">
+              <template slot="SearchString" slot-scope="data">
                 <textfield v-model="data.value" :index="data.index" v-on:input="setSearch" ttype="text"></textfield>
               </template>
-              <template slot="PMIDs" slot-scope="data">
+              <template slot="PMIDList" slot-scope="data">
                 <textfield v-model="data.value" :index="data.index" v-on:input="setPmid" ttype="text"></textfield>
               </template>
               <template slot="delete" slot-scope="row">
@@ -210,7 +210,7 @@ export default {
       excCriteria: [],
       descriptors: [],
       //searchStr: [],
-      spFields: ['Search', 'PMIDs', 'delete'],
+      spFields: ['SearchString', 'PMIDList', 'delete'],
       spPairs: [],
       //pmids: [],
       loading: true,
@@ -228,7 +228,7 @@ export default {
       this.$refs.spTable.refresh();
     },
     setSearch(val, idx) {
-      this.spPairs[idx].Search = val;
+      this.spPairs[idx].SearchString = val;
     },
     splitPmids(val) {
       // console.log(val.split(" "));
@@ -236,12 +236,12 @@ export default {
       this.pmids = pmidArray;
     },
     setPmid(val, idx) {
-      this.spPairs[idx].PMIDs = val;
+      this.spPairs[idx].PMIDList = val;
     },
     addSProw() {
       this.spPairs.push({
-        Search: '',
-        PMIDs: '',
+        SearchString: '',
+        PMIDList: '',
       });
       this.$refs.spTable.refresh();
     },
@@ -301,21 +301,21 @@ export default {
     convertSearch(thing) {
       const q = [];
       thing.forEach((v) => {
-        q.push(v.Search);
+        q.push(v.SearchString);
       });
       return q;
     },
     convertPmids(thing) {
       const z = [];
       thing.forEach((v) => {
-        z.push(v.PMIDs);
+        z.push(v.PMIDList);
       });
       return z;
     },
     submit() {
       const search_map = {}
       this.spPairs.forEach((v) => {
-        search_map[v.Search] = v.PMIDs.split(' ');
+        search_map[v.SearchString] = v.PMIDList.split(' ');
       });
       console.log('search map is', search_map);
       const querystring2 = qs.stringify({
