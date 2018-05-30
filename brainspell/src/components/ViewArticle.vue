@@ -77,11 +77,12 @@
           </p>
         </b-row>
         <hr class="mb-3 mt-3 pt-3 pb-3">
-
+        <b-alert :show="localPending">
+          Getting your info from GitHub...
+        </b-alert>
         <b-row style="display: block;" class="mt-3">
-
-          <div v-for="(exp, index) in info.experiments" class="experiment-list mt-3">
-            <experiment :index="index" :exp="exp" v-on:newexp="addExp" v-on:needsSave="needsSave"></experiment>
+          <div v-for="(exp, index) in info.experiments" class="experiment-list mt-3" :key="index">
+            <experiment :index="index" :exp="exp" v-on:newexp="addExp" v-on:needsSave="needsSave" :ref="'exp' + index"></experiment>
           </div>
 
         </b-row>
@@ -172,6 +173,7 @@
         articleURL: null,
         articlePDF: null,
         addPending: false,
+        localPending: true,
         madeEdits: false,
       };
     },
@@ -179,15 +181,14 @@
     computed: {
       isInCollection() {
         if (this.currentCollection) {
-          console.log('checking if in collection', this.currentCollection);
+          // console.log('checking if in collection', this.currentCollection);
           const exists = _.filter(this.currentCollection.unmapped_articles,
             v => v.pmid === this.pmid);
           if (exists != undefined) {
             this.$emit('setEdit', exists.length);
             return exists.length;
           }
-
-          console.log('exists is undefined???');
+          // console.log('exists is undefined???');
         }
         return 0;
       },
@@ -233,14 +234,28 @@
 
     methods: {
       checkExclusion() {
-        axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
-          console.log('from checkExclusion', resp);
-          this.isExcluded = !!resp.data.article_info.excluded_flag;
-          this.excReason = resp.data.article_info.exclusion_reason || '';
-        }).catch(() => {
-          this.isExcluded = false;
-          this.excReason = '';
-        });
+        if (this.currentCollection) {
+          this.localPending = true;
+          axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
+            this.isExcluded = !!resp.data.article_info.excluded_flag;
+            this.excReason = resp.data.article_info.exclusion_reason || '';
+            this.localPending = false;
+            if (resp.data.article_info.experiments && this.info.experiments.length) {
+              const localExperiments = resp.data.article_info.experiments;
+              this.info.experiments.forEach((e, i) => {
+                if (localExperiments[e.id]) {
+                  Vue.set(this.info.experiments[i], 'kvPairs', localExperiments[e.id].key_value_pairs);
+                  this.$refs[`exp${i}`][0].$refs.kvTable.refresh();
+                  Vue.set(this.info.experiments[i], 'include', !localExperiments[e.id].excluded_flag);
+                  this.$forceUpdate();
+                }
+              });
+            }
+          }).catch(() => {
+            this.isExcluded = false;
+            this.excReason = '';
+          });
+        }
       },
       addToCollection() {
         // console.log('sending request...');
@@ -330,6 +345,7 @@
             });
             // Editing items in the locations table will require and emit
           });
+          this.checkExclusion();
         });
         /* .catch((e) => {
           console.log('ERROR', e);
