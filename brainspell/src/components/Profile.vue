@@ -14,14 +14,14 @@
         </p>
 
         <div role="tablist">
-          <b-card no-body class="mb-1" v-for="(coll, index) in allCollections" :key="coll">
+          <b-card no-body class="mb-1" v-for="(coll, index) in allCollections" :key="index">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-btn block href="#" v-b-toggle="'accordion'+index" variant="default">{{coll.name}}</b-btn>
             </b-card-header>
             <b-collapse :id="'accordion'+index" :visible='coll == currentCollection' accordion="my-accordion" role="tabpanel">
               <b-card-body>
-                <p class="card-text text-left" v-if="coll.contents.length">
-                  <div v-for="c in coll.contents" class="mt-2 mb-2 pb-2 pt-2 text-left">
+                <p class="card-text text-left" v-if="coll.unmapped_articles.length">
+                  <div v-for="c in coll.unmapped_articles" class="mt-2 mb-2 pb-2 pt-2 text-left">
                     <p class="text-left mb-0 pb-0">
                       <router-link :to="'/view-article/'+c.pmid">{{c.title}}</router-link>
                     </p>

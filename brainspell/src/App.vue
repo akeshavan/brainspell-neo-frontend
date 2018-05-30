@@ -12,7 +12,10 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="/" style="font-family: 'Lobster Two'">metaCurious.</b-navbar-brand>
+      <b-navbar-brand href="/" style="font-family: 'Lobster Two'">
+        <img class="icon-small" src="./assets/imgs/metacurious.svg"/>
+        metaCurious.
+      </b-navbar-brand>
 
       <!-- If the viewport is small, the navbar collapses.
           Everything in b-collapse is what gets collapsed.
@@ -115,6 +118,7 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios';
+import qs from 'simple-query-string';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
@@ -169,14 +173,14 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
-      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=1`)
+      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
            .then((resp) => {
              this.allCollections = resp.data.collections;
              this.allCollections.forEach((coll, idx) => {
                /* eslint-disable */
                coll.name = coll.name.replace('brainspell-neo-collection-', '');
                /* eslint-enable */
-               Vue.set(this.allCollections[idx], 'contents', coll.contents);
+               Vue.set(this.allCollections[idx], 'unmapped_articles', coll.unmapped_articles);
              });
              this.pendingCollection = false;
            });
@@ -187,15 +191,69 @@ export default {
     setSave(val) {
       this.needsSave = val;
     },
+    stringifyLocations(loc) {
+      const output = [];
+      loc.forEach((v) => {
+        output.push(`${v.x},${v.y},${v.z},${v.E}`);
+      });
+      return output;
+    },
     doSave() {
+      // console.log('need to save', this.$refs.routerView.info);
       const data = this.$refs.routerView.info;
-      axios.post(`https://brainspell.herokuapp.com/json/article?pmid=${data.pmid}`,
-        data);
-        /* .then((resp) => {
-          // console.log('response is', resp);
-        }).catch((e) => {
-          // console.log('error', e);
-        }); */
+      const globalData = {};
+
+      globalData.nsubjects = data.N;
+      globalData.experiments = [];
+      data.experiments.forEach((v) => {
+        const entry = {
+          id: v.id,
+          caption: v.caption,
+          locations: this.stringifyLocations(v.locations),
+          descriptors: v.descriptors,
+          contrast: v.contrast,
+          space: v.space,
+          effect: v.effect,
+        };
+        globalData.experiments.push(entry);
+      });
+      const contents = JSON.stringify(globalData);
+      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&edit_contents=${contents}`); /* .then((resp) => {
+        //console.log('sent global', resp);
+      }); */
+      // const data = this.$refs.routerView.info;
+
+      const kvFormat = function kvFormat() {
+        const output = {};
+        data.experiments.forEach((v) => {
+          output[v.id] = v.kvPairs;
+        });
+        return output;
+      };
+
+      const excFormat = function excFormat() {
+        const output = {};
+        data.experiments.forEach((v) => {
+          if (!v.include) {
+            output[v.id] = 'excluded';
+          }
+        });
+        return output;
+      };
+
+      const localData = {
+        collection_name: this.currentCollection.name,
+        github_token: this.auth_tokens.github_access_token,
+        key: this.auth_tokens.api_key,
+        pmid: data.pmid,
+        key_value_pairs: JSON.stringify(kvFormat()),
+        exclusion_reasons: JSON.stringify(excFormat()),
+      };
+
+      const querystring = qs.stringify(localData);
+      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-local-article?${querystring}`).then((resp) => {
+        console.log('local response', resp);
+      });
     },
     getUserInfo() {
       const token = auth.getToken();
@@ -270,6 +328,10 @@ export default {
 
   .inline {
 
+  }
+
+  .icon-small {
+    width: 20px;
   }
 
 </style>
