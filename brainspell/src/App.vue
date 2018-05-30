@@ -37,6 +37,7 @@
               </span>
 
               <span v-else>
+                <span v-if="savePending"><i class="fa fa-spinner fa-pulse"></i></span>
                 <i class="fa fa-exclamation-triangle" v-if="needsSave"></i> Save Changes
               </span>
 
@@ -102,6 +103,7 @@
         v-on:setEdit="setEdit"
         v-on:needsSave="setSave"
         v-on:doLogin="authenticate"
+        v-on:savePending="setSavePending"
         ref="routerView"
         />
     </div>
@@ -142,6 +144,7 @@ export default {
       pendingCollection: true,
       canEdit: false,
       needsSave: false,
+      savePending: false,
     };
   },
 
@@ -153,6 +156,9 @@ export default {
   methods: {
     gotoProfile() {
       this.$router.replace('/profile');
+    },
+    setSavePending(val) {
+      this.savePending = val;
     },
     authenticate() {
       const self = this;
@@ -195,6 +201,7 @@ export default {
     },
     doSave() {
       // console.log('need to save', this.$refs.routerView.info);
+      this.savePending = true;
       const data = this.$refs.routerView.info;
       const globalData = {};
 
@@ -248,6 +255,8 @@ export default {
       const querystring = qs.stringify(localData);
       axios.post(`https://brainspell.herokuapp.com/json/v2/edit-local-article?${querystring}`).then((resp) => {
         console.log('local response', resp);
+        this.savePending = false;
+        this.needsSave = false;
       });
     },
     getUserInfo() {

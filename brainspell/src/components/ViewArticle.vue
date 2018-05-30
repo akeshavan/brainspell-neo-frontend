@@ -77,7 +77,7 @@
           </p>
         </b-row>
         <hr class="mb-3 mt-3 pt-3 pb-3">
-        <b-alert :show="localPending">
+        <b-alert :show="localPending && isInCollection">
           Getting your info from GitHub...
         </b-alert>
         <b-row style="display: block;" class="mt-3">
@@ -236,6 +236,7 @@
       checkExclusion() {
         if (this.currentCollection) {
           this.localPending = true;
+          this.$emit('savePending', true);
           axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
             this.isExcluded = !!resp.data.article_info.excluded_flag;
             this.excReason = resp.data.article_info.exclusion_reason || '';
@@ -248,6 +249,8 @@
                   this.$refs[`exp${i}`][0].$refs.kvTable.refresh();
                   Vue.set(this.info.experiments[i], 'include', !localExperiments[e.id].excluded_flag);
                   this.$forceUpdate();
+                  this.$emit('needsSave', false);
+                  this.$emit('savePending', false);
                 }
               });
             }
@@ -323,14 +326,13 @@
         .then((resp) => {
           this.info = resp.data;
           // this.articleURL = `http://dx.doi.org/${this.info.doi}`;
-          // console.log('FETCHED, this.info ', this.info);
           this.setArticleURL(this.info.doi);
           this.info.experiments = JSON.parse(this.info.experiments);
           this.info.metadata = JSON.parse(this.info.metadata);
           this.info.N = this.info.metadata.nsubjects;
           this.info.experiments.forEach((exp, idx, arr) => {
             Vue.set(this.info.experiments[idx], 'kvPairs', this.info.experiments[idx].kvPairs || []);
-            Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].descriptors || []);
+            Vue.set(this.info.experiments[idx], 'descriptors', this.info.experiments[idx].tags || []);
             arr[idx].locations.forEach((loc, jdx, locarr) => {
               if (typeof loc === 'string' || loc instanceof String) {
                 const locs = loc.split(',');
@@ -346,6 +348,7 @@
             // Editing items in the locations table will require and emit
           });
           this.checkExclusion();
+          this.$emit('needsSave', false);
         });
         /* .catch((e) => {
           console.log('ERROR', e);
