@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop no-close-on-esc hide-header-close hide header centered>
+    <b-modal ref="completeModalRef" hide-footer  no-close-on-backdrop hide header centered>
       <template slot="modal-title" v-if="loading">Your collection is being created...</template>
       <template slot="modal-title" v-if="!loading">Your collection has been created!</template>
       <span v-if="loading">
@@ -9,14 +9,23 @@
         </p>
       </span>
       <span v-if="!loading">
-        <p>
-          Your collection lives at
-        </p>
+        <span v-if="yay">
+          <p>
+            Your collection lives at
+          </p>
+        </span>
+        <span v-if="!yay">
+          <p id="erroneous">{{this.error}}</p>
+        </span>
       </span>
       <a href="#" id="linkToCollection" target="_blank">
         github.com/{{userInfo.login}}/brainspell-neo-collection-{{this.name}}
-      </a>
+      </a><br>
       <span v-if="!loading">
+        <span v-if="yay=false">
+          <img class="failure" src="../assets/imgs/undraw_taken_yju1.svg"/>
+          <p>It seems your creation has been abducted by aliens.</p>
+        </span>
         <img class="success" src="../assets/imgs/undraw_gift1_sgf8.svg"/>
         <p>
           <br>
@@ -219,6 +228,8 @@ export default {
       spPairs: [],
       // pmids: [],
       loading: true,
+      yay: false,
+      errors: '',
     };
   },
   components: {
@@ -353,12 +364,39 @@ export default {
           axios.post(`https://brainspell.herokuapp.com/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
             console.log('resp2', resp2);
             this.loading = false;
+            this.yay = true;
           })
+          .catch(function(error) {
+            this.errors = error.message;
+            console.log('error is', error);
+          });
           this.convertURL(this.userInfo.login, this.name);
         })
-        .catch(() => {
-          // console.log('error is', error);
-        });
+        .catch(function (error) {
+          if (error.response) {
+            // Found at https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
+            // Because I'm still trying to work out this whole post/response/error thing
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        })
+// this is the old error catching, the above is probably better, but I didn't want to throw this out just in case
+//        .catch(function(error) {
+//          this.loading = false;
+//          this.yay = false;
+//          this.errors = error.message;
+//          console.log('error is', error);
+//        });
       this.$refs.completeModalRef.show();
     },
     showModal () {
