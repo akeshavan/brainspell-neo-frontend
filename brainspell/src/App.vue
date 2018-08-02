@@ -45,18 +45,16 @@
           </b-nav-form>
         </b-navbar-nav>
 
-
-
         <!-- Right aligned nav items -->
         <div class="navbar-collapse justify-content-end">
           <!-- This part only displays if the user is authenticated -->
-
+        <ul class="navbar-nav ml-auto">
 
           <li class="nav-item" v-if="isAuthenticated && !currentCollection"> <a href="#/createcollection"><i class="fa fa-plus m-2" size="sm"></i>Create Collection</a></li>
 
           <!-- The login option shows if the user is not authenticated -->
           <li class="nav-item" v-if="!isAuthenticated"><a href="#/login">Login</a></li>
-      </ul>
+        </ul>
 
       <b-dropdown id="ddown-split1" variant="outline-white" size="sm" right split v-if="isAuthenticated && allCollections.length && !pendingCollection" class="m-2" @click="gotoProfile">
 
