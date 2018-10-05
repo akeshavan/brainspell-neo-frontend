@@ -88,6 +88,19 @@
 
       </b-collapse>
     </b-navbar>
+    <b-navbar toggleable="md" type="dark" variant="info" fixed="bottom">
+
+      <b-navbar-text>metaCurious is built on Roberto Toro's </b-navbar-text>
+      <b-navbar-nav>
+        <b-nav-item href="https://brainspell.herokuapp.com/">Brainspell.</b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+          <b-nav-item href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</b-nav-item>
+      </b-navbar-nav>
+
+    </b-navbar>
 
     <!-- The content is in the router view -->
 

@@ -15,7 +15,7 @@
           </p>
         </span>
         <span v-if="!yay">
-          <p id="erroneous">{{this.error}}</p>
+          <p id="erroneous">{{this.errors}}</p>
         </span>
       </span>
       <a href="#" id="linkToCollection" target="_blank">
@@ -389,6 +389,8 @@ export default {
             console.log('Error', error.message);
           }
           console.log(error.config);
+          this.errors = error.message;
+          this.yay = false;
         })
 // this is the old error catching, the above is probably better, but I didn't want to throw this out just in case
 //        .catch(function(error) {
