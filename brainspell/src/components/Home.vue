@@ -76,7 +76,7 @@ export default {
       }
     },
     randomQuery() {
-      axios.get('https://brainspell.herokuapp.com/json/random-query').then((res) => {
+      axios.get(`${this.$hostname}/json/random-query`).then((res) => {
         // console.log('result is', res);
         this.articles = res.data.articles;
         this.randomPending = false;

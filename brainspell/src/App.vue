@@ -132,6 +132,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import auth from './lib/auth';
 
+Vue.prototype.$hostname = "https://brainspell.herokuapp.com";
+
 // explicit installation required in module environments
 
 Vue.use(BootstrapVue);
@@ -185,7 +187,7 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
-      axios.get(`https://brainspell.herokuapp.com/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
+      axios.get(`${this.$hostname}/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
            .then((resp) => {
              console.log('response on get user collections', resp);
              this.allCollections = resp.data.collections;
@@ -242,7 +244,7 @@ export default {
         globalData.experiments.push(entry);
       });
       const contents = JSON.stringify(globalData);
-      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&edit_contents=${contents}`); /* .then((resp) => {
+      axios.post(`${this.$hostname}/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&edit_contents=${contents}`); /* .then((resp) => {
         //console.log('sent global', resp);
       }); */
       // const data = this.$refs.routerView.info;
@@ -275,7 +277,7 @@ export default {
       };
 
       const querystring = qs.stringify(localData);
-      axios.post(`https://brainspell.herokuapp.com/json/v2/edit-local-article?${querystring}`).then((resp) => {
+      axios.post(`${this.$hostname}/json/v2/edit-local-article?${querystring}`).then((resp) => {
         console.log('local response', resp);
         this.savePending = false;
         this.needsSave = false;

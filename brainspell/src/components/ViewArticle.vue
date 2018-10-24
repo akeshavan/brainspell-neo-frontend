@@ -243,7 +243,7 @@
         if (this.currentCollection) {
           this.localPending = true;
           this.$emit('savePending', true);
-          axios.get(`https://brainspell.herokuapp.com/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
+          axios.get(`${this.$hostname}/json/v2/get-article-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}`).then((resp) => {
             this.isExcluded = !!resp.data.article_info.excluded_flag;
             this.excReason = resp.data.article_info.exclusion_reason || '';
             this.localPending = false;
@@ -269,7 +269,7 @@
       addToCollection() {
         // console.log('sending request...');
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&unmapped_pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
+        axios.get(`${this.$hostname}/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&unmapped_pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;
@@ -282,7 +282,7 @@
       includeInCollection(e) {
         e.preventDefault();
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=0`)
+        axios.get(`${this.$hostname}/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=0`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;
@@ -293,7 +293,7 @@
 
       excludeFromCollection() {
         this.addPending = true;
-        axios.get(`https://brainspell.herokuapp.com/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=1`)
+        axios.get(`${this.$hostname}/json/v2/toggle-exclusion-from-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${this.pmid}&collection_name=${this.currentCollection.name}&exclusion_criterion=${this.excReason}&exclude=1`)
           .then(() => {
             // console.log('success, added', resp);
             this.addPending = false;
@@ -330,7 +330,7 @@
       },
       fetchData() {
         this.pmid = this.$route.params.id;
-        axios.get(`https://brainspell.herokuapp.com/json/article?pmid=${this.$route.params.id}`)
+        axios.get(`${this.$hostname}/json/article?pmid=${this.$route.params.id}`)
         .then((resp) => {
           this.info = resp.data;
           // this.articleURL = `http://dx.doi.org/${this.info.doi}`;
