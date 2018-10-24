@@ -57,6 +57,7 @@ import axios from 'axios';
 
 export default {
   name: 'Home',
+  props: ['hostname'],
   data() {
     return {
       query: null,
@@ -76,7 +77,7 @@ export default {
       }
     },
     randomQuery() {
-      axios.get(`${this.$hostname}/json/random-query`).then((res) => {
+      axios.get(`${this.hostname}/json/random-query`).then((res) => {
         // console.log('result is', res);
         this.articles = res.data.articles;
         this.randomPending = false;

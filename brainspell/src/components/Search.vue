@@ -61,6 +61,7 @@ import axios from 'axios';
 
 export default {
   name: 'search',
+  props : ['hostname'],
   data() {
     return {
       articles: [],
@@ -78,7 +79,7 @@ export default {
   methods: {
     fetchData() {
       this.loading = true;
-      axios.get(`${this.$hostname}/json/query?q=${this.$route.params.query}&start=${this.start}`).then((resp) => {
+      axios.get(`${this.hostname}/json/query?q=${this.$route.params.query}&start=${this.start}`).then((resp) => {
         this.articles = this.articles.concat(resp.data.articles);
         if (resp.data.articles.length !== 10) {
           this.end = true;
