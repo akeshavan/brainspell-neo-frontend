@@ -88,19 +88,15 @@
 
       </b-collapse>
     </b-navbar>
-    <b-navbar toggleable="md" type="dark" variant="info" fixed="bottom">
+    <div class="footer">
+        metaCurious is built on Roberto Toro's
+        <a href="https://brainspell.herokuapp.com/"> Brainspell., </a>
+        <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</a>
+    </div>
 
-      <b-navbar-text>metaCurious is built on Roberto Toro's </b-navbar-text>
-      <b-navbar-nav>
-        <b-nav-item href="https://brainspell.herokuapp.com/">Brainspell.</b-nav-item>
-      </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-          <b-nav-item href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</b-nav-item>
-      </b-navbar-nav>
 
-    </b-navbar>
+
 
     <!-- The content is in the router view -->
 
@@ -349,7 +345,7 @@ export default {
   }
 
   .router {
-    /*padding-top: 40px;*/
+    padding-bottom: 40px;
   }
 
   .inline {
@@ -358,6 +354,24 @@ export default {
 
   .icon-small {
     width: 20px;
+  }
+
+  body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 1rem;
+    min-height: 100%;
+  }
+
+  .footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #D0ECF1;
+    font-size: small;
+    text-align: center;
   }
 
 </style>
