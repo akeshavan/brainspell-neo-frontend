@@ -18,13 +18,13 @@ First make sure you have [`npm` and `node.js`](https://nodejs.org/en/download/) 
 Next, clone the boilerplate from GitHub:
 
 ```bash
-git clone https://github.com/akeshavan/vue-auth-boilerplate
+git clone https://github.com/akeshavan/brainspell-neo-frontend
 ```
 
 Then install all `npm` packages:
 
 ```bash
-cd vue-auth-boilerplate/my-app
+cd brainspell-neo-frontend/brainspell
 npm install
 ```
 
