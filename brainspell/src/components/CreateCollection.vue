@@ -185,6 +185,7 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import 'ti-icons/css/themify-icons.css';
 import Descriptors from './Descriptors';
 
+
 Vue.use(VueFormWizard);
 
 const Textfield = {
@@ -211,7 +212,7 @@ const Textfield = {
 };
 export default {
   name: 'collection',
-  props: ['isAuthenticated', 'auth_tokens', 'userInfo'],
+  props: ['isAuthenticated', 'auth_tokens', 'userInfo', 'hostname'],
   data() {
     return {
       incFields: ['Criteria', 'delete'],
@@ -358,10 +359,10 @@ export default {
         key: this.auth_tokens.api_key });
       // const help = `https://brainspell.herokuapp.com/json/v2/create-collection?github_token=${this.auth_tokens.github_access_token}&inclusion_criteria=${JSON.stringify(this.incCriteria)}&exclusion_criteria=${JSON.stringify(this.excCriteria)}&collection_name=${this.name}&description=${this.description}&search_strings=${JSON.stringify(this.searchStr)}&tags=${JSON.stringify(this.descriptors)}&key=${this.auth_tokens.api_key}`
       // console.log(querystring);
-      axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
+      axios.post(`${this.hostname}/json/v2/create-collection?${querystring}`)
         .then(() => {
           // console.log('resp is', response);
-          axios.post(`https://brainspell.herokuapp.com/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
+          axios.post(`${this.hostname}/json/v2/add-to-collection?${querystring2}`).then((resp2) => {
             console.log('resp2', resp2);
             this.loading = false;
             this.yay = true;

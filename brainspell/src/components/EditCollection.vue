@@ -161,7 +161,7 @@ const Textfield = {
 };
 export default {
   name: 'collection',
-  props: ['isAuthenticated', 'auth_tokens', 'userInfo'],
+  props: ['isAuthenticated', 'auth_tokens', 'userInfo', 'hostname'],
   data() {
     return {
       showDismissibleAlert: false,
@@ -269,7 +269,7 @@ export default {
         key: this.auth_tokens.api_key });
       // const help = `https://brainspell.herokuapp.com/json/v2/create-collection?github_token=${this.auth_tokens.github_access_token}&inclusion_criteria=${JSON.stringify(this.incCriteria)}&exclusion_criteria=${JSON.stringify(this.excCriteria)}&collection_name=${this.name}&description=${this.description}&search_strings=${JSON.stringify(this.searchStr)}&tags=${JSON.stringify(this.descriptors)}&key=${this.auth_tokens.api_key}`
       // console.log(querystring);
-      axios.post(`https://brainspell.herokuapp.com/json/v2/create-collection?${querystring}`)
+      axios.post(`${this.hostname}/json/v2/create-collection?${querystring}`)
         .then(() => {
           // console.log('resp is', response);
         })
