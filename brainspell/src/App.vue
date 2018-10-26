@@ -359,8 +359,12 @@ export default {
   body {
     position: relative;
     margin: 0;
-    padding-bottom: 1rem;
+    padding-bottom: 2rem;
     min-height: 100%;
+  }
+
+  html {
+    height: 100%;
   }
 
   .footer {
