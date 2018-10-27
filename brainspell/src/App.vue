@@ -88,14 +88,6 @@
 
       </b-collapse>
     </b-navbar>
-    <div class="footer">
-        metaCurious is built on Roberto Toro's
-        <a href="https://brainspell.herokuapp.com/"> Brainspell., </a>
-        <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</a>
-    </div>
-
-
-
 
 
     <!-- The content is in the router view -->
@@ -114,8 +106,13 @@
         v-on:savePending="setSavePending"
         ref="routerView"
         />
-    </div>
 
+    </div>
+    <div class="footer" style="font-size: small">
+        metaCurious is built on Roberto Toro's
+        <a href="https://brainspell.herokuapp.com/"> Brainspell., </a>
+        <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</a>
+    </div>
   </div>
 </template>
 
@@ -323,12 +320,31 @@ export default {
     the styles follow into child components.
   */
   @import url('https://fonts.googleapis.com/css?family=Lobster+Two:700');
+  $height-footer: 60px;
+  html {
+    min-height: 100%;
+    position: relative;
+    body {
+      margin-bottom: $height-footer;
+    }
+    #footer {
+      width: 100%;
+      position: relative;
+      font-size: small;
+      height: $height-footer;
+      .footer-block {
+        margin: 20px 0;
+      }
+    }
+  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    min-height: 100vh;
   }
 
   .dropdown-menu.dropdown-menu-right.show {
@@ -349,6 +365,7 @@ export default {
 
   .router {
     padding-bottom: 40px;
+    min-height: calc(100vh - 100px);
   }
 
   .inline {
@@ -357,24 +374,6 @@ export default {
 
   .icon-small {
     width: 20px;
-  }
-
-  body {
-    position: relative;
-    margin: 0;
-    padding-bottom: 1rem;
-    min-height: 100%;
-  }
-
-  .footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 1rem;
-    background-color: #D0ECF1;
-    font-size: small;
-    text-align: center;
   }
 
 </style>
