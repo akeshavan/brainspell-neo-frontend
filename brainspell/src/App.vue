@@ -181,7 +181,7 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
-      axios.get(`${this.hostname}/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0`)
+      axios.get(`${this.hostname}/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0&cache=1`)
            .then((resp) => {
              console.log('response on get user collections', resp);
              this.allCollections = resp.data.collections;
