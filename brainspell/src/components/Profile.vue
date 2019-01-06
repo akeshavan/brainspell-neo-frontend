@@ -7,13 +7,14 @@
         <h1>
           <img :src="userInfo.avatar_url" class="img img-thumbnail avatar rounded-circle"> {{userInfo.login}}'s Collections </img>
         </h1>
+        <button v-on:click="forcePullCollections" class="btn btn-info">Force Pull From Github</button>
 
         <p class="lead mt-3">
-          <p v-if="pendingCollection" class="lead">Gathering your collections</p>
-          <i v-if="pendingCollection" class="fa fa-spinner fa-pulse fa-3x"></i>
+          <p v-if="pendingCollection || showSpinner" class="lead">Gathering your collections</p>
+          <i v-if="pendingCollection || showSpinner" class="fa fa-spinner fa-pulse fa-3x"></i>
         </p>
 
-        <div role="tablist">
+        <div v-show="!showSpinner" role="tablist">
           <b-card no-body class="mb-1" v-for="(coll, index) in allCollections" :key="index">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-btn block href="#" v-b-toggle="'accordion'+index" variant="default">{{coll.name}}</b-btn>
@@ -58,16 +59,27 @@
 }
 </style>
 
+
+
 <script>
 export default {
   name: 'profile',
   data() {
     return {
-
+      showSpinner: false,
     };
+  },
+  methods: {
+    forcePullCollections: async function() {
+        /* Issues a request for updated collections and refreshes the view */
+      this.showSpinner = true;
+      let resp = await axios.get(`${this.hostname}/json/v2/get-user-collections?key=${this.auth_tokens.api_key}&github_token=${this.auth_tokens.github_access_token}&contributors=0&cache=0`);
+      this.allCollections = resp.data.collections;
+      this.showSpinner = false;
+    }
   },
   // the parent component feeds these vars to this component
   props: ['userInfo', 'isAuthenticated', 'allCollections',
-    'pendingCollection', 'currentCollection'],
+    'pendingCollection', 'currentCollection', 'auth_tokens', 'hostname'],
 };
 </script>
