@@ -10,7 +10,7 @@
     -->
     <b-navbar toggleable="md" type="dark" variant="dark" sticky>
 
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>`
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand href="/" style="font-family: 'Lobster Two'">
         <img class="icon-small" src="./assets/imgs/metacurious.svg"/>
@@ -185,7 +185,6 @@ export default {
            .then((resp) => {
              console.log('response on get user collections', resp);
              this.allCollections = resp.data.collections;
-
              this.allCollections.forEach((coll, idx) => {
                /* eslint-disable */
                coll.name = coll.name.replace('brainspell-neo-collection-', '');
@@ -243,7 +242,7 @@ export default {
       console.log(globalData.experiments);
       axios.post(`${this.hostname}/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&experiments=${contents}&subjects=${globalData.nsubjects}`); /* .then((resp) => {
         //console.log('sent global', resp);
-      // }); */
+      }); */
       // const data = this.$refs.routerView.info;
 
       const kvFormat = function kvFormat() {
