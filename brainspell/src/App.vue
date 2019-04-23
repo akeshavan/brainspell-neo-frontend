@@ -213,7 +213,8 @@ export default {
     stringifyLocations(loc) {
       const output = [];
       loc.forEach((v) => {
-        output.push(`${v.x},${v.y},${v.z},${v.E}`);
+        // Ensure to remove undefined operators to maintain db integrity
+        output.push(`${v.x|| ''},${v.y || ''},${v.z || ''}${ v.E ? ',' + v.E : '' }`);
       });
       return output;
     },
@@ -223,7 +224,7 @@ export default {
       const data = this.$refs.routerView.info;
       const globalData = {};
 
-      globalData.nsubjects = data.N;
+      globalData.nsubjects = data.N || -1;
       globalData.experiments = [];
       data.experiments.forEach((v) => {
         const entry = {
@@ -237,8 +238,9 @@ export default {
         };
         globalData.experiments.push(entry);
       });
-      const contents = JSON.stringify(globalData);
-      axios.post(`${this.hostname}/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&edit_contents=${contents}`); /* .then((resp) => {
+      const contents = JSON.stringify(globalData.experiments);
+      console.log(globalData.experiments);
+      axios.post(`${this.hostname}/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&experiments=${contents}&subjects=${globalData.nsubjects}`); /* .then((resp) => {
         //console.log('sent global', resp);
       }); */
       // const data = this.$refs.routerView.info;

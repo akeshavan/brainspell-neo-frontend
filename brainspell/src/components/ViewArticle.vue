@@ -267,11 +267,9 @@
         }
       },
       addToCollection() {
-        // console.log('sending request...');
         this.addPending = true;
         axios.get(`${this.hostname}/json/v2/add-to-collection?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&unmapped_pmids=${JSON.stringify([this.pmid])}&collection_name=${this.currentCollection.name}`)
           .then(() => {
-            // console.log('success, added', resp);
             this.addPending = false;
             this.$emit('updateCollection');
           }); /* .catch((e) => {

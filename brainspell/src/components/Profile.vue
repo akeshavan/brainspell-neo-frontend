@@ -71,10 +71,9 @@ export default {
   },
   methods: {
     forcePullCollections: async function() {
-        /* Issues a request for updated collections and refreshes the view */
       this.showSpinner = true;
       let resp = await axios.get(`${this.hostname}/json/v2/get-user-collections?key=${this.auth_tokens.api_key}&github_token=${this.auth_tokens.github_access_token}&contributors=0&cache=0`);
-      this.allCollections = resp.data.collections;
+      this.$emit('updateCollection');
       this.showSpinner = false;
     }
   },
