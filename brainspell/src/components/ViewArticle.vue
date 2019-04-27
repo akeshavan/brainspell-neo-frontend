@@ -190,7 +190,7 @@
 
           exists = exists.concat(exists2);
 
-          if (exists != undefined) {
+          if (exists !== undefined) {
             this.$emit('setEdit', exists.length);
             return exists.length;
           }

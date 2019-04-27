@@ -181,6 +181,7 @@ export default {
       const key = auth.getKey();
       // Get the user's collections
       this.pendingCollection = true;
+
       axios.get(`${this.hostname}/json/v2/get-user-collections?key=${key}&github_token=${token}&contributors=0&cache=1`)
            .then((resp) => {
              console.log('response on get user collections', resp);
@@ -239,7 +240,6 @@ export default {
         globalData.experiments.push(entry);
       });
       const contents = JSON.stringify(globalData.experiments);
-      console.log(globalData.experiments);
       axios.post(`${this.hostname}/json/v2/edit-global-article?github_token=${this.auth_tokens.github_access_token}&key=${this.auth_tokens.api_key}&pmid=${data.pmid}&experiments=${contents}&subjects=${globalData.nsubjects}`); /* .then((resp) => {
         //console.log('sent global', resp);
       }); */
