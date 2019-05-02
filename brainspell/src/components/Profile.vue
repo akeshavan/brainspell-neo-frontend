@@ -72,9 +72,34 @@ export default {
   methods: {
     forcePullCollections: async function() {
       this.showSpinner = true;
-      let resp = await axios.get(`${this.hostname}/json/v2/get-user-collections?key=${this.auth_tokens.api_key}&github_token=${this.auth_tokens.github_access_token}&contributors=0&cache=0`);
-      this.$emit('updateCollection');
-      this.showSpinner = false;
+      const ws_api_hostname = this.hostname.split("//")[1];
+      let ws = new WebSocket(`ws://${ws_api_hostname}/api-socket`);
+      console.log(ws);
+      const params = {
+        key: this.auth_tokens.api_key,
+        github_token: this.auth_tokens.github_access_token,
+        contributors: 0,
+        cache: 0
+      };
+
+      ws.onmessage = ({ data }) => {
+        console.log(data);
+        const { loading, success, collections } = JSON.parse(data);
+        if (loading) {
+          return;
+        }
+        if (success === 1) {
+          this.$emit('updateCollection');
+          this.showSpinner = false;
+        }
+      };
+
+      ws.onopen = (event) => {
+        ws.send(JSON.stringify({
+          type: "v2/get-user-collections",
+          payload: params
+        }));
+      };
     }
   },
   // the parent component feeds these vars to this component
